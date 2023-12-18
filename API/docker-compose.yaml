@@ -1,0 +1,30 @@
+﻿services:
+  mssql:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Mahmoud2320030@"
+    ports:
+      - 1433:1433
+    volumes:
+      - sqlvolume:/var/opt/mssql
+    networks: 
+      - api-and-mssql
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api
+    ports:
+      - "5000:8080"
+    networks: 
+      - api-and-mssql
+    depends_on: 
+      - mssql
+
+volumes:
+  sqlvolume:
+
+networks:
+  api-and-mssql:

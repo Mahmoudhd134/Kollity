@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>false</InvariantGlobalization>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Application\Application.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Dtos"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <_ContentIncludedByDefault Remove="wwwroot\files\images\11fad330-41f5-4e89-9d80-79ad488d94b6Screenshot 2023-12-10 220906.json"/>
+        <_ContentIncludedByDefault Remove="wwwroot\files\images\31edefef-6559-48b9-a7db-7e217f0e4045AWS fargate.pptx"/>
+        <_ContentIncludedByDefault Remove="wwwroot\files\images\59048a66-6707-4e2f-a0db-1af2114408b7075.mp3"/>
+        <_ContentIncludedByDefault Remove="wwwroot\files\images\77be0512-d56f-4669-9174-9b6c266ce84ebeautify-picture.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\files\images\94ce0eee-186f-463c-83f0-f10162f4951aScreenshot 2023-12-11 190958.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\files\images\index.html"/>
+    </ItemGroup>
+
+</Project>
