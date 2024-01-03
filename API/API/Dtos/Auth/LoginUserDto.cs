@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace API.Dtos.Auth;
 
 public class LoginUserDto

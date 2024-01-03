@@ -1,6 +1,6 @@
 ﻿using Domain.ErrorHandlers;
 
-namespace Domain.Identity;
+namespace Domain.Identity.User;
 
 public static class UserErrors
 {

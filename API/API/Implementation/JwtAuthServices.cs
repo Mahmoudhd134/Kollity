@@ -5,40 +5,44 @@ using API.Abstractions;
 using API.Dtos.Auth;
 using API.Helpers;
 using Domain.ErrorHandlers;
-using Domain.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Domain.Identity.User;
+using Domain.Identity.UserRefreshToken;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Persistence.Data;
+using Persistence.Abstractions;
 
 namespace API.Implementation;
 
 public class JwtAuthServices : IAuthServices
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IUserRepository _userRepository;
+    private readonly IUserRefreshTokenRepository _userRefreshTokenRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly JwtConfiguration _jwtConfiguration;
-    private readonly UserManager<BaseUser> _userManager;
 
-    public JwtAuthServices(UserManager<BaseUser> userManager, IOptions<JwtConfiguration> jwtConfiguration,
-        ApplicationDbContext context)
+    public JwtAuthServices(IUserRepository userRepository,
+        IUserRefreshTokenRepository userRefreshTokenRepository,
+        IUnitOfWork unitOfWork,
+        IOptions<JwtConfiguration> jwtConfiguration)
     {
-        _userManager = userManager;
-        _context = context;
+        _userRepository = userRepository;
+        _userRefreshTokenRepository = userRefreshTokenRepository;
+        _unitOfWork = unitOfWork;
         _jwtConfiguration = jwtConfiguration.Value;
     }
 
     public async Task<Result<RefreshTokenDto>> LoginUser(LoginUserDto loginUserDto, string userAgent)
     {
-        var user = await _userManager.FindByNameAsync(loginUserDto.Username);
+        var user = await _userRepository.FindByNameAsync(loginUserDto.Username);
         if (user == null)
             return UserErrors.WrongUsername;
 
-        if (await _userManager.CheckPasswordAsync(user, loginUserDto.Password) == false)
+        if (await _userRepository.CheckPasswordAsync(user, loginUserDto.Password) == false)
             return UserErrors.WrongPassword;
 
-        var oldRefreshToken = await _context.UserRefreshTokens
-            .FirstOrDefaultAsync(u => u.UserId.Equals(user.Id) && u.UserAgent.Equals(userAgent));
+        // var oldRefreshToken = await _context.UserRefreshTokens
+        //     .FirstOrDefaultAsync(u => u.UserId.Equals(user.Id) && u.UserAgent.Equals(userAgent));
+        var oldRefreshToken = await _userRefreshTokenRepository.GetRefreshTokenForUser(user.Id, userAgent);
 
         var result = await GetTokenAndRefreshToken(user);
         if (result.IsSuccess == false)
@@ -46,7 +50,13 @@ public class JwtAuthServices : IAuthServices
 
         if (oldRefreshToken == null)
         {
-            await _context.UserRefreshTokens.AddAsync(new UserRefreshToken
+            // await _context.UserRefreshTokens.AddAsync(new UserRefreshToken
+            // {
+            //     UserId = user.Id,
+            //     RefreshToken = result.Data.RefreshToken,
+            //     UserAgent = userAgent
+            // });
+            await _userRefreshTokenRepository.AddRefreshTokenWithUserAgentAsync(new UserRefreshToken
             {
                 UserId = user.Id,
                 RefreshToken = result.Data.RefreshToken,
@@ -56,10 +66,11 @@ public class JwtAuthServices : IAuthServices
         else
         {
             oldRefreshToken.RefreshToken = result.Data.RefreshToken;
-            _context.UserRefreshTokens.Update(oldRefreshToken);
+            // _context.UserRefreshTokens.Update(oldRefreshToken);
+            await _userRefreshTokenRepository.Update(oldRefreshToken);
         }
 
-        await _context.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         result.Data.UserName = user.UserName;
         result.Data.Email = user.Email;
@@ -72,9 +83,10 @@ public class JwtAuthServices : IAuthServices
         if (string.IsNullOrWhiteSpace(refreshToken))
             return UserErrors.ExpireRefreshToken;
 
-        var userRefreshToken = await _context.UserRefreshTokens
-            .Include(u => u.User)
-            .FirstOrDefaultAsync(u => u.UserId == userId && u.UserAgent == userAgent);
+        var userRefreshToken = await _userRefreshTokenRepository.GetRefreshTokenForUserWithUser(userId, userAgent);
+        // await _context.UserRefreshTokens
+        // .Include(u => u.User)
+        // .FirstOrDefaultAsync(u => u.UserId == userId && u.UserAgent == userAgent);
 
         if (userRefreshToken == null)
             return UserErrors.NotSignedIn;
@@ -99,8 +111,9 @@ public class JwtAuthServices : IAuthServices
         };
 
         userRefreshToken.RefreshToken = newRefreshTokenDto.RefreshToken;
-        _context.UserRefreshTokens.Update(userRefreshToken);
-        await _context.SaveChangesAsync();
+        await _userRefreshTokenRepository.Update(userRefreshToken);
+        
+        await _unitOfWork.SaveChangesAsync();
 
         return newRefreshTokenDto;
     }
@@ -122,7 +135,7 @@ public class JwtAuthServices : IAuthServices
 
     private async Task<(IEnumerable<string>, IEnumerable<Claim>)> GetRolesAndClaimsAsync(BaseUser user)
     {
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _userRepository.GetRolesAsync(user);
         var claims = roles
             .Select(r => new Claim(ClaimTypes.Role, r))
             .Append(new Claim(ClaimTypes.NameIdentifier, user.UserName!))

@@ -1,4 +1,6 @@
-﻿namespace Domain.Identity;
+﻿using Domain.Identity.User;
+
+namespace Domain.Identity.UserRefreshToken;
 
 public class UserRefreshToken
 {

@@ -74,7 +74,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddAuthToSwaggerGen(this IServiceCollection services)
+    public static IServiceCollection AddSwaggerGenWithJwtAuth(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
         {

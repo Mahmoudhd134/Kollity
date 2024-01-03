@@ -12,8 +12,6 @@ namespace Persistence.Migrations
         {
 
             migrationBuilder.Sql(@"
-USE [my_college]
-GO
 INSERT [dbo].[Roles] ([id], [name], [normalized_name], [concurrency_stamp]) VALUES (N'4e07f76d-0de6-4c58-98f7-0a46c153fff5', N'Student', N'STUDENT', NULL)
 GO
 ");

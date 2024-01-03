@@ -4,9 +4,11 @@ using API.Extensions;
 using API.Helpers;
 using Domain.ErrorHandlers;
 using Domain.Identity;
+using Domain.Identity.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers;
 
@@ -22,8 +24,8 @@ public class AuthController : BaseController
         _authServices = authServices;
     }
 
-    [Route("login")]
-    [HttpPost]
+    [HttpPost("login")]
+    [SwaggerResponse(200, type: typeof(TokenDto))]
     public async Task<IResult> Login([FromBody] LoginUserDto loginUserDto)
     {
         var result = await _authServices.LoginUser(loginUserDto, UserAgent);
@@ -35,8 +37,8 @@ public class AuthController : BaseController
         return Results.Ok(tokenDto);
     }
 
-    [Route("refresh-token")]
-    [HttpPost]
+    [HttpPost("refresh-token")]
+    [SwaggerResponse(200, type: typeof(TokenDto))]
     public async Task<IResult> RefreshToken()
     {
         if (Request.Cookies.TryGetValue("id", out var id) == false)

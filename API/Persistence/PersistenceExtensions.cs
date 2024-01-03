@@ -1,10 +1,15 @@
 ﻿using Domain.Doctor;
 using Domain.Identity;
+using Domain.Identity.Role;
+using Domain.Identity.User;
+using Domain.Identity.UserRefreshToken;
 using Domain.Student;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Abstractions;
 using Persistence.Data;
+using Persistence.Implementation;
 
 namespace Persistence;
 
@@ -14,6 +19,11 @@ public static class PersistenceExtensions
         string connectionString)
     {
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
+
+        services.AddScoped<IUserRepository, EfCoreUserRepo>();
+        services.AddScoped<IUserRefreshTokenRepository, EfCoreUserRefreshTokenRepo>();
+        services.AddScoped<IStudentRepository, EfCoreStudentRepo>();
+        services.AddScoped<IUnitOfWork, EfCoreUnitOfWork>();
 
         services.AddDefaultIdentity<BaseUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
             .AddRoles<BaseRole>()

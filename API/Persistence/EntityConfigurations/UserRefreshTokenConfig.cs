@@ -1,4 +1,6 @@
 ﻿using Domain.Identity;
+using Domain.Identity.User;
+using Domain.Identity.UserRefreshToken;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

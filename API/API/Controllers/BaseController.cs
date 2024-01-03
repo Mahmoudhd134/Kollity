@@ -1,13 +1,18 @@
 ﻿using System.Security.Claims;
+using API.Dtos;
 using API.Extensions;
 using Application.Abstractions.Messages;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
+[
+    ApiController,
+    Route("api/[controller]"),
+    SwaggerResponse(400, type: typeof(ProblemDetails))
+]
 public class BaseController : ControllerBase
 {
     private ISender _sender;

@@ -1,4 +1,4 @@
-﻿namespace Application.Commands.Student.AddStudent;
+﻿namespace Application.Dtos.Student;
 
 public class AddStudentDto
 {

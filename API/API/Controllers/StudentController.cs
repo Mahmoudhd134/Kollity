@@ -1,4 +1,5 @@
 ﻿using Application.Commands.Student.AddStudent;
+using Application.Dtos.Student;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

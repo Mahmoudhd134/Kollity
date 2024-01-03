@@ -1,4 +1,4 @@
-﻿namespace Domain.Identity;
+﻿namespace Domain.Identity.Role;
 
 public static class Role
 {

@@ -1,4 +1,5 @@
 ﻿using Domain.Identity;
+using Domain.Identity.User;
 
 namespace Domain.Doctor;
 

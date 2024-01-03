@@ -1,8 +1,12 @@
 ﻿using Domain.Doctor;
 using Domain.Identity;
+using Domain.Identity.Role;
+using Domain.Identity.User;
+using Domain.Identity.UserRefreshToken;
 using Domain.Student;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Abstractions;
 using Persistence.Extensions;
 
 namespace Persistence.Data;
