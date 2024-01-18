@@ -1,5 +1,5 @@
 ﻿using Domain.ErrorHandlers;
-using Domain.Student;
+using Domain.StudentModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace Persistence.Implementation;

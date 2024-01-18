@@ -1,9 +1,10 @@
-﻿using Domain.Doctor;
+﻿using Domain.AssistantModels;
+using Domain.DoctorModels;
 using Domain.Identity;
 using Domain.Identity.Role;
 using Domain.Identity.User;
 using Domain.Identity.UserRefreshToken;
-using Domain.Student;
+using Domain.StudentModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,6 +35,10 @@ public static class PersistenceExtensions
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.AddIdentityCore<Doctor>()
+            .AddRoles<BaseRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+        
+        services.AddIdentityCore<Assistant>()
             .AddRoles<BaseRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 

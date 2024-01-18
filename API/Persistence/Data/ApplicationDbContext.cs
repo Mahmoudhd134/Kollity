@@ -1,9 +1,9 @@
-﻿using Domain.Doctor;
+﻿using Domain.DoctorModels;
 using Domain.Identity;
 using Domain.Identity.Role;
 using Domain.Identity.User;
 using Domain.Identity.UserRefreshToken;
-using Domain.Student;
+using Domain.StudentModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Abstractions;

@@ -1,4 +1,4 @@
-﻿using Domain.Student;
+﻿using Domain.StudentModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using Domain.ErrorHandlers;
+﻿using Domain.ErrorHandlers;
 
-namespace Domain.Student;
+namespace Domain.StudentModels;
 
 public interface IStudentRepository
 {

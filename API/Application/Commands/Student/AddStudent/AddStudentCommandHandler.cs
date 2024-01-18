@@ -4,7 +4,7 @@ using AutoMapper;
 using Domain.ErrorHandlers;
 using Domain.Identity.Role;
 using Domain.Identity.User;
-using Domain.Student;
+using Domain.StudentModels;
 using MediatR;
 using Persistence.Abstractions;
 
@@ -42,7 +42,7 @@ public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
         if (isEmailUsed.Data)
             return UserErrors.EmailAlreadyUsed(request.AddStudentDto.Email);
 
-        var student = _mapper.Map<Domain.Student.Student>(request.AddStudentDto);
+        var student = _mapper.Map<Domain.StudentModels.Student>(request.AddStudentDto);
         var errors = await _studentRepository.CreateAsync(student);
 
         if (errors is not null && errors.Count > 0)

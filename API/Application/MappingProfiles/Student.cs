@@ -8,6 +8,6 @@ public class Student : Profile
 {
     public Student()
     {
-        CreateMap<AddStudentDto, Domain.Student.Student>();
+        CreateMap<AddStudentDto, Domain.StudentModels.Student>();
     }
 }
