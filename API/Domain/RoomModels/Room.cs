@@ -1,5 +1,6 @@
 ﻿using Domain.AssignmentModels.AssignmentGroupModels;
 using Domain.CourseModels;
+using Domain.ExamModels;
 
 namespace Domain.RoomModels;
 
@@ -13,7 +14,7 @@ public class Room
     public bool EnsureJoinRequest { get; set; }
 
     public List<RoomMessage> RoomMessages { get; set; } = [];
-    public List<UsersRooms> UsersRooms { get; set; } = [];
-    public List<RoomsSupervisors> RoomsSupervisors { get; set; } = [];
-    public List<AssignmentGroupsStudents> AssignmentGroupsStudents { get; set; } = [];
+    public List<UserRoom> UsersRooms { get; set; } = [];
+    public List<RoomSupervisor> RoomsSupervisors { get; set; } = [];
+    public List<Exam> Exams { get; set; } = [];
 }

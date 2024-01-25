@@ -6,28 +6,25 @@ using Domain.Identity.Role;
 using Domain.Identity.User;
 using Domain.StudentModels;
 using MediatR;
-using Persistence.Abstractions;
+using Microsoft.AspNetCore.Identity;
+using Persistence.Data;
 
 namespace Application.Commands.Student.AddStudent;
 
 public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
 {
     private readonly IMapper _mapper;
-    private readonly IStudentRepository _studentRepository;
-    private readonly IUserRepository _userRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly UserManager<Domain.StudentModels.Student> _studentManager;
+    private readonly ApplicationDbContext _context;
     private readonly ISender _sender;
 
-    public AddStudentCommandHandler(IStudentRepository studentRepository,
-        IUserRepository userRepository,
-        IUnitOfWork unitOfWork,
-        ISender sender, IMapper mapper)
+    public AddStudentCommandHandler(ApplicationDbContext context, ISender sender, IMapper mapper,
+        UserManager<Domain.StudentModels.Student> studentManager)
     {
-        _studentRepository = studentRepository;
-        _userRepository = userRepository;
-        _unitOfWork = unitOfWork;
+        _context = context;
         _sender = sender;
         _mapper = mapper;
+        _studentManager = studentManager;
     }
 
     public async Task<Result> Handle(AddStudentCommand request, CancellationToken cancellationToken)
@@ -43,13 +40,16 @@ public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
             return UserErrors.EmailAlreadyUsed(request.AddStudentDto.Email);
 
         var student = _mapper.Map<Domain.StudentModels.Student>(request.AddStudentDto);
-        var errors = await _studentRepository.CreateAsync(student);
+        var result = await _studentManager.CreateAsync(student);
+        var errors = result.Errors
+            .Select(e => new Error(e.Code, e.Description))
+            .ToList();
 
-        if (errors is not null && errors.Count > 0)
+        if (errors.Count > 0)
             return errors;
 
-        await _userRepository.AddToRoleAsync(student, Role.Student);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _studentManager.AddToRoleAsync(student, Role.Student);
+        await _context.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }
 }

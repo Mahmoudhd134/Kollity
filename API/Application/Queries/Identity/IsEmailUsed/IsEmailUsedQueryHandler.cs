@@ -7,15 +7,16 @@ namespace Application.Queries.Identity.IsEmailUsed;
 
 public class IsEmailUsedQueryHandler : IQueryHandler<IsEmailUsedQuery, bool>
 {
-    private readonly IUserRepository _userRepository;
+    private ApplicationDbContext _context;
 
-    public IsEmailUsedQueryHandler(IUserRepository userRepository)
+    public IsEmailUsedQueryHandler(ApplicationDbContext context)
     {
-        _userRepository = userRepository;
+        _context = context;
     }
 
     public async Task<Result<bool>> Handle(IsEmailUsedQuery request, CancellationToken cancellationToken)
     {
-        return await _userRepository.IsEmailUsed(request.Email, cancellationToken);
+        return await _context.Users.AnyAsync(
+            u => u.NormalizedEmail == request.Email.ToUpper(), cancellationToken);
     }
 }

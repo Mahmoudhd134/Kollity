@@ -11,7 +11,7 @@ namespace API.Controllers;
 [
     ApiController,
     Route("api/[controller]"),
-    SwaggerResponse(400, type: typeof(ProblemDetails))
+    //SwaggerResponse(400, type: typeof(ProblemDetails))
 ]
 public class BaseController : ControllerBase
 {

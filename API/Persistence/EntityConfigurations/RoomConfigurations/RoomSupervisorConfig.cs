@@ -1,0 +1,36 @@
+﻿using Domain.Identity.User;
+using Domain.RoomModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Persistence.EntityConfigurations.CourseConfigurations;
+
+namespace Persistence.EntityConfigurations.RoomConfigurations;
+
+public class RoomSupervisorConfig : IEntityTypeConfiguration<RoomSupervisor>
+{
+    public void Configure(EntityTypeBuilder<RoomSupervisor> builder)
+    {
+        builder.HasKey(x => x.Id);
+
+        builder
+            .HasOne(x => x.Room)
+            .WithMany(x => x.RoomsSupervisors)
+            .HasForeignKey(x => x.RoomId);
+
+        builder
+            .HasOne(x => x.Course)
+            .WithMany()
+            .HasForeignKey(x => x.CourseId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+            .HasOne(x => x.Supervisor)
+            .WithMany(x => x.RoomsSupervisors)
+            .HasForeignKey(x => x.SupervisorId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasIndex(x => new { x.RoomId, x.SupervisorId }).IsUnique();
+
+        builder.ToTable("RoomSupervisor");
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using Domain.AssignmentModels.AssignmentGroupModels;
 using Domain.DoctorModels;
+using Domain.RoomModels;
 using Domain.StudentModels;
 
 namespace Domain.CourseModels;
@@ -15,6 +16,7 @@ public class Course
     public Guid DoctorId { get; set; }
     public Doctor Doctor { get; set; }
 
-    public List<StudentsCourses> StudentsCourses { get; set; } = [];
-    public List<AssignmentGroupsStudents> AssignmentGroupsStudents { get; set; } = [];
+    public List<Room> Rooms { get; set; } = [];
+    public List<StudentCourse> StudentsCourses { get; set; } = [];
+    public List<CourseAssistant> CoursesAssistants { get; set; } = [];
 }

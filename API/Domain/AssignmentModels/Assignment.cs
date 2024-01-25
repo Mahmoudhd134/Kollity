@@ -8,4 +8,5 @@ public class Assignment
     public AssignmentMode Mode { get; set; }
     public DateTime CreatedDate { get; set; }
     public List<AssignmentImage> AssignmentImages { get; set; } = [];
+    public List<AssignmentAnswer> AssignmentsAnswers { get; set; } = [];
 }

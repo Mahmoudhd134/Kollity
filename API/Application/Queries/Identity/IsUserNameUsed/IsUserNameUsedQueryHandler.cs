@@ -7,16 +7,17 @@ namespace Application.Queries.Identity.IsUserNameUsed;
 
 public class IsUserNameUsedQueryHandler : IQueryHandler<IsUserNameUsedQuery, bool>
 {
-    private readonly IUserRepository _userRepository;
+    private ApplicationDbContext _context;
 
-    public IsUserNameUsedQueryHandler(IUserRepository userRepository)
+    public IsUserNameUsedQueryHandler(ApplicationDbContext context)
     {
-        _userRepository = userRepository;
+        _context = context;
     }
 
 
     public async Task<Result<bool>> Handle(IsUserNameUsedQuery request, CancellationToken cancellationToken)
     {
-        return await _userRepository.IsUserNameUsed(request.UserName, cancellationToken);
+        return await _context.Users.AnyAsync(
+            u => u.NormalizedUserName == request.UserName.ToUpper(), cancellationToken);
     }
 }
