@@ -1,5 +1,4 @@
 ﻿using Domain.ErrorHandlers;
-using Domain.Identity.User;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
@@ -7,7 +6,7 @@ namespace Application.Queries.Identity.IsUserNameUsed;
 
 public class IsUserNameUsedQueryHandler : IQueryHandler<IsUserNameUsedQuery, bool>
 {
-    private ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
 
     public IsUserNameUsedQueryHandler(ApplicationDbContext context)
     {

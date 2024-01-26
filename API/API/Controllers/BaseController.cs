@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using API.Dtos;
 using API.Extensions;
+using API.Helpers;
 using Application.Abstractions.Messages;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace API.Controllers;
 [
     ApiController,
     Route("api/[controller]"),
-    //SwaggerResponse(400, type: typeof(ProblemDetails))
+    SwaggerResponse(400, type: typeof(FailureType))
 ]
 public class BaseController : ControllerBase
 {
@@ -27,13 +28,12 @@ public class BaseController : ControllerBase
         .Select(c => c.Value)
         .ToList();
 
-    protected async Task<IResult> Send(ICommand command)
-    {
-        return (await Sender.Send(command)).ToIResult();
-    }
+    protected async Task<IResult> Send<T>(IQuery<T> query) =>
+        (await Sender.Send(query)).ToIResult();
 
-    protected async Task<IResult> Send<T>(ICommand<T> command)
-    {
-        return (await Sender.Send(command)).ToIResult();
-    }
+    protected async Task<IResult> Send(ICommand command) =>
+        (await Sender.Send(command)).ToIResult();
+
+    protected async Task<IResult> Send<T>(ICommand<T> command) =>
+        (await Sender.Send(command)).ToIResult();
 }

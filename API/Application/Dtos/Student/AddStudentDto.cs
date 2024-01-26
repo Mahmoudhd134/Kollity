@@ -1,7 +1,11 @@
-﻿namespace Application.Dtos.Student;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Application.Dtos.Student;
 
 public class AddStudentDto
 {
-    public string UserName { get; set; }
-    public string Email { get; set; }
+    [Required] public string UserName { get; set; }
+    [Required] public string FullNameInArabic { get; set; }
+    [Required] public string Code { get; set; }
+    [Required] public string Password { get; set; }
 }

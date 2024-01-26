@@ -13,7 +13,7 @@ public class Course
     public int Hours { get; set; }
     public string Name { get; set; }
 
-    public Guid DoctorId { get; set; }
+    public Guid? DoctorId { get; set; }
     public Doctor Doctor { get; set; }
 
     public List<Room> Rooms { get; set; } = [];

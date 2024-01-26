@@ -1,12 +1,11 @@
-﻿using Application.Commands.Student.AddStudent;
-using Application.Dtos.Student;
+﻿using Application.Dtos.Student;
 using AutoMapper;
 
 namespace Application.MappingProfiles;
 
-public class Student : Profile
+public class StudentMapsProfile : Profile
 {
-    public Student()
+    public StudentMapsProfile()
     {
         CreateMap<AddStudentDto, Domain.StudentModels.Student>();
     }
