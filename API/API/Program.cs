@@ -21,7 +21,8 @@ builder.Services
     .AddJwtAuthentication(builder.Configuration)
     .AddFallbackPolicy()
     .AddClassesConfigurations(builder.Configuration)
-    .AddServicesInjection();
+    .AddServicesInjection()
+    .AddModelBindingErrorsMap();
 
 var app = builder.Build();
 

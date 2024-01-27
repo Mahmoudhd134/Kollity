@@ -6,6 +6,7 @@ using Application.Abstractions.Files;
 using Infrastructure.Files;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -105,6 +106,14 @@ public static class ServiceCollectionExtensions
                 }
             });
         });
+        return services;
+    }
+
+    public static IServiceCollection AddModelBindingErrorsMap(this IServiceCollection services)
+    {
+        services.AddControllers(opt => opt.Filters.Add(typeof(CustomValidationFilterAttribute)));
+        services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
+        
         return services;
     }
 }

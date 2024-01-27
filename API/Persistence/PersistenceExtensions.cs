@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
-using Persistence.EntityConfigurations.AssistantConfigurations;
 
 namespace Persistence;
 

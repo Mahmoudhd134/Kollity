@@ -7,19 +7,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Domain\Domain.csproj" />
+        <ProjectReference Include="..\Domain\Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="EFCore.NamingConventions" Version="8.0.0-rc.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+        <PackageReference Include="EFCore.NamingConventions" Version="8.0.0-rc.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,24 +27,24 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="bin\Debug\net8.0\Domain.dll" />
-        <Content Include="bin\Debug\net8.0\Domain.pdb" />
-        <Content Include="bin\Debug\net8.0\Persistence.deps.json" />
-        <Content Include="bin\Debug\net8.0\Persistence.dll" />
-        <Content Include="bin\Debug\net8.0\Persistence.pdb" />
-        <Content Include="bin\Debug\net8.0\Persistence.runtimeconfig.json" />
+        <Content Include="bin\Debug\net8.0\Domain.dll"/>
+        <Content Include="bin\Debug\net8.0\Domain.pdb"/>
+        <Content Include="bin\Debug\net8.0\Persistence.deps.json"/>
+        <Content Include="bin\Debug\net8.0\Persistence.dll"/>
+        <Content Include="bin\Debug\net8.0\Persistence.pdb"/>
+        <Content Include="bin\Debug\net8.0\Persistence.runtimeconfig.json"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="bin\**" />
+        <Compile Remove="bin\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Remove="bin\**" />
+        <EmbeddedResource Remove="bin\**"/>
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="bin\**" />
+        <None Remove="bin\**"/>
     </ItemGroup>
 
 </Project>

@@ -4,7 +4,9 @@ using API.Extensions;
 using API.Helpers;
 using Application.Abstractions.Messages;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace API.Controllers;
@@ -12,7 +14,10 @@ namespace API.Controllers;
 [
     ApiController,
     Route("api/[controller]"),
-    SwaggerResponse(400, type: typeof(FailureType))
+    SwaggerResponse(400, type: typeof(FailureType)),
+    SwaggerResponse(404, type: typeof(FailureType)),
+    SwaggerResponse(409, type: typeof(FailureType)),
+    SwaggerResponse(500, type: typeof(FailureType)),
 ]
 public class BaseController : ControllerBase
 {

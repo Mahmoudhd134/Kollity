@@ -1,4 +1,5 @@
-﻿using Domain.ErrorHandlers;
+﻿using API.Helpers;
+using Domain.ErrorHandlers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Extensions;
@@ -19,7 +20,7 @@ public static class ResultExtensions
             : result.ToProblemDetails();
     }
 
-    private static IResult ToProblemDetails(this Result result)
+    public static IResult ToProblemDetails(this Result result)
     {
         return Results.Problem(
             statusCode: GetStatusCode(result.Errors.First().Type),
@@ -30,6 +31,17 @@ public static class ResultExtensions
                 { "errors", result.Errors }
             }
         );
+    }
+
+    public static FailureType ToFailureType(this Result result)
+    {
+        return new FailureType()
+        {
+            Status = GetStatusCode(result.Errors.First().Type),
+            Title = GetTitle(result.Errors.First().Type),
+            Type = GetType(result.Errors.First().Type),
+            Errors = result.Errors
+        };
     }
 
     private static string GetType(ErrorType type) => type switch
