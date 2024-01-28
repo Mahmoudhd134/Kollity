@@ -22,9 +22,9 @@ public class CourseController : BaseController
     [HttpGet, SwaggerResponse(200, type: typeof(List<CourseForListDto>))]
     public Task<IResult> Get([FromQuery] CourseListFilters filters) => Send(new GetCourseListQuery(filters));
 
-    [HttpPut("{id:guid}"), Authorize(Roles = $"{Role.Admin}")]
-    public Task<IResult> Edit(Guid id, [FromBody] EditCourseDto editCourseDto) =>
-        Send(new EditCourseCommand(id, editCourseDto));
+    [HttpPut, Authorize(Roles = $"{Role.Admin}")]
+    public Task<IResult> Edit([FromBody] EditCourseDto editCourseDto) =>
+        Send(new EditCourseCommand(editCourseDto));
 
     [HttpDelete("{id:guid}"), Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> Delete(Guid id) => Send(new DeleteCourseCommand(id));

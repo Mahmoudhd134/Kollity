@@ -2,4 +2,4 @@
 
 namespace Application.Commands.Course.EditCourse;
 
-public record EditCourseCommand(Guid CourseId, EditCourseDto EditCourseDto) : ICommand;
+public record EditCourseCommand(EditCourseDto EditCourseDto) : ICommand;

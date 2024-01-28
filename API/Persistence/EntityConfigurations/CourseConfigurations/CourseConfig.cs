@@ -23,6 +23,8 @@ public class CourseConfig : IEntityTypeConfiguration<Course>
             .WithMany(x => x.Courses)
             .HasForeignKey(x => x.DoctorId);
 
+        builder.HasIndex(x => x.Code).IsUnique();
+
         builder.ToTable("Course");
     }
 }

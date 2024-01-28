@@ -1,5 +1,5 @@
 ﻿using Application.Dtos.Student;
-using AutoMapper;
+using Domain.StudentModels;
 
 namespace Application.MappingProfiles;
 
@@ -7,6 +7,19 @@ public class StudentMapsProfile : Profile
 {
     public StudentMapsProfile()
     {
-        CreateMap<AddStudentDto, Domain.StudentModels.Student>();
+        CreateMap<AddStudentDto, Student>();
+        CreateMap<EditStudentDto, Student>();
+
+        CreateMap<Student, StudentDto>()
+            .ForMember(dest => dest.Courses, opt =>
+                opt.MapFrom(src => src.StudentsCourses.Select(sc => new CourseForStudentDto()
+                {
+                    Id = sc.CourseId,
+                    Code = sc.Course.Code,
+                    Department = sc.Course.Department,
+                    Name = sc.Course.Name
+                })));
+
+        CreateMap<Student, StudentForListDto>();
     }
 }

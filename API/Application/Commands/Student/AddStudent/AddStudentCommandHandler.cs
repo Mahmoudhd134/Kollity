@@ -1,10 +1,10 @@
 ﻿using Application.Queries.Identity.IsUserNameUsed;
-using AutoMapper;
-using Domain.ErrorHandlers;
 using Domain.Identity.Role;
 using Domain.Identity.User;
+using Domain.StudentModels;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Commands.Student.AddStudent;
 
@@ -36,6 +36,11 @@ public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
         // if (isEmailUsed.Data)
         //     return UserErrors.EmailAlreadyUsed(request.AddStudentDto.Email);
 
+        var isCodeUsed = await _context.Students
+            .AnyAsync(x => x.Code == request.AddStudentDto.Code, cancellationToken);
+        if (isCodeUsed)
+            return StudentErrors.CodeAlreadyExists(request.AddStudentDto.Code);
+
         var student = _mapper.Map<Domain.StudentModels.Student>(request.AddStudentDto);
         var result = await _studentManager.CreateAsync(student, request.AddStudentDto.Password);
         var errors = result.Errors
@@ -47,6 +52,7 @@ public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
 
         await _studentManager.AddToRoleAsync(student, Role.Student);
         await _context.SaveChangesAsync(cancellationToken);
+        
         return Result.Success();
     }
 }

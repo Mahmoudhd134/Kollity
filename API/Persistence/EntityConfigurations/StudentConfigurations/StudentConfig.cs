@@ -10,5 +10,7 @@ public class StudentConfig : IEntityTypeConfiguration<Student>
     {
         builder.Property(s => s.FullNameInArabic).HasMaxLength(127);
         builder.Property(x => x.Code).HasMaxLength(15).IsRequired();
+
+        builder.HasIndex(x => x.Code).IsUnique();
     }
 }

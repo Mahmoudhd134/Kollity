@@ -19,14 +19,11 @@ public class EditCourseCommandHandler : ICommandHandler<EditCourseCommand>
 
     public async Task<Result> Handle(EditCourseCommand request, CancellationToken cancellationToken)
     {
-        var (courseId, editDto) = request;
+        var editDto = request.EditCourseDto;
 
-        if (courseId != editDto.Id)
-            return CourseErrors.IdConflict;
-
-        var course = await _context.Courses.FirstOrDefaultAsync(x => x.Id == courseId, cancellationToken);
+        var course = await _context.Courses.FirstOrDefaultAsync(x => x.Id == editDto.Id, cancellationToken);
         if (course is null)
-            return CourseErrors.WrongId(courseId);
+            return CourseErrors.WrongId(editDto.Id);
 
         if (course.Code != editDto.Code)
         {
