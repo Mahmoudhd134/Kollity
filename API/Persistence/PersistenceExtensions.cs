@@ -1,5 +1,4 @@
-﻿using Domain.AssistantModels;
-using Domain.DoctorModels;
+﻿using Domain.DoctorModels;
 using Domain.Identity.Role;
 using Domain.Identity.User;
 using Domain.StudentModels;
@@ -29,10 +28,6 @@ public static class PersistenceExtensions
             .AddRoles<BaseRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
         
-        services.AddIdentityCore<Assistant>()
-            .AddRoles<BaseRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
-
         return services;
     }
 

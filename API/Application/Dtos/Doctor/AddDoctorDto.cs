@@ -1,7 +1,12 @@
-﻿namespace Application.Dtos.Doctor;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Application.Dtos.Doctor;
 
 public class AddDoctorDto
 {
-    public string UserName { get; set; }
-    public string Password { get; set; }
+    [Required] public string UserName { get; set; }
+    [Required] public string Password { get; set; }
+
+    [Required, AllowedValues(Domain.Identity.Role.Role.Doctor,Domain.Identity.Role.Role.Assistant)]
+    public string Role { get; set; }
 }

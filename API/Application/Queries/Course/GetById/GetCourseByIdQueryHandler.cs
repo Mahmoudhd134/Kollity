@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Course;
+﻿using Application.Abstractions;
+using Application.Dtos.Course;
 using AutoMapper.QueryableExtensions;
 using Domain.CourseModels;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,13 @@ public class GetCourseByIdQueryHandler : IQueryHandler<GetCourseByIdQuery, Cours
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IUserAccessor _userAccessor;
 
-    public GetCourseByIdQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetCourseByIdQueryHandler(ApplicationDbContext context, IMapper mapper, IUserAccessor userAccessor)
     {
         _context = context;
         _mapper = mapper;
+        _userAccessor = userAccessor;
     }
 
     public async Task<Result<CourseDto>> Handle(GetCourseByIdQuery request, CancellationToken cancellationToken)
@@ -24,6 +27,13 @@ public class GetCourseByIdQueryHandler : IQueryHandler<GetCourseByIdQuery, Cours
             .ProjectTo<CourseDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-        return courseDto is not null ? courseDto : CourseErrors.WrongId(request.Id);
+        if (courseDto is null)
+            return CourseErrors.IdNotFound(request.Id);
+
+        var currentUserId = _userAccessor.GetCurrentUserId();
+        courseDto.IsTheDoctorAssigned = courseDto.Doctor?.Id == currentUserId ||
+                                     courseDto.Assistants.Any(x => x.Id == currentUserId);
+
+        return courseDto;
     }
 }

@@ -13,9 +13,9 @@ public class DeleteCourseCommandHandler : ICommandHandler<DeleteCourseCommand>
 
     public async Task<Result> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
     {
-        var result = await _context.Courses
+        await _context.Courses
             .Where(x => x.Id == request.Id)
             .ExecuteDeleteAsync(cancellationToken);
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        return Result.Success();
     }
 }

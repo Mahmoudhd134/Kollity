@@ -22,6 +22,7 @@ public class CourseConfig : IEntityTypeConfiguration<Course>
             .HasOne(x => x.Doctor)
             .WithMany(x => x.Courses)
             .HasForeignKey(x => x.DoctorId)
+            .OnDelete(DeleteBehavior.SetNull)
             .IsRequired(false);
 
         builder.HasIndex(x => x.Code).IsUnique();

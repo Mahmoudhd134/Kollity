@@ -20,7 +20,7 @@ public class EditCourseCommandHandler : ICommandHandler<EditCourseCommand>
 
         var course = await _context.Courses.FirstOrDefaultAsync(x => x.Id == editDto.Id, cancellationToken);
         if (course is null)
-            return CourseErrors.WrongId(editDto.Id);
+            return CourseErrors.IdNotFound(editDto.Id);
 
         if (course.Code != editDto.Code)
         {

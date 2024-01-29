@@ -1,6 +1,5 @@
 ﻿using Domain.AssignmentModels;
 using Domain.AssignmentModels.AssignmentGroupModels;
-using Domain.AssistantModels;
 using Domain.CourseModels;
 using Domain.DoctorModels;
 using Domain.ExamModels;
@@ -24,7 +23,6 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
 
     public DbSet<Student> Students { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
-    public DbSet<Assistant> Assistants { get; set; }
     public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomMessage> RoomMessages { get; set; }

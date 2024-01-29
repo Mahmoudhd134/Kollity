@@ -37,7 +37,10 @@ public class AddDoctorCommandHandler : ICommandHandler<AddDoctorCommand>
         if (errors.Count > 0)
             return errors;
 
-        await _doctorManager.AddToRoleAsync(doctor, Role.Doctor);
+        if (request.AddDoctorDto.Role == Role.Doctor)
+            await _doctorManager.AddToRoleAsync(doctor, Role.Doctor);
+        else if (request.AddDoctorDto.Role == Role.Assistant)
+            await _doctorManager.AddToRoleAsync(doctor, Role.Assistant);
 
         return Result.Success();
     }

@@ -28,6 +28,8 @@ INSERT [dbo].[Role] ([id], [name], [normalized_name], [concurrency_stamp]) VALUE
 GO
 INSERT [dbo].[Role] ([id], [name], [normalized_name], [concurrency_stamp]) VALUES (N'536aab07-0157-4e1a-a81d-39fe9b816dfa', N'Doctor', N'DOCTOR', NULL)
 GO
+INSERT [dbo].[Role] ([id], [name], [normalized_name], [concurrency_stamp]) VALUES (N'05ceba2d-1aa3-4b59-959c-13ec142bfef4', N'Assistant', N'ASSISTANT', NULL)
+GO
 ");
         }
 

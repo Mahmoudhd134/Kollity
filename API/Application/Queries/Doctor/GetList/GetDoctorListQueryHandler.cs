@@ -28,6 +28,7 @@ public class GetDoctorListQueryHandler : IQueryHandler<GetDoctorListQuery, List<
         return await doctors
             .Skip(filters.PageIndex * filters.PageSize)
             .Take(filters.PageSize)
+            .OrderBy(x => x.UserName)
             .ProjectTo<DoctorForListDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
     }

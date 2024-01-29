@@ -49,6 +49,7 @@ public class GetCourseListQueryHandler : IQueryHandler<GetCourseListQuery, List<
         return await courseDtos
             .Skip(filters.PageIndex * filters.PageSize)
             .Take(filters.PageSize)
+            .OrderBy(c => c.Name)
             .ToListAsync(cancellationToken);
     }
 }

@@ -6,4 +6,5 @@ namespace Domain.DoctorModels;
 public class Doctor : BaseUser
 {
     public List<Course> Courses { get; set; } = [];
+    public List<CourseAssistant> CoursesAssistants { get; set; } = [];
 }

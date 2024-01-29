@@ -30,6 +30,7 @@ public class GetStudentListQueryHandler : IQueryHandler<GetStudentListQuery, Lis
         return await students
             .Skip(filters.PageIndex * filters.PageSize)
             .Take(filters.PageSize)
+            .OrderBy(x => x.UserName)
             .ProjectTo<StudentForListDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
     }

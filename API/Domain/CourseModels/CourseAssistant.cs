@@ -1,4 +1,4 @@
-﻿using Domain.AssistantModels;
+﻿using Domain.DoctorModels;
 
 namespace Domain.CourseModels;
 
@@ -10,5 +10,5 @@ public class CourseAssistant
     public Course Course { get; set; }
 
     public Guid AssistantId { get; set; }
-    public Assistant Assistant { get; set; }
+    public Doctor Assistant { get; set; }
 }
