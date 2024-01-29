@@ -21,7 +21,8 @@ public class CourseConfig : IEntityTypeConfiguration<Course>
         builder
             .HasOne(x => x.Doctor)
             .WithMany(x => x.Courses)
-            .HasForeignKey(x => x.DoctorId);
+            .HasForeignKey(x => x.DoctorId)
+            .IsRequired(false);
 
         builder.HasIndex(x => x.Code).IsUnique();
 

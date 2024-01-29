@@ -4,6 +4,7 @@ using API.Extensions;
 using API.Helpers;
 using Application.Abstractions.Messages;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -13,6 +14,7 @@ namespace API.Controllers;
 
 [
     ApiController,
+    Authorize,
     Route("api/[controller]"),
     SwaggerResponse(400, type: typeof(FailureType)),
     SwaggerResponse(404, type: typeof(FailureType)),

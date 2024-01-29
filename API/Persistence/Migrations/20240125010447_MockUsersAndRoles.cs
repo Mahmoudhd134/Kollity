@@ -26,6 +26,8 @@ INSERT [dbo].[UserRole] ([user_id], [role_id]) VALUES (N'a2d1dae7-d933-469d-f3fb
 GO
 INSERT [dbo].[Role] ([id], [name], [normalized_name], [concurrency_stamp]) VALUES (N'4e07f76d-0de6-4c58-98f7-0a46c153fff5', N'Student', N'STUDENT', NULL)
 GO
+INSERT [dbo].[Role] ([id], [name], [normalized_name], [concurrency_stamp]) VALUES (N'536aab07-0157-4e1a-a81d-39fe9b816dfa', N'Doctor', N'DOCTOR', NULL)
+GO
 ");
         }
 

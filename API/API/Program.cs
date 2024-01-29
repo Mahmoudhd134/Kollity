@@ -19,7 +19,7 @@ builder.Services
     .AddPersistenceConfigurations(connectionString)
     .AddCors()
     .AddJwtAuthentication(builder.Configuration)
-    .AddFallbackPolicy()
+    // .AddFallbackPolicy()
     .AddClassesConfigurations(builder.Configuration)
     .AddServicesInjection()
     .AddModelBindingErrorsMap();

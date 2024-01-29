@@ -1,5 +1,4 @@
 ﻿using Application.Dtos.Course;
-using AutoMapper;
 using Domain.CourseModels;
 
 namespace Application.MappingProfiles;
@@ -12,7 +11,7 @@ public class CourseMapsProfile : Profile
         CreateMap<Course, CourseDto>()
             .ForMember(dest => dest.Doctor, opt =>
                 opt.MapFrom(src => src.DoctorId != null
-                    ? new DoctorForCourseDto()
+                    ? new DoctorForCourseDto
                     {
                         Id = src.Doctor.Id,
                         ProfileImage = src.Doctor.ProfileImage,
@@ -21,8 +20,15 @@ public class CourseMapsProfile : Profile
                     : null))
             .ForMember(dest => dest.HasADoctor, opt =>
                 opt.MapFrom(src => src.DoctorId != null))
+            .ForMember(dest => dest.Assistants, opt =>
+                opt.MapFrom(src => src.CoursesAssistants.Select(ca => new AssistantForCourseDto
+                {
+                    Id = ca.AssistantId,
+                    UserName = ca.Assistant.UserName,
+                    ProfileImage = ca.Assistant.ProfileImage
+                })))
             .ForMember(dest => dest.Rooms, opt =>
-                opt.MapFrom(src => src.Rooms.Select(r => new RoomForCourseDto()
+                opt.MapFrom(src => src.Rooms.Select(r => new RoomForCourseDto
                 {
                     Id = r.Id,
                     Image = r.Image,

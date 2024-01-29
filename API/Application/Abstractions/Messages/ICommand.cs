@@ -1,5 +1,4 @@
-﻿using Domain.ErrorHandlers;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Abstractions.Messages;
 

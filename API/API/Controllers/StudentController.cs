@@ -1,6 +1,6 @@
-﻿using Application.Commands.Student.AddStudent;
-using Application.Commands.Student.DeleteStudent;
-using Application.Commands.Student.EditStudent;
+﻿using Application.Commands.Student.Add;
+using Application.Commands.Student.Delete;
+using Application.Commands.Student.Edit;
 using Application.Dtos.Student;
 using Application.Queries.Student.GetById;
 using Application.Queries.Student.GetList;
@@ -19,12 +19,12 @@ public class StudentController : BaseController
     [HttpGet("{id:guid}"), SwaggerResponse(200, type: typeof(StudentDto))]
     public Task<IResult> Get(Guid id) => Send(new GetStudentByIdQuery(id));
 
-    [HttpGet, SwaggerResponse(200, type: typeof(List<StudentDto>))]
+    [HttpGet, SwaggerResponse(200, type: typeof(List<StudentForListDto>))]
     public Task<IResult> Get([FromQuery] StudentListFilters filters) => Send(new GetStudentListQuery(filters));
 
     [HttpPut]
     public Task<IResult> Edit([FromBody] EditStudentDto editStudentDto) =>
-        Send(new EditStudentCommand(Guid.Parse(Id), editStudentDto));
+        Send(new EditStudentCommand(editStudentDto));
 
     [HttpDelete("{id:guid}"), Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> Delete(Guid id) => Send(new DeleteStudentCommand(id));

@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Commands.Student.AddStudent;
+namespace Application.Commands.Student.Add;
 
 public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
 {
@@ -52,7 +52,7 @@ public class AddStudentCommandHandler : ICommandHandler<AddStudentCommand>
 
         await _studentManager.AddToRoleAsync(student, Role.Student);
         await _context.SaveChangesAsync(cancellationToken);
-        
+
         return Result.Success();
     }
 }

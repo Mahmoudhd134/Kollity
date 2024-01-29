@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Domain;
-using Domain.CourseModels;
-using Domain.ErrorHandlers;
+﻿using Domain.CourseModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Commands.Course.EditCourse;
+namespace Application.Commands.Course.Edit;
 
 public class EditCourseCommandHandler : ICommandHandler<EditCourseCommand>
 {

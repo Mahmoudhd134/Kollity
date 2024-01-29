@@ -2,6 +2,7 @@
 using API.Abstractions;
 using API.Helpers;
 using API.Implementation;
+using Application.Abstractions;
 using Application.Abstractions.Files;
 using Infrastructure.Files;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,6 +19,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IAuthServices, JwtAuthServices>();
         services.AddScoped<IImageAccessor, PhysicalImageAccessor>();
+        services.AddScoped<IUserAccessor, HttpUserAccessor>();
 
         return services;
     }
@@ -48,7 +50,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddAuthorization(options =>
             {
-                options.AddPolicy("VerySecurePolicy", policy => { policy.RequireClaim("role", "admin"); });
+                // options.AddPolicy("VerySecurePolicy", policy => { policy.RequireClaim("role", "admin"); });
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
                     .Build();
@@ -113,7 +115,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddControllers(opt => opt.Filters.Add(typeof(CustomValidationFilterAttribute)));
         services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
-        
+
         return services;
     }
 }

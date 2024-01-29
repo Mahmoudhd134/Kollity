@@ -1,6 +1,5 @@
 ﻿using Application.Dtos.Course;
 using AutoMapper.QueryableExtensions;
-using Domain.ErrorHandlers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Queries.Course.GetList;

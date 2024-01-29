@@ -1,6 +1,6 @@
-﻿using Application.Commands.Course.AddCourse;
-using Application.Commands.Course.DeleteCourse;
-using Application.Commands.Course.EditCourse;
+﻿using Application.Commands.Course.Add;
+using Application.Commands.Course.Delete;
+using Application.Commands.Course.Edit;
 using Application.Dtos.Course;
 using Application.Queries.Course.GetById;
 using Application.Queries.Course.GetList;

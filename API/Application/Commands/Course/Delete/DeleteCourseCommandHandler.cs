@@ -1,8 +1,6 @@
-﻿using Domain;
-using Domain.ErrorHandlers;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Application.Commands.Course.DeleteCourse;
+namespace Application.Commands.Course.Delete;
 
 public class DeleteCourseCommandHandler : ICommandHandler<DeleteCourseCommand>
 {

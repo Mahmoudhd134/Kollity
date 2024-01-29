@@ -1,6 +1,4 @@
-﻿using Domain.ErrorHandlers;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Data;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Application.Queries.Identity.IsEmailUsed;
 

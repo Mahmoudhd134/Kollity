@@ -10,6 +10,6 @@ public class CourseDto
 
     public bool HasADoctor { get; set; }
     public DoctorForCourseDto Doctor { get; set; }
-
+    public List<AssistantForCourseDto> Assistants { get; set; }
     public List<RoomForCourseDto> Rooms { get; set; }
 }
