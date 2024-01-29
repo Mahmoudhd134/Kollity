@@ -17,11 +17,6 @@ public class RoomSupervisorConfig : IEntityTypeConfiguration<RoomSupervisor>
             .WithMany(x => x.RoomsSupervisors)
             .HasForeignKey(x => x.RoomId);
 
-        builder
-            .HasOne(x => x.Course)
-            .WithMany()
-            .HasForeignKey(x => x.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(x => x.Supervisor)

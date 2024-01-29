@@ -14,7 +14,8 @@ public class ExamAnswerConfig : IEntityTypeConfiguration<ExamAnswer>
             .HasOne(x => x.Student)
             .WithMany()
             .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
 
         builder
             .HasOne(x => x.Exam)

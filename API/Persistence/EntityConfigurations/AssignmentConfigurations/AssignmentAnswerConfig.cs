@@ -23,13 +23,15 @@ public class AssignmentAnswerConfig : IEntityTypeConfiguration<AssignmentAnswer>
             .HasOne(x => x.Student)
             .WithMany(x => x.AssignmentsAnswers)
             .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
 
         builder
             .HasOne(x => x.AssignmentGroup)
             .WithMany(x => x.AssignmentsAnswers)
             .HasForeignKey(x => x.AssignmentGroupId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
 
         builder.ToTable("AssignmentAnswer");
     }

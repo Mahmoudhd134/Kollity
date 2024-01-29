@@ -5,7 +5,7 @@ namespace Domain.ExamModels;
 public class ExamAnswer
 {
     public Guid Id { get; set; }
-    public Guid StudentId { get; set; }
+    public Guid? StudentId { get; set; }
     public Student Student { get; set; }
     public Guid ExamId { get; set; }
     public Exam Exam { get; set; }

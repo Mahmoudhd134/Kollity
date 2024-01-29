@@ -17,12 +17,6 @@ public class ExamQuestionOptionConfig : IEntityTypeConfiguration<ExamQuestionOpt
             .WithMany(x => x.ExamQuestionOptions)
             .HasForeignKey(x => x.ExamQuestionId);
 
-        builder
-            .HasOne(x => x.Exam)
-            .WithMany()
-            .HasForeignKey(x => x.ExamId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.ToTable("ExamQuestionOption");
     }
 }

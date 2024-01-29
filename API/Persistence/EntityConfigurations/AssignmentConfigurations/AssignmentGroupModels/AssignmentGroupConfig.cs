@@ -19,12 +19,6 @@ public class AssignmentGroupConfig : IEntityTypeConfiguration<AssignmentGroup>
             .WithMany()
             .HasForeignKey(x => x.RoomId);
 
-        builder
-            .HasOne(x => x.Course)
-            .WithMany()
-            .HasForeignKey(x => x.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.HasIndex(x => x.Code).IsUnique();
 
         builder.ToTable("AssignmentGroup");

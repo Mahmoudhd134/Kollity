@@ -30,12 +30,6 @@ public class AssignmentGroupStudentConfig : IEntityTypeConfiguration<AssignmentG
             .WithMany()
             .HasForeignKey(x => x.RoomId);
 
-        builder
-            .HasOne(x => x.Course)
-            .WithMany()
-            .HasForeignKey(x => x.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
-        
         builder.ToTable("AssignmentGroupStudent");
     }
 }

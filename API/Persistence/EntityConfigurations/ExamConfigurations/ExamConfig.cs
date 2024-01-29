@@ -19,12 +19,6 @@ public class ExamConfig : IEntityTypeConfiguration<Exam>
             .WithMany(x => x.Exams)
             .HasForeignKey(x => x.RoomId);
 
-        builder
-            .HasOne(x => x.Course)
-            .WithMany()
-            .HasForeignKey(x => x.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.ToTable("Exam");
     }
 }

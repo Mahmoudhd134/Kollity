@@ -19,18 +19,13 @@ public class RoomMessageConfig : IEntityTypeConfiguration<RoomMessage>
             .HasOne(x => x.Sender)
             .WithMany()
             .HasForeignKey(x => x.SenderId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.SetNull)
+            .IsRequired(false);
 
         builder
             .HasOne(x => x.Room)
             .WithMany(x => x.RoomMessages)
             .HasForeignKey(x => x.RoomId);
-
-        builder
-            .HasOne(x => x.Course)
-            .WithMany()
-            .HasForeignKey(x => x.CourseId)
-            .OnDelete(DeleteBehavior.NoAction);
 
         builder.ToTable("RoomMessage");
     }

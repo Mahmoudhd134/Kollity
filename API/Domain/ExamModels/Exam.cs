@@ -12,8 +12,6 @@ public class Exam
     public DateTime CreationDate { get; set; }
     public DateTime LastUpdatedDate { get; set; }
 
-    public Guid CourseId { get; set; }
-    public Course Course { get; set; }
     
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
