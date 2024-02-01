@@ -16,7 +16,7 @@ public class AssignmentGroupConfig : IEntityTypeConfiguration<AssignmentGroup>
 
         builder
             .HasOne(x => x.Room)
-            .WithMany()
+            .WithMany(x => x.AssignmentGroups)
             .HasForeignKey(x => x.RoomId);
 
         builder.HasIndex(x => x.Code).IsUnique();

@@ -16,19 +16,17 @@ public class AssignmentGroupStudentConfig : IEntityTypeConfiguration<AssignmentG
         builder
             .HasOne(x => x.AssignmentGroup)
             .WithMany(x => x.AssignmentGroupsStudents)
-            .HasForeignKey(x => x.AssignmentGroupId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.AssignmentGroupId);
 
         builder
             .HasOne(x => x.Student)
             .WithMany(x => x.AssignmentGroupsStudents)
-            .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.StudentId);
 
-        builder
-            .HasOne(x => x.Room)
-            .WithMany()
-            .HasForeignKey(x => x.RoomId);
+        // builder
+        //     .HasOne(x => x.Room)
+        //     .WithMany()
+        //     .HasForeignKey(x => x.RoomId);
 
         builder.ToTable("AssignmentGroupStudent");
     }

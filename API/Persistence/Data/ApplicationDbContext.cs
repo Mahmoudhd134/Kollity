@@ -20,7 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
     }
-
+    
     public DbSet<Student> Students { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
@@ -46,6 +46,7 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     {
         base.OnConfiguring(optionsBuilder);
         optionsBuilder.UseSnakeCaseNamingConvention();
+        // optionsBuilder.UseSqlServer("server=.;database=MyCollege;trusted_connection=true;encrypt=false;");
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

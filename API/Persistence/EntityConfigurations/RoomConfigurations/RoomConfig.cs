@@ -20,6 +20,13 @@ public class RoomConfig : IEntityTypeConfiguration<Room>
             .WithMany(x => x.Rooms)
             .HasForeignKey(x => x.CourseId);
 
+        builder
+            .HasOne(x => x.Doctor)
+            .WithMany()
+            .HasForeignKey(x => x.DoctorId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.ToTable("Room");
     }
 }

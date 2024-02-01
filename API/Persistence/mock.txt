@@ -1,16 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-#nullable disable
-
-namespace Persistence.Migrations
-{
-    /// <inheritdoc />
-    public partial class MockUsersAndRoles : Migration
-    {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            /*
+﻿ /*
              * Add Admin, Student Roles
              * 
              * Admin Account =>
@@ -31,12 +19,3 @@ GO
 INSERT [dbo].[Role] ([id], [name], [normalized_name], [concurrency_stamp]) VALUES (N'05ceba2d-1aa3-4b59-959c-13ec142bfef4', N'Assistant', N'ASSISTANT', NULL)
 GO
 ");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-
-        }
-    }
-}

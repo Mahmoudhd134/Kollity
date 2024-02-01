@@ -12,21 +12,6 @@ namespace Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Assigment",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", maxLength: 4095, nullable: false),
-                    mode = table.Column<int>(type: "int", nullable: false),
-                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_assigment", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
                 {
@@ -46,7 +31,7 @@ namespace Persistence.Migrations
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     profile_image = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    type = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    type = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     full_name_in_arabic = table.Column<string>(type: "nvarchar(127)", maxLength: 127, nullable: true),
                     code = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     user_name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -67,25 +52,6 @@ namespace Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_user", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AssignmentImage",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    assignment_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    image = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_assignment_image", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_assignment_image_assigment_assignment_id",
-                        column: x => x.assignment_id,
-                        principalTable: "Assigment",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,7 +84,7 @@ namespace Persistence.Migrations
                     code = table.Column<int>(type: "int", nullable: false),
                     hours = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: false),
-                    doctor_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    doctor_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -128,7 +94,7 @@ namespace Persistence.Migrations
                         column: x => x.doctor_id,
                         principalTable: "User",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,6 +234,7 @@ namespace Persistence.Migrations
                     name = table.Column<string>(type: "nvarchar(227)", maxLength: 227, nullable: false),
                     image = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: false),
                     course_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    doctor_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ensure_join_request = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -279,6 +246,12 @@ namespace Persistence.Migrations
                         principalTable: "Course",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_room_user_doctor_id",
+                        column: x => x.doctor_id,
+                        principalTable: "User",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,22 +279,45 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Assigment",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    name = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    description = table.Column<string>(type: "nvarchar(max)", maxLength: 4095, nullable: false),
+                    mode = table.Column<int>(type: "int", nullable: false),
+                    created_date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    doctor_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_assigment", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_assigment_asp_net_users_doctor_id",
+                        column: x => x.doctor_id,
+                        principalTable: "User",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "fk_assigment_rooms_room_id",
+                        column: x => x.room_id,
+                        principalTable: "Room",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AssignmentGroup",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     code = table.Column<int>(type: "int", nullable: false),
-                    room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    course_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_assignment_group", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_assignment_group_courses_course_id",
-                        column: x => x.course_id,
-                        principalTable: "Course",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_assignment_group_rooms_room_id",
                         column: x => x.room_id,
@@ -340,17 +336,11 @@ namespace Persistence.Migrations
                     end_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     creation_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     last_updated_date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    course_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_exam", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_exam_course_course_id",
-                        column: x => x.course_id,
-                        principalTable: "Course",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_exam_rooms_room_id",
                         column: x => x.room_id,
@@ -367,19 +357,13 @@ namespace Persistence.Migrations
                     text = table.Column<string>(type: "nvarchar(max)", maxLength: 4067, nullable: true),
                     file = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: true),
                     date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sender_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    sender_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    course_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     is_read = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_room_message", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_room_message_course_course_id",
-                        column: x => x.course_id,
-                        principalTable: "Course",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_room_message_room_room_id",
                         column: x => x.room_id,
@@ -390,7 +374,8 @@ namespace Persistence.Migrations
                         name: "fk_room_message_user_sender_id",
                         column: x => x.sender_id,
                         principalTable: "User",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -399,17 +384,11 @@ namespace Persistence.Migrations
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    course_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     supervisor_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_room_supervisor", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_room_supervisor_course_course_id",
-                        column: x => x.course_id,
-                        principalTable: "Course",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_room_supervisor_room_room_id",
                         column: x => x.room_id,
@@ -450,6 +429,25 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AssignmentImage",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    assignment_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    image = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_assignment_image", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_assignment_image_assigment_assignment_id",
+                        column: x => x.assignment_id,
+                        principalTable: "Assigment",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AssignmentAnswer",
                 columns: table => new
                 {
@@ -457,8 +455,8 @@ namespace Persistence.Migrations
                     assignment_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     upload_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     file = table.Column<string>(type: "nvarchar(511)", maxLength: 511, nullable: false),
-                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    assignment_group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    assignment_group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -487,8 +485,6 @@ namespace Persistence.Migrations
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     assignment_group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    course_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     join_request_accepted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -499,21 +495,12 @@ namespace Persistence.Migrations
                         name: "fk_assignment_group_student_asp_net_users_student_id",
                         column: x => x.student_id,
                         principalTable: "User",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_assignment_group_student_assignment_group_assignment_group_id",
                         column: x => x.assignment_group_id,
                         principalTable: "AssignmentGroup",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_assignment_group_student_courses_course_id",
-                        column: x => x.course_id,
-                        principalTable: "Course",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_assignment_group_student_rooms_room_id",
-                        column: x => x.room_id,
-                        principalTable: "Room",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -544,18 +531,12 @@ namespace Persistence.Migrations
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     exam_question_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    exam_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     option = table.Column<string>(type: "nvarchar(1023)", maxLength: 1023, nullable: false),
                     is_right_option = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_exam_question_option", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_exam_question_option_exam_exam_id",
-                        column: x => x.exam_id,
-                        principalTable: "Exam",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_exam_question_option_exam_question_exam_question_id",
                         column: x => x.exam_question_id,
@@ -569,7 +550,7 @@ namespace Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     exam_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     exam_question_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     exam_question_option_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -583,7 +564,8 @@ namespace Persistence.Migrations
                         name: "fk_exam_answer_asp_net_users_student_id",
                         column: x => x.student_id,
                         principalTable: "User",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "fk_exam_answer_exam_question_options_exam_question_option_id",
                         column: x => x.exam_question_option_id,
@@ -601,6 +583,16 @@ namespace Persistence.Migrations
                         principalTable: "Exam",
                         principalColumn: "id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "ix_assigment_doctor_id",
+                table: "Assigment",
+                column: "doctor_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_assigment_room_id",
+                table: "Assigment",
+                column: "room_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_assignment_answer_assignment_group_id",
@@ -624,11 +616,6 @@ namespace Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_assignment_group_course_id",
-                table: "AssignmentGroup",
-                column: "course_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_assignment_group_room_id",
                 table: "AssignmentGroup",
                 column: "room_id");
@@ -639,16 +626,6 @@ namespace Persistence.Migrations
                 column: "assignment_group_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_assignment_group_student_course_id",
-                table: "AssignmentGroupStudent",
-                column: "course_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_assignment_group_student_room_id",
-                table: "AssignmentGroupStudent",
-                column: "room_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_assignment_group_student_student_id",
                 table: "AssignmentGroupStudent",
                 column: "student_id");
@@ -657,6 +634,12 @@ namespace Persistence.Migrations
                 name: "ix_assignment_image_assignment_id",
                 table: "AssignmentImage",
                 column: "assignment_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_course_code",
+                table: "Course",
+                column: "code",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_course_doctor_id",
@@ -674,9 +657,10 @@ namespace Persistence.Migrations
                 column: "course_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_exam_course_id",
-                table: "Exam",
-                column: "course_id");
+                name: "ix_course_assistant_course_id_assistant_id",
+                table: "CourseAssistant",
+                columns: new[] { "course_id", "assistant_id" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_exam_room_id",
@@ -702,16 +686,12 @@ namespace Persistence.Migrations
                 name: "ix_exam_answer_student_id_exam_question_id",
                 table: "ExamAnswer",
                 columns: new[] { "student_id", "exam_question_id" },
-                unique: true);
+                unique: true,
+                filter: "[student_id] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "ix_exam_question_exam_id",
                 table: "ExamQuestion",
-                column: "exam_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_exam_question_option_exam_id",
-                table: "ExamQuestionOption",
                 column: "exam_id");
 
             migrationBuilder.CreateIndex(
@@ -737,9 +717,9 @@ namespace Persistence.Migrations
                 column: "course_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_room_message_course_id",
-                table: "RoomMessage",
-                column: "course_id");
+                name: "ix_room_doctor_id",
+                table: "Room",
+                column: "doctor_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_room_message_room_id",
@@ -750,11 +730,6 @@ namespace Persistence.Migrations
                 name: "ix_room_message_sender_id",
                 table: "RoomMessage",
                 column: "sender_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_room_supervisor_course_id",
-                table: "RoomSupervisor",
-                column: "course_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_room_supervisor_room_id_supervisor_id",
@@ -783,6 +758,13 @@ namespace Persistence.Migrations
                 column: "normalized_email",
                 unique: true,
                 filter: "[normalized_email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_code",
+                table: "User",
+                column: "code",
+                unique: true,
+                filter: "[code] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "ix_user_email",

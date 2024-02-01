@@ -13,6 +13,18 @@ public class AssignmentConfig : IEntityTypeConfiguration<Assignment>
         builder.Property(x => x.Name).HasMaxLength(512).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(4095).IsRequired();
 
+        builder
+            .HasOne(x => x.Room)
+            .WithMany(x => x.Assignments)
+            .HasForeignKey(x => x.RoomId);
+
+        builder
+            .HasOne(x => x.Doctor)
+            .WithMany()
+            .HasForeignKey(x => x.DoctorId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.Property(x => x.Mode)
             .HasConversion<int>();
 

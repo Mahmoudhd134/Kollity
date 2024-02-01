@@ -12,7 +12,7 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240125010418_ConfigureTables")]
+    [Migration("20240131215608_ConfigureTables")]
     partial class ConfigureTables
     {
         /// <inheritdoc />
@@ -42,6 +42,10 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
+                    b.Property<Guid?>("DoctorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("doctor_id");
+
                     b.Property<int>("Mode")
                         .HasColumnType("int")
                         .HasColumnName("mode");
@@ -52,8 +56,18 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasColumnName("name");
 
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("room_id");
+
                     b.HasKey("Id")
                         .HasName("pk_assigment");
+
+                    b.HasIndex("DoctorId")
+                        .HasDatabaseName("ix_assigment_doctor_id");
+
+                    b.HasIndex("RoomId")
+                        .HasDatabaseName("ix_assigment_room_id");
 
                     b.ToTable("Assigment", (string)null);
                 });
@@ -65,7 +79,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("AssignmentGroupId")
+                    b.Property<Guid?>("AssignmentGroupId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("assignment_group_id");
 
@@ -79,7 +93,7 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(511)")
                         .HasColumnName("file");
 
-                    b.Property<Guid>("StudentId")
+                    b.Property<Guid?>("StudentId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("student_id");
 
@@ -113,10 +127,6 @@ namespace Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("code");
 
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("course_id");
-
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_id");
@@ -127,9 +137,6 @@ namespace Persistence.Migrations
                     b.HasIndex("Code")
                         .IsUnique()
                         .HasDatabaseName("ix_assignment_group_code");
-
-                    b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_assignment_group_course_id");
 
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_assignment_group_room_id");
@@ -148,17 +155,9 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("assignment_group_id");
 
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("course_id");
-
                     b.Property<bool>("JoinRequestAccepted")
                         .HasColumnType("bit")
                         .HasColumnName("join_request_accepted");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("room_id");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier")
@@ -169,12 +168,6 @@ namespace Persistence.Migrations
 
                     b.HasIndex("AssignmentGroupId")
                         .HasDatabaseName("ix_assignment_group_student_assignment_group_id");
-
-                    b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_assignment_group_student_course_id");
-
-                    b.HasIndex("RoomId")
-                        .HasDatabaseName("ix_assignment_group_student_room_id");
 
                     b.HasIndex("StudentId")
                         .HasDatabaseName("ix_assignment_group_student_student_id");
@@ -225,7 +218,7 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(15)")
                         .HasColumnName("department");
 
-                    b.Property<Guid>("DoctorId")
+                    b.Property<Guid?>("DoctorId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("doctor_id");
 
@@ -241,6 +234,10 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_course");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_course_code");
 
                     b.HasIndex("DoctorId")
                         .HasDatabaseName("ix_course_doctor_id");
@@ -272,6 +269,10 @@ namespace Persistence.Migrations
                     b.HasIndex("CourseId")
                         .HasDatabaseName("ix_course_assistant_course_id");
 
+                    b.HasIndex("CourseId", "AssistantId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_course_assistant_course_id_assistant_id");
+
                     b.ToTable("CourseAssistant", (string)null);
                 });
 
@@ -281,10 +282,6 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("course_id");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
@@ -315,9 +312,6 @@ namespace Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_exam");
 
-                    b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_exam_course_id");
-
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_exam_room_id");
 
@@ -347,7 +341,7 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("request_time");
 
-                    b.Property<Guid>("StudentId")
+                    b.Property<Guid?>("StudentId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("student_id");
 
@@ -369,7 +363,8 @@ namespace Persistence.Migrations
 
                     b.HasIndex("StudentId", "ExamQuestionId")
                         .IsUnique()
-                        .HasDatabaseName("ix_exam_answer_student_id_exam_question_id");
+                        .HasDatabaseName("ix_exam_answer_student_id_exam_question_id")
+                        .HasFilter("[student_id] IS NOT NULL");
 
                     b.ToTable("ExamAnswer", (string)null);
                 });
@@ -411,10 +406,6 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("ExamId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_id");
-
                     b.Property<Guid>("ExamQuestionId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("exam_question_id");
@@ -431,9 +422,6 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_exam_question_option");
-
-                    b.HasIndex("ExamId")
-                        .HasDatabaseName("ix_exam_question_option_exam_id");
 
                     b.HasIndex("ExamQuestionId")
                         .HasDatabaseName("ix_exam_question_option_exam_question_id");
@@ -545,8 +533,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)")
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
                         .HasColumnName("type");
 
                     b.Property<string>("UserName")
@@ -626,6 +614,10 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("course_id");
 
+                    b.Property<Guid?>("DoctorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("doctor_id");
+
                     b.Property<bool>("EnsureJoinRequest")
                         .HasColumnType("bit")
                         .HasColumnName("ensure_join_request");
@@ -648,6 +640,9 @@ namespace Persistence.Migrations
                     b.HasIndex("CourseId")
                         .HasDatabaseName("ix_room_course_id");
 
+                    b.HasIndex("DoctorId")
+                        .HasDatabaseName("ix_room_doctor_id");
+
                     b.ToTable("Room", (string)null);
                 });
 
@@ -657,10 +652,6 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("course_id");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2")
@@ -679,7 +670,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_id");
 
-                    b.Property<Guid>("SenderId")
+                    b.Property<Guid?>("SenderId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("sender_id");
 
@@ -690,9 +681,6 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_room_message");
-
-                    b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_room_message_course_id");
 
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_room_message_room_id");
@@ -710,10 +698,6 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("course_id");
-
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_id");
@@ -724,9 +708,6 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_room_supervisor");
-
-                    b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_room_supervisor_course_id");
 
                     b.HasIndex("SupervisorId")
                         .HasDatabaseName("ix_room_supervisor_supervisor_id");
@@ -935,13 +916,6 @@ namespace Persistence.Migrations
                     b.ToTable("UserToken", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.AssistantModels.Assistant", b =>
-                {
-                    b.HasBaseType("Domain.Identity.User.BaseUser");
-
-                    b.HasDiscriminator().HasValue("Assistant");
-                });
-
             modelBuilder.Entity("Domain.DoctorModels.Doctor", b =>
                 {
                     b.HasBaseType("Domain.Identity.User.BaseUser");
@@ -964,7 +938,32 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(127)")
                         .HasColumnName("full_name_in_arabic");
 
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_code")
+                        .HasFilter("[code] IS NOT NULL");
+
                     b.HasDiscriminator().HasValue("Student");
+                });
+
+            modelBuilder.Entity("Domain.AssignmentModels.Assignment", b =>
+                {
+                    b.HasOne("Domain.DoctorModels.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_assigment_asp_net_users_doctor_id");
+
+                    b.HasOne("Domain.RoomModels.Room", "Room")
+                        .WithMany("Assignments")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_assigment_rooms_room_id");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Domain.AssignmentModels.AssignmentAnswer", b =>
@@ -972,8 +971,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.AssignmentModels.AssignmentGroupModels.AssignmentGroup", "AssignmentGroup")
                         .WithMany("AssignmentsAnswers")
                         .HasForeignKey("AssignmentGroupId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
                         .HasConstraintName("fk_assignment_answer_assignment_groups_assignment_group_id");
 
                     b.HasOne("Domain.AssignmentModels.Assignment", "Assignment")
@@ -986,8 +983,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.StudentModels.Student", "Student")
                         .WithMany("AssignmentsAnswers")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
                         .HasConstraintName("fk_assignment_answer_asp_net_users_student_id");
 
                     b.Navigation("Assignment");
@@ -999,21 +994,12 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.AssignmentModels.AssignmentGroupModels.AssignmentGroup", b =>
                 {
-                    b.HasOne("Domain.CourseModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_assignment_group_courses_course_id");
-
                     b.HasOne("Domain.RoomModels.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_assignment_group_rooms_room_id");
-
-                    b.Navigation("Course");
 
                     b.Navigation("Room");
                 });
@@ -1023,36 +1009,18 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.AssignmentModels.AssignmentGroupModels.AssignmentGroup", "AssignmentGroup")
                         .WithMany("AssignmentGroupsStudents")
                         .HasForeignKey("AssignmentGroupId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_assignment_group_student_assignment_group_assignment_group_id");
-
-                    b.HasOne("Domain.CourseModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_assignment_group_student_courses_course_id");
-
-                    b.HasOne("Domain.RoomModels.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_assignment_group_student_rooms_room_id");
+                        .HasConstraintName("fk_assignment_group_student_assignment_group_assignment_group_id");
 
                     b.HasOne("Domain.StudentModels.Student", "Student")
                         .WithMany("AssignmentGroupsStudents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_assignment_group_student_asp_net_users_student_id");
 
                     b.Navigation("AssignmentGroup");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Room");
 
                     b.Navigation("Student");
                 });
@@ -1074,8 +1042,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.DoctorModels.Doctor", "Doctor")
                         .WithMany("Courses")
                         .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("fk_course_asp_net_users_doctor_id");
 
                     b.Navigation("Doctor");
@@ -1083,7 +1050,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.CourseModels.CourseAssistant", b =>
                 {
-                    b.HasOne("Domain.AssistantModels.Assistant", "Assistant")
+                    b.HasOne("Domain.DoctorModels.Doctor", "Assistant")
                         .WithMany("CoursesAssistants")
                         .HasForeignKey("AssistantId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1104,21 +1071,12 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.ExamModels.Exam", b =>
                 {
-                    b.HasOne("Domain.CourseModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_course_course_id");
-
                     b.HasOne("Domain.RoomModels.Room", "Room")
                         .WithMany("Exams")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_exam_rooms_room_id");
-
-                    b.Navigation("Course");
 
                     b.Navigation("Room");
                 });
@@ -1149,8 +1107,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.StudentModels.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("fk_exam_answer_asp_net_users_student_id");
 
                     b.Navigation("Exam");
@@ -1176,21 +1133,12 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.ExamModels.ExamQuestionOption", b =>
                 {
-                    b.HasOne("Domain.ExamModels.Exam", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_question_option_exam_exam_id");
-
                     b.HasOne("Domain.ExamModels.ExamQuestion", "ExamQuestion")
                         .WithMany("ExamQuestionOptions")
                         .HasForeignKey("ExamQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_exam_question_option_exam_question_exam_question_id");
-
-                    b.Navigation("Exam");
 
                     b.Navigation("ExamQuestion");
                 });
@@ -1216,18 +1164,19 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_room_course_course_id");
 
+                    b.HasOne("Domain.DoctorModels.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_room_user_doctor_id");
+
                     b.Navigation("Course");
+
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("Domain.RoomModels.RoomMessage", b =>
                 {
-                    b.HasOne("Domain.CourseModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_room_message_course_course_id");
-
                     b.HasOne("Domain.RoomModels.Room", "Room")
                         .WithMany("RoomMessages")
                         .HasForeignKey("RoomId")
@@ -1238,11 +1187,8 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Identity.User.BaseUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("fk_room_message_user_sender_id");
-
-                    b.Navigation("Course");
 
                     b.Navigation("Room");
 
@@ -1251,13 +1197,6 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.RoomModels.RoomSupervisor", b =>
                 {
-                    b.HasOne("Domain.CourseModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_room_supervisor_course_course_id");
-
                     b.HasOne("Domain.RoomModels.Room", "Room")
                         .WithMany("RoomsSupervisors")
                         .HasForeignKey("RoomId")
@@ -1271,8 +1210,6 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_room_supervisor_user_supervisor_id");
-
-                    b.Navigation("Course");
 
                     b.Navigation("Room");
 
@@ -1429,6 +1366,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.RoomModels.Room", b =>
                 {
+                    b.Navigation("Assignments");
+
                     b.Navigation("Exams");
 
                     b.Navigation("RoomMessages");
@@ -1438,14 +1377,11 @@ namespace Persistence.Migrations
                     b.Navigation("UsersRooms");
                 });
 
-            modelBuilder.Entity("Domain.AssistantModels.Assistant", b =>
-                {
-                    b.Navigation("CoursesAssistants");
-                });
-
             modelBuilder.Entity("Domain.DoctorModels.Doctor", b =>
                 {
                     b.Navigation("Courses");
+
+                    b.Navigation("CoursesAssistants");
                 });
 
             modelBuilder.Entity("Domain.StudentModels.Student", b =>
