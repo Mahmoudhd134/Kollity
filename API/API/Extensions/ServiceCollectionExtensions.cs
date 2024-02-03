@@ -18,7 +18,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddServicesInjection(this IServiceCollection services)
     {
         services.AddScoped<IAuthServices, JwtAuthServices>();
-        services.AddScoped<IImageAccessor, PhysicalImageAccessor>();
         services.AddScoped<IUserAccessor, HttpUserAccessor>();
 
         return services;

@@ -1,7 +1,9 @@
 ﻿using Application.Commands.Course.Add;
 using Application.Commands.Course.AddAssistant;
 using Application.Commands.Course.AssignDoctor;
+using Application.Commands.Course.AssignStudent;
 using Application.Commands.Course.DeAssignDoctor;
+using Application.Commands.Course.DeAssignStudent;
 using Application.Commands.Course.Delete;
 using Application.Commands.Course.DeleteAssistant;
 using Application.Commands.Course.Edit;
@@ -26,6 +28,10 @@ public class CourseController : BaseController
     [HttpPost("add-assistant"), Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> AddAssistant([FromBody] CourseDoctorIdsMap ids) => Send(new AddAssistantToCourseCommand(ids));
 
+    [HttpPost("assign-student"), Authorize(Roles = $"{Role.Admin}")]
+    public Task<IResult> AssignStudent([FromBody] CourseStudentIdsMap ids) =>
+        Send(new AssignStudentToCourseCommand(ids));
+
     [HttpGet("{id:guid}"), SwaggerResponse(200, type: typeof(CourseDto))]
     public Task<IResult> Get(Guid id) => Send(new GetCourseByIdQuery(id));
 
@@ -45,4 +51,8 @@ public class CourseController : BaseController
     [HttpDelete("delete-assistant"), Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> DeleteAssistant([FromBody] CourseDoctorIdsMap ids) =>
         Send(new DeleteAssistantFromCourseCommand(ids));
+
+    [HttpDelete("deassign-student"), Authorize(Roles = $"{Role.Admin}")]
+    public Task<IResult> DeAssignStudent([FromBody] CourseStudentIdsMap ids) =>
+        Send(new DeAssignStudentFromCourseCommand(ids));
 }

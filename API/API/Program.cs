@@ -1,6 +1,9 @@
 using API.Extensions;
 using API.Helpers;
 using Application;
+using Application.Abstractions;
+using Application.Dtos.Email;
+using Infrastructure;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +18,9 @@ builder.Services.AddProblemDetails();
 
 var connectionString = builder.Configuration["ConnectionStrings:Default"];
 builder.Services
-    .AddApplicationConfiguration()
+    .AddApplicationConfiguration(builder.Configuration)
     .AddPersistenceConfigurations(connectionString)
+    .AddInfrastructureServices()
     .AddCors()
     .AddJwtAuthentication(builder.Configuration)
     // .AddFallbackPolicy()

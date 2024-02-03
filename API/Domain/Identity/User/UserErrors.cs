@@ -11,13 +11,16 @@ public static class UserErrors
         "The username is wrong");
 
     public static readonly Error WrongPassword = Error.Validation("User.WrongPassword",
-        "The password ss wrong");
+        "The password is wrong");
 
     public static readonly Error ExpireRefreshToken = Error.Validation("User.ExpireRefreshToken",
         "The session is expired, signin again");
 
-    public static readonly Error WrongId = Error.NotFound("User.WrongId",
-        "The Id is wrong");
+    public static Error EmailNotFound(string email) => Error.NotFound("User.EmailNotFound",
+        $"There is no user with the email '{email}'.");
+
+    public static Error IdNotFound(Guid id) => Error.NotFound("User.IdNotFound",
+        $"There is no user with the id '{id}'.");
 
     public static readonly Error WrongRefreshToken = Error.NotFound("User.WrongRefreshToken",
         "The Refresh Token Is Wrong, Sign In Again");

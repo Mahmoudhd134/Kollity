@@ -24,4 +24,10 @@ public static class CourseErrors
 
     public static Error AssistantNotAssigned(Guid assistantId) => Error.NotFound("AssistantNotAssigned",
         $"The assistant with id '{assistantId}' is not assigned to this course.");
+
+    public static readonly Error StudentAlreadyAssigned = Error.Conflict("Course.StudentAlreadyAssigned",
+        "The student is already assigned to this course.");
+
+    public static readonly Error StudentIsNotAssignedToThisCourse = Error.Conflict("Course.StudentIsNotAssignedToThisCourse",
+        "The student is not assigned to this course to de assign him.");
 }

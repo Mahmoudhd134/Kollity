@@ -7,38 +7,31 @@ namespace Infrastructure.Files;
 
 public abstract class PhysicalBaseFileAccessor
 {
-    private readonly string _dir;
+    private readonly string _fullPath;
     private readonly string _relativePath;
-    private readonly string _wwwroot;
+    private readonly string _rootPath;
 
-    protected PhysicalBaseFileAccessor(string wwwroot, string relativePath)
+    protected PhysicalBaseFileAccessor(string rootPath, string relativePath)
     {
-        _wwwroot = wwwroot;
+        _rootPath = rootPath;
         _relativePath = relativePath;
-        _dir = Path.Combine(wwwroot, relativePath);
+        _fullPath = Path.Combine(rootPath, relativePath);
     }
 
-    public async Task<string> UploadImage(IFormFile image)
+    protected async Task<string> UploadFile(IFormFile file)
     {
-        if (Directory.Exists(_dir) == false)
-            Directory.CreateDirectory(_dir);
-        var imageName = $"{Guid.NewGuid()}{Path.GetFileName(image.FileName)}";
-        var imagePath = Path.Combine(_dir, imageName);
-        await using var fileStream = new FileStream(imagePath, FileMode.Create);
-        await image.CopyToAsync(fileStream);
-        return Path.Combine(_relativePath, imageName);
+        if (Directory.Exists(_fullPath) == false)
+            Directory.CreateDirectory(_fullPath);
+        var fileName = $"{Guid.NewGuid()}{Path.GetFileName(file.FileName)}";
+        var filePath = Path.Combine(_fullPath, fileName);
+        await using var fileStream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(fileStream);
+        return Path.Combine(_relativePath, fileName);
     }
 
-    public async Task<string> ReplaceImage(string path, IFormFile image)
+    protected Task<bool> DeleteFile(string path)
     {
-        if (await DeleteImage(path) == false)
-            return null;
-        return await UploadImage(image);
-    }
-
-    public Task<bool> DeleteImage(string path)
-    {
-        var fullPath = Path.Combine(_wwwroot, path);
+        var fullPath = Path.Combine(_rootPath, path);
         if (File.Exists(fullPath) == false)
             return Task.FromResult(false);
         File.Delete(fullPath);

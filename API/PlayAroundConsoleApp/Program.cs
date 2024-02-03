@@ -3,60 +3,19 @@ using Domain.AssignmentModels.AssignmentGroupModels;
 using Domain.CourseModels;
 using Domain.ExamModels;
 using Domain.RoomModels;
+using Infrastructure.Emails;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Persistence.Data;
 
 var optionsBuilder = new DbContextOptionsBuilder()
     .UseSqlServer("server=.;database=MyCollege;trusted_connection=true;encrypt=false;");
 var context = new ApplicationDbContext(optionsBuilder.Options);
 
-CreateCourse(context);
+// CreateCourse(context);
+// CreateAssignment(context);
 
-var course = context.Courses
-    .Include(x => x.Rooms)
-    .First();
 
-var assignment = new Assignment
-{
-    Name = "assignment one",
-    Description = "this is assignment one",
-    DoctorId = course.Rooms.First().DoctorId,
-    Mode = AssignmentMode.Individual,
-    CreatedDate = DateTime.UtcNow
-};
-var student = context.Students.First();
-var assignmentGroup = new AssignmentGroup
-{
-    Code = 123,
-    RoomId = course.Rooms.First().Id,
-    AssignmentGroupsStudents =
-    [
-        new AssignmentGroupStudent
-        {
-            StudentId = student.Id,
-        }
-    ]
-};
-
-course.Rooms.First().Assignments.Add(assignment);
-course.Rooms.First().AssignmentGroups.Add(assignmentGroup);
-context.SaveChanges();
-context.AssignmentAnswers.AddRange([
-    new AssignmentAnswer
-    {
-        File = "this is file url",
-        AssignmentId = assignment.Id,
-        StudentId = student.Id
-    },
-    new AssignmentAnswer
-    {
-        File = "this is file url",
-        AssignmentId = assignment.Id,
-        AssignmentGroupId = assignmentGroup.Id
-    }
-]);
-
-context.SaveChanges();
 Console.WriteLine();
 return;
 
@@ -119,4 +78,53 @@ void CreateCourse(ApplicationDbContext applicationDbContext)
 
     applicationDbContext.Add(entity);
     applicationDbContext.SaveChanges();
+}
+
+void CreateAssignment(ApplicationDbContext context1)
+{
+    var course = context1.Courses
+        .Include(x => x.Rooms)
+        .First();
+
+    var assignment = new Assignment
+    {
+        Name = "assignment one",
+        Description = "this is assignment one",
+        DoctorId = course.Rooms.First().DoctorId,
+        Mode = AssignmentMode.Individual,
+        CreatedDate = DateTime.UtcNow
+    };
+    var student = context1.Students.First();
+    var assignmentGroup = new AssignmentGroup
+    {
+        Code = 123,
+        RoomId = course.Rooms.First().Id,
+        AssignmentGroupsStudents =
+        [
+            new AssignmentGroupStudent
+            {
+                StudentId = student.Id,
+            }
+        ]
+    };
+
+    course.Rooms.First().Assignments.Add(assignment);
+    course.Rooms.First().AssignmentGroups.Add(assignmentGroup);
+    context1.SaveChanges();
+    context1.AssignmentAnswers.AddRange([
+        new AssignmentAnswer
+        {
+            File = "this is file url",
+            AssignmentId = assignment.Id,
+            StudentId = student.Id
+        },
+        new AssignmentAnswer
+        {
+            File = "this is file url",
+            AssignmentId = assignment.Id,
+            AssignmentGroupId = assignmentGroup.Id
+        }
+    ]);
+
+    context1.SaveChanges();
 }

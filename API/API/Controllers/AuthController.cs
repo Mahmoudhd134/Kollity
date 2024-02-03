@@ -61,17 +61,14 @@ public class AuthController : BaseController
         return Results.Ok(tokenDto);
     }
 
-    private TokenDto ToTokenDto(TokenDto tokenDto)
+    private TokenDto ToTokenDto(TokenDto tokenDto) => new TokenDto
     {
-        return new()
-        {
-            Token = tokenDto.Token,
-            Email = tokenDto.Email,
-            Roles = tokenDto.Roles,
-            UserName = tokenDto.UserName,
-            ProfileImage = tokenDto.ProfileImage
-        };
-    }
+        Token = tokenDto.Token,
+        Email = tokenDto.Email,
+        Roles = tokenDto.Roles,
+        UserName = tokenDto.UserName,
+        ProfileImage = tokenDto.ProfileImage
+    };
 
     private void SetToHttpCookie(RefreshTokenDto refreshTokenDto)
     {

@@ -19,9 +19,11 @@ public class StudentCourseConfig : IEntityTypeConfiguration<StudentCourse>
         builder
             .HasOne(x => x.Student)
             .WithMany(x => x.StudentsCourses)
-            .HasForeignKey(x => x.StudentId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.StudentId);
 
+        builder
+            .HasIndex(x => new { x.StudentId, x.CourseId })
+            .IsUnique();
         builder.ToTable("StudentCourse");
     }
 }
