@@ -1,8 +1,6 @@
-﻿using Domain.Identity.User;
-using Domain.RoomModels;
+﻿using Domain.RoomModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Persistence.EntityConfigurations.CourseConfigurations;
 
 namespace Persistence.EntityConfigurations.RoomConfigurations;
 

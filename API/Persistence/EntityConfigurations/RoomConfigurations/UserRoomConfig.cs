@@ -19,10 +19,10 @@ public class UserRoomConfig : IEntityTypeConfiguration<UserRoom>
         builder
             .HasOne(x => x.User)
             .WithMany(x => x.UsersRooms)
-            .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.UserId);
 
         builder.HasIndex(x => new { x.UserId, x.RoomId }).IsUnique();
+        builder.HasIndex(x => x.IsSupervisor);
 
         builder.ToTable("UserRoom");
     }

@@ -1,5 +1,4 @@
-﻿using Domain.CourseModels;
-using Domain.Identity.User;
+﻿using Domain.Identity.User;
 
 namespace Domain.RoomModels;
 

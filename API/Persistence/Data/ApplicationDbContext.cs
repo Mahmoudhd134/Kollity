@@ -26,7 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomMessage> RoomMessages { get; set; }
-    public DbSet<RoomSupervisor> RoomSupervisors { get; set; }
+    // public DbSet<RoomSupervisor> RoomSupervisors { get; set; }
     public DbSet<UserRoom> UserRooms { get; set; }
     public DbSet<Exam> Exams { get; set; }
     public DbSet<ExamQuestion> ExamQuestions { get; set; }

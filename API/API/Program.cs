@@ -1,8 +1,6 @@
 using API.Extensions;
 using API.Helpers;
 using Application;
-using Application.Abstractions;
-using Application.Dtos.Email;
 using Infrastructure;
 using Persistence;
 
@@ -35,6 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
+    await app.UpdateDatabase();
 }
 
 app.UseHttpsRedirection();
@@ -50,7 +49,5 @@ app.UseExceptionHandler();
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
-await app.UpdateDatabase();
 
 app.Run();

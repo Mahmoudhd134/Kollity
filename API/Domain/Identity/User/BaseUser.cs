@@ -9,5 +9,5 @@ public class BaseUser : IdentityUser<Guid>
     public string Type { get; set; }
     public List<UserRefreshToken.UserRefreshToken> UserRefreshTokens { get; set; } = [];
     public List<UserRoom> UsersRooms { get; set; } = [];
-    public List<RoomSupervisor> RoomsSupervisors { get; set; } = [];
+    // public List<RoomSupervisor> RoomsSupervisors { get; set; } = [];
 }

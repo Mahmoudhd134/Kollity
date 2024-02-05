@@ -28,6 +28,10 @@ public static class CourseErrors
     public static readonly Error StudentAlreadyAssigned = Error.Conflict("Course.StudentAlreadyAssigned",
         "The student is already assigned to this course.");
 
-    public static readonly Error StudentIsNotAssignedToThisCourse = Error.Conflict("Course.StudentIsNotAssignedToThisCourse",
+    public static readonly Error StudentIsNotAssignedToThisCourse = Error.Conflict(
+        "Course.StudentIsNotAssignedToThisCourse",
         "The student is not assigned to this course to de assign him.");
+
+    public static readonly Error UnAuthorizeAddRoom = Error.Validation("UnAuthorizeAddRoom",
+        "You can not add room to a course that you are not assigned to");
 }

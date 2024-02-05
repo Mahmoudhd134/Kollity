@@ -19,7 +19,7 @@ public class Room
 
     public List<RoomMessage> RoomMessages { get; set; } = [];
     public List<UserRoom> UsersRooms { get; set; } = [];
-    public List<RoomSupervisor> RoomsSupervisors { get; set; } = [];
+    // public List<RoomSupervisor> RoomsSupervisors { get; set; } = [];
     public List<Exam> Exams { get; set; } = [];
     public List<Assignment> Assignments { get; set; } = [];
     public List<AssignmentGroup> AssignmentGroups { get; set; } = [];

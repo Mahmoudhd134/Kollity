@@ -10,6 +10,7 @@ public class UserRoom
     public Guid UserId { get; set; }
     public BaseUser User { get; set; }
 
+    public bool IsSupervisor { get; set; }
     public bool JoinRequestAccepted { get; set; }
     public DateTime LastOnlineDate { get; set; }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Data;
 
@@ -11,9 +12,11 @@ using Persistence.Data;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204181601_EditColumnUserIdInUserRoomTableConfigurations")]
+    partial class EditColumnUserIdInUserRoomTableConfigurations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -688,16 +691,40 @@ namespace Persistence.Migrations
                     b.ToTable("RoomMessage", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.RoomModels.UserRoom", b =>
+            modelBuilder.Entity("Domain.RoomModels.RoomSupervisor", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<bool>("IsSupervisor")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_supervisor");
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("room_id");
+
+                    b.Property<Guid>("SupervisorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("supervisor_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_room_supervisor");
+
+                    b.HasIndex("SupervisorId")
+                        .HasDatabaseName("ix_room_supervisor_supervisor_id");
+
+                    b.HasIndex("RoomId", "SupervisorId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_room_supervisor_room_id_supervisor_id");
+
+                    b.ToTable("RoomSupervisor", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.RoomModels.UserRoom", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
 
                     b.Property<bool>("JoinRequestAccepted")
                         .HasColumnType("bit")
@@ -717,9 +744,6 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_user_room");
-
-                    b.HasIndex("IsSupervisor")
-                        .HasDatabaseName("ix_user_room_is_supervisor");
 
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_user_room_room_id");
@@ -1172,6 +1196,27 @@ namespace Persistence.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("Domain.RoomModels.RoomSupervisor", b =>
+                {
+                    b.HasOne("Domain.RoomModels.Room", "Room")
+                        .WithMany("RoomsSupervisors")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_room_supervisor_room_room_id");
+
+                    b.HasOne("Domain.Identity.User.BaseUser", "Supervisor")
+                        .WithMany("RoomsSupervisors")
+                        .HasForeignKey("SupervisorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_room_supervisor_user_supervisor_id");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Supervisor");
+                });
+
             modelBuilder.Entity("Domain.RoomModels.UserRoom", b =>
                 {
                     b.HasOne("Domain.RoomModels.Room", "Room")
@@ -1313,6 +1358,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Identity.User.BaseUser", b =>
                 {
+                    b.Navigation("RoomsSupervisors");
+
                     b.Navigation("UserRefreshTokens");
 
                     b.Navigation("UsersRooms");
@@ -1327,6 +1374,8 @@ namespace Persistence.Migrations
                     b.Navigation("Exams");
 
                     b.Navigation("RoomMessages");
+
+                    b.Navigation("RoomsSupervisors");
 
                     b.Navigation("UsersRooms");
                 });
