@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.EntityConfigurations.IdentityConfigurations;
 
-public class BaseUserLoginConfig : IEntityTypeConfiguration<IdentityUserLogin<Guid>>
+public class IdentityRoleClaimConfig : IEntityTypeConfiguration<IdentityRoleClaim<Guid>>
 {
-    public void Configure(EntityTypeBuilder<IdentityUserLogin<Guid>> builder)
+    public void Configure(EntityTypeBuilder<IdentityRoleClaim<Guid>> builder)
     {
-        builder.ToTable("UserLogin");
+        builder.ToTable("RoleClaim");
     }
 }

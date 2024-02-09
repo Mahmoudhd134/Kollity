@@ -22,7 +22,7 @@ public abstract class PhysicalBaseFileAccessor
     {
         if (Directory.Exists(_fullPath) == false)
             Directory.CreateDirectory(_fullPath);
-        var fileName = $"{Guid.NewGuid()}{Path.GetFileName(file.FileName)}";
+        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
         var filePath = Path.Combine(_fullPath, fileName);
         await using var fileStream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(fileStream);
@@ -31,10 +31,17 @@ public abstract class PhysicalBaseFileAccessor
 
     protected Task<bool> DeleteFile(string path)
     {
-        var fullPath = Path.Combine(_rootPath, path);
-        if (File.Exists(fullPath) == false)
+        try
+        {
+            var fullPath = Path.Combine(_rootPath, path);
+            if (File.Exists(fullPath) == false)
+                return Task.FromResult(false);
+            File.Delete(fullPath);
+            return Task.FromResult(true);
+        }
+        catch
+        {
             return Task.FromResult(false);
-        File.Delete(fullPath);
-        return Task.FromResult(true);
+        }
     }
 }

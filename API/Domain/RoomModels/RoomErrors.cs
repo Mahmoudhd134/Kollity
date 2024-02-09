@@ -21,4 +21,16 @@ public static class RoomErrors
 
     public static readonly Error UserAlreadyJoinedTheRoom = Error.Conflict("Room.UserAlreadyJoinedTheRoom",
         "The user is already a member in this room.");
+
+    public static readonly Error UnAuthorizeAddSupervisor = Error.Validation("Room.UnAuthorizeAddSupervisor",
+        "You do not have the right permissions to add a new supervisor to this room.");
+
+    public static Error UserIsNotJoined(Guid userId) => Error.Validation("Room.UserIdNotJoined",
+        $"There are no user with id '{userId} in this room.");
+
+    public static readonly Error UnAuthorizeDeleteSupervisor = Error.Validation("Room.UnAuthorizeDeleteSupervisor",
+        "You do not have the right permissions to delete an supervisor from this room.");
+
+    public static readonly Error DoctorMustBeAnSupervisor = Error.Validation("Room.DoctorMustBeAnSupervisor",
+        "The room doctor must be an supervisor");
 }

@@ -17,7 +17,13 @@ public class DoctorMapsProfile : Profile
                     Code = c.Code,
                     Department = c.Department,
                     Name = c.Name
-                })));
+                }).Concat(src.CoursesAssistants.Select(ca => new CourseForListDto
+                {
+                    Id = ca.Course.Id,
+                    Code = ca.Course.Code,
+                    Department = ca.Course.Department,
+                    Name = ca.Course.Name
+                })).ToList()));
         CreateMap<EditDoctorDto, Doctor>();
         CreateMap<Doctor, DoctorForListDto>();
     }

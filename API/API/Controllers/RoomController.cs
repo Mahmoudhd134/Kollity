@@ -1,7 +1,9 @@
 ﻿using Application.Commands.Room.AcceptAllJoins;
 using Application.Commands.Room.AcceptJoin;
 using Application.Commands.Room.Add;
+using Application.Commands.Room.AddSupervisor;
 using Application.Commands.Room.Delete;
+using Application.Commands.Room.DeleteSupervisor;
 using Application.Commands.Room.DenyJoin;
 using Application.Commands.Room.Edit;
 using Application.Commands.Room.Join;
@@ -19,7 +21,7 @@ public class RoomController : BaseController
 {
     [HttpPost, Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
     public Task<IResult> Add(AddRoomDto addRoomDto) => Send(new AddRoomCommand(addRoomDto));
-    
+
     [HttpPost("{id:guid}/join")]
     public Task<IResult> Join(Guid id) => Send(new JoinRoomCommand(id));
 
@@ -28,7 +30,10 @@ public class RoomController : BaseController
 
     [HttpPost("{id:guid}/accept-all-join-requests")]
     public Task<IResult> AcceptAllJoinRequests(Guid id) => Send(new AcceptAllRoomJoinRequestsCommand(id));
-    
+
+    [HttpPost("add-supervisor")]
+    public Task<IResult> AddSupervisor([FromBody] RoomUserIdsMap ids) => Send(new AddRoomSupervisorCommand(ids));
+
     [HttpGet("{id:guid}"), SwaggerResponse(200, type: typeof(RoomDto))]
     public Task<IResult> Get(Guid id) => Send(new GetRoomByIdQuery(id));
 
@@ -43,4 +48,7 @@ public class RoomController : BaseController
 
     [HttpDelete("{id:guid}"), Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}")]
     public Task<IResult> Delete(Guid id) => Send(new DeleteRoomCommand(id));
+
+    [HttpDelete("delete-supervisor")]
+    public Task<IResult> DeleteSupervisor([FromBody] RoomUserIdsMap ids) => Send(new DeleteRoomSupervisorCommand(ids));
 }

@@ -1,5 +1,7 @@
 ﻿using Application.Dtos.Doctor;
 using AutoMapper.QueryableExtensions;
+using Domain.Identity.Role;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Queries.Doctor.GetList;
@@ -24,6 +26,18 @@ public class GetDoctorListQueryHandler : IQueryHandler<GetDoctorListQuery, List<
 
         if (string.IsNullOrWhiteSpace(filters.UserNamePrefix) == false)
             doctors = doctors.Where(x => x.NormalizedUserName.StartsWith(filters.UserNamePrefix.ToUpper()));
+
+        if (string.IsNullOrWhiteSpace(filters.Role) == false)
+        {
+            var role = request.Filters.Role.ToUpper();
+            var roleId = await _context.Roles
+                .Where(x => x.NormalizedName == role)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+            if (roleId == Guid.Empty)
+                return RoleErrors.RoleNotFound(request.Filters.Role);
+            doctors = doctors.Where(x => x.Roles.Any(xx => xx.RoleId == roleId));
+        }
 
         return await doctors
             .Skip(filters.PageIndex * filters.PageSize)

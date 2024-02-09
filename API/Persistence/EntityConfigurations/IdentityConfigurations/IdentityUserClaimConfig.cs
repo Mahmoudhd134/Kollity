@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistence.EntityConfigurations.IdentityConfigurations;
 
-public class BaseUserTokenConfig : IEntityTypeConfiguration<IdentityUserToken<Guid>>
+public class IdentityUserClaimConfig : IEntityTypeConfiguration<IdentityUserClaim<Guid>>
 {
-    public void Configure(EntityTypeBuilder<IdentityUserToken<Guid>> builder)
+    public void Configure(EntityTypeBuilder<IdentityUserClaim<Guid>> builder)
     {
-        builder.ToTable("UserToken");
+        builder.ToTable("UserClaim");
     }
 }
