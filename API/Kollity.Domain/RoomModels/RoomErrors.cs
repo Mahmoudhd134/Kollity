@@ -1,0 +1,42 @@
+﻿using Kollity.Domain.ErrorHandlers;
+
+namespace Kollity.Domain.RoomModels;
+
+public static class RoomErrors
+{
+    public static readonly Error UnAuthorizeEdit = Error.Validation("Room.UnAuthorizeEdit",
+        "You can edit the details of a room you don't own.");
+
+    public static readonly Error UnAuthorizeDelete = Error.Validation("Room.UnAuthorizeDelete",
+        "You do not have the right permissions to delete this room.");
+
+    public static readonly Error UnAuthorizeAcceptJoinRequest = Error.Validation("Room.UnAuthorizeAcceptJoinRequest",
+        "You do not have the right permissions to accept join requests in this room.");
+
+    public static readonly Error UnAuthorizeDenyJoinRequest = Error.Validation("Room.UnAuthorizeDenyJoinRequest",
+        "You do not have the right permissions to deny join requests in this room.");
+
+    public static readonly Error UserAlreadyJoinedTheRoom = Error.Conflict("Room.UserAlreadyJoinedTheRoom",
+        "The user is already a member in this room.");
+
+    public static readonly Error UnAuthorizeAddSupervisor = Error.Validation("Room.UnAuthorizeAddSupervisor",
+        "You do not have the right permissions to add a new supervisor to this room.");
+
+    public static readonly Error UnAuthorizeDeleteSupervisor = Error.Validation("Room.UnAuthorizeDeleteSupervisor",
+        "You do not have the right permissions to delete an supervisor from this room.");
+
+    public static readonly Error DoctorMustBeAnSupervisor = Error.Validation("Room.DoctorMustBeAnSupervisor",
+        "The room doctor must be an supervisor");
+
+    public static Error IdNotFound(Guid roomId)
+    {
+        return Error.NotFound("Room.WrongId",
+            $"The id '{roomId}' is wrong.");
+    }
+
+    public static Error UserIsNotJoined(Guid userId)
+    {
+        return Error.Validation("Room.UserIdNotJoined",
+            $"There are no user with id '{userId} in this room.");
+    }
+}
