@@ -11,303 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f3afaf1b-cea4-48ff-95af-2273c886c4a8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.API/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.API/Hubs/BaseHub.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.API/Hubs/HubConfigurations.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.API/Hubs/Room/IRoomHubClient.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.API/Hubs/Room/RoomHub.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/IEmailService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/Add/AddCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/AddAssistant/AddAssistantToCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/AssignDoctor/AssignDoctorToCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/AssignStudent/AssignStudentToCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/DeAssignDoctor/DeAssignDoctorFromCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/DeAssignStudent/DeAssignStudentFromCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/Delete/DeleteCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/DeleteAssistant/DeleteAssistantFromCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/Edit/EditCourseCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Doctor/Add/AddDoctorCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Doctor/Delete/DeleteDoctorCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Doctor/Edit/EditDoctorCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ChangeImagePhoto/ChangeUserProfileImageCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ChangePassword/ChangePasswordCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ResetPassword/Reset/ResetPasswordCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ResetPassword/SendToken/SendResetPasswordTokenToEmailCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/SetEmail/Confirm/ConfirmEmailCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/SetEmail/Set/SetEmailCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/AcceptAllJoins/AcceptAllRoomJoinRequestsCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/AcceptJoin/AcceptRoomJoinRequestCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Add/AddRoomCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/AddSupervisor/AddRoomSupervisorCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Delete/DeleteRoomCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/DeleteSupervisor/DeleteRoomSupervisorCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/DenyJoin/DenyRoomJoinRequestCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Edit/EditRoomCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Join/JoinRoomCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Student/Add/AddStudentCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Student/Delete/DeleteStudentCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Student/Edit/EditStudentCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/GlobalUsing.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Course/GetById/GetCourseByIdQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Course/GetList/GetCourseListQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Doctor/GetById/GetDoctorByIdQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Doctor/GetList/GetDoctorListQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Identity/IsEmailUsed/IsEmailUsedQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Identity/IsUserNameUsed/IsUserNameUsedQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Room/GetById/GetRoomByIdQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Room/GetMembers/GetRoomMembersQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Student/GetById/GetStudentByIdQuery.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Student/GetList/GetStudentListQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/git_toolbox_prj.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/API.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API.sln.DotSettings" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/API.sln.DotSettings.user" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Kollity.API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/API.http" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/API.http" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Abstractions/IAuthServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Abstractions/IAuthServices.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/AuthController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/AuthController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/BaseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/BaseController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/CourseController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/CourseController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/DoctorController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/DoctorController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/IdentityController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/IdentityController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/RoomController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/RoomController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Controllers/StudentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Controllers/StudentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Dtos/Auth/LoginUserDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Dtos/Auth/LoginUserDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Dtos/Auth/RefreshTokenDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Dtos/Auth/RefreshTokenDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Dtos/Auth/TokenDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Dtos/Auth/TokenDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Dtos/FailureResponseType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Dtos/FailureResponseType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Extensions/ResultExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Extensions/ResultExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Extensions/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Extensions/ServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Helpers/Constants.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Helpers/CustomValidationFilterAttribute.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Helpers/CustomValidationFilterAttribute.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Helpers/FailureType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Helpers/FailureType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Helpers/GlobalExceptionHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Helpers/GlobalExceptionHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Helpers/JwtConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Helpers/JwtConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Implementation/HttpUserAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Implementation/HttpUserAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Implementation/JwtAuthServices.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Implementation/JwtAuthServices.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API/wwwroot/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.API/wwwroot/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/Files/IImageAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/Files/IImageAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/IEmailService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/IUserAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/IUserAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/Messages/ICommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/Messages/ICommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/Messages/ICommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/Messages/ICommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/Messages/IQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/Messages/IQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Abstractions/Messages/IQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Abstractions/Messages/IQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Kollity.Application.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/ApplicationExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/ApplicationExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/Add/AddCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/Add/AddCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/Add/AddCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/AddAssistant/AddAssistantToCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/AddAssistant/AddAssistantToCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/AddAssistant/AddAssistantToCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/AssignDoctor/AssignDoctorToCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/AssignDoctor/AssignDoctorToCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/AssignDoctor/AssignDoctorToCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/AssignStudent/AssignStudentToCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/AssignStudent/AssignStudentToCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/AssignStudent/AssignStudentToCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/DeAssignDoctor/DeAssignDoctorFromCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/DeAssignDoctor/DeAssignDoctorFromCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/DeAssignDoctor/DeAssignDoctorFromCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/DeAssignStudent/DeAssignStudentFromCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/DeAssignStudent/DeAssignStudentFromCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/DeAssignStudent/DeAssignStudentFromCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/Delete/DeleteCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/Delete/DeleteCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/Delete/DeleteCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/DeleteAssistant/DeleteAssistantFromCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/DeleteAssistant/DeleteAssistantFromCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/DeleteAssistant/DeleteAssistantFromCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/Edit/EditCourseCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Course/Edit/EditCourseCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Course/Edit/EditCourseCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Doctor/Add/AddDoctorCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Doctor/Add/AddDoctorCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Doctor/Add/AddDoctorCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Doctor/Delete/DeleteDoctorCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Doctor/Delete/DeleteDoctorCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Doctor/Delete/DeleteDoctorCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Doctor/Edit/EditDoctorCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Doctor/Edit/EditDoctorCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Doctor/Edit/EditDoctorCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ChangeImagePhoto/ChangeUserProfileImageCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ChangeImagePhoto/ChangeUserProfileImageCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ChangeImagePhoto/ChangeUserProfileImageCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ChangePassword/ChangePasswordCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ChangePassword/ChangePasswordCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ChangePassword/ChangePasswordCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ResetPassword/Reset/ResetPasswordCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ResetPassword/Reset/ResetPasswordCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ResetPassword/Reset/ResetPasswordCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ResetPassword/SendToken/SendResetPasswordTokenToEmailCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/ResetPassword/SendToken/SendResetPasswordTokenToEmailCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/ResetPassword/SendToken/SendResetPasswordTokenToEmailCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/SetEmail/Confirm/ConfirmEmailCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/SetEmail/Confirm/ConfirmEmailCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/SetEmail/Confirm/ConfirmEmailCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/SetEmail/Set/SetEmailCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Identity/SetEmail/Set/SetEmailCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Identity/SetEmail/Set/SetEmailCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/AcceptAllJoins/AcceptAllRoomJoinRequestsCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/AcceptAllJoins/AcceptAllRoomJoinRequestsCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/AcceptAllJoins/AcceptAllRoomJoinRequestsCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/AcceptJoin/AcceptRoomJoinRequestCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/AcceptJoin/AcceptRoomJoinRequestCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/AcceptJoin/AcceptRoomJoinRequestCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Add/AddRoomCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Add/AddRoomCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Add/AddRoomCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/AddSupervisor/AddRoomSupervisorCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/AddSupervisor/AddRoomSupervisorCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/AddSupervisor/AddRoomSupervisorCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Delete/DeleteRoomCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Delete/DeleteRoomCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Delete/DeleteRoomCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/DeleteSupervisor/DeleteRoomSupervisorCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/DeleteSupervisor/DeleteRoomSupervisorCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/DeleteSupervisor/DeleteRoomSupervisorCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/DenyJoin/DenyRoomJoinRequestCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/DenyJoin/DenyRoomJoinRequestCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/DenyJoin/DenyRoomJoinRequestCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Edit/EditRoomCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Edit/EditRoomCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Edit/EditRoomCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Join/JoinRoomCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Room/Join/JoinRoomCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Room/Join/JoinRoomCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Student/Add/AddStudentCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Student/Add/AddStudentCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Student/Add/AddStudentCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Student/Delete/DeleteStudentCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Student/Delete/DeleteStudentCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Student/Delete/DeleteStudentCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Student/Edit/EditStudentCommand.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Commands/Student/Edit/EditStudentCommandHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Commands/Student/Edit/EditStudentCommandHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/AddCourseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/AddCourseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/AssistantForCourseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/AssistantForCourseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/CourseDoctorIdsMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/CourseDoctorIdsMap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/CourseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/CourseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/CourseForListDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/CourseForListDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/CourseListFilters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/CourseListFilters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/CourseStudentIdsMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/CourseStudentIdsMap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/DoctorForCourseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/DoctorForCourseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/EditCourseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/EditCourseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Course/RoomForCourseDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Course/RoomForCourseDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/AddDoctorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Doctor/AddDoctorDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Doctor/DoctorDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorForListDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Doctor/DoctorForListDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/DoctorListFilters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Doctor/DoctorListFilters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Doctor/EditDoctorDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Doctor/EditDoctorDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Email/EmailData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Email/EmailData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Email/MailSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Email/MailSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Identity/ChangeImagePhotoDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Identity/ChangeImagePhotoDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Identity/ChangePasswordDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Identity/ChangePasswordDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Identity/ResetPasswordDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Identity/ResetPasswordDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/AddRoomDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/AddRoomDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/CourseForRoomDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/CourseForRoomDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/DoctorForRoomDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/DoctorForRoomDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/EditRoomDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/EditRoomDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/RoomDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/RoomDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/RoomMemberDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/RoomMemberDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/RoomUserIdsMap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/RoomUserIdsMap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Room/UserRoomState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Room/UserRoomState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/AddStudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Student/AddStudentDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/EditStudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Student/EditStudentDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/StudentDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Student/StudentDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/StudentForListDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Student/StudentForListDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Dtos/Student/StudentListFilters.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Dtos/Student/StudentListFilters.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Extensions/IdentityExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Extensions/IdentityExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/GlobalUsing.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/CourseMapsProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/MappingProfiles/CourseMapsProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/DoctorMapsProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/MappingProfiles/DoctorMapsProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/RoomMapsProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/MappingProfiles/RoomMapsProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/StudentMapsProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/MappingProfiles/StudentMapsProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/MappingProfiles/UserRoomMapsProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/MappingProfiles/UserRoomMapsProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Course/GetById/GetCourseByIdQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Course/GetById/GetCourseByIdQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Course/GetById/GetCourseByIdQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Course/GetList/GetCourseListQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Course/GetList/GetCourseListQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Course/GetList/GetCourseListQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Doctor/GetById/GetDoctorByIdQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Doctor/GetById/GetDoctorByIdQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Doctor/GetById/GetDoctorByIdQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Doctor/GetList/GetDoctorListQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Doctor/GetList/GetDoctorListQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Doctor/GetList/GetDoctorListQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Identity/IsEmailUsed/IsEmailUsedQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Identity/IsEmailUsed/IsEmailUsedQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Identity/IsEmailUsed/IsEmailUsedQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Identity/IsUserNameUsed/IsUserNameUsedQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Identity/IsUserNameUsed/IsUserNameUsedQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Identity/IsUserNameUsed/IsUserNameUsedQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Room/GetById/GetRoomByIdQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Room/GetById/GetRoomByIdQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Room/GetById/GetRoomByIdQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Room/GetMembers/GetRoomMembersQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Room/GetMembers/GetRoomMembersQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Room/GetMembers/GetRoomMembersQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Student/GetById/GetStudentByIdQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Student/GetById/GetStudentByIdQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Student/GetById/GetStudentByIdQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Student/GetList/GetStudentListQuery.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/Queries/Student/GetList/GetStudentListQueryHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Application/Queries/Student/GetList/GetStudentListQueryHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/AssignmentModels/Assignment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/AssignmentModels/Assignment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/AssignmentModels/AssignmentAnswer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/AssignmentModels/AssignmentAnswer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/AssignmentModels/AssignmentGroupModels/AssignmentGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/AssignmentModels/AssignmentGroupModels/AssignmentGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/AssignmentModels/AssignmentGroupModels/AssignmentGroupStudent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/AssignmentModels/AssignmentGroupModels/AssignmentGroupStudent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/AssignmentModels/AssignmentImage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/AssignmentModels/AssignmentImage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/AssignmentModels/AssignmentMode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/AssignmentModels/AssignmentMode.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/CourseModels/Course.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/CourseModels/Course.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/CourseModels/CourseAssistant.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/CourseModels/CourseAssistant.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/CourseModels/CourseErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/CourseModels/CourseErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/DoctorModels/Doctor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/DoctorModels/Doctor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/DoctorModels/DoctorErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/DoctorModels/DoctorErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Domain.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Kollity.Domain.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/ErrorHandlers/Error.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/ErrorHandlers/Error.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/ErrorHandlers/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/ErrorHandlers/Result.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/ExamModels/Exam.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/ExamModels/Exam.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/ExamModels/ExamAnswer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/ExamModels/ExamAnswer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/ExamModels/ExamQuestion.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/ExamModels/ExamQuestion.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/ExamModels/ExamQuestionOption.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/ExamModels/ExamQuestionOption.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identity/Role/BaseRole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Identity/Role/BaseRole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identity/Role/Role.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Identity/Role/Role.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identity/Role/RoleErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Identity/Role/RoleErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identity/User/BaseUser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Identity/User/BaseUser.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identity/User/UserErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Identity/User/UserErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/Identity/UserRefreshToken/UserRefreshToken.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/Identity/UserRefreshToken/UserRefreshToken.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/RoomModels/Room.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/RoomModels/Room.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/RoomModels/RoomErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/RoomModels/RoomErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/RoomModels/RoomMessage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/RoomModels/RoomMessage.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/RoomModels/RoomSupervisor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/RoomModels/RoomSupervisor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/RoomModels/UserRoom.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/RoomModels/UserRoom.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/StudentModels/Student.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/StudentModels/Student.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/StudentModels/StudentCourse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/StudentModels/StudentCourse.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Domain/StudentModels/StudentErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Domain/StudentModels/StudentErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/Emails/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Infrastructure/Emails/EmailService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/Files/PhysicalBaseFileAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Infrastructure/Files/PhysicalBaseFileAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/Files/PhysicalImageAccessor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Infrastructure/Files/PhysicalImageAccessor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Infrastructure/Kollity.Infrastructure.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/InfrastructureConfigurations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Infrastructure/InfrastructureConfigurations.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Data/ApplicationDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Data/ApplicationDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentAnswerConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentAnswerConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentGroupModels/AssignmentGroupConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentGroupModels/AssignmentGroupConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentGroupModels/AssignmentGroupStudentConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentGroupModels/AssignmentGroupStudentConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentImageConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/AssignmentConfigurations/AssignmentImageConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/CourseConfigurations/CourseAssistantConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/CourseConfigurations/CourseAssistantConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/CourseConfigurations/CourseConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/CourseConfigurations/CourseConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/DoctorConfigurations/DoctorConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/DoctorConfigurations/DoctorConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/ExamConfigurations/ExamAnswerConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/ExamConfigurations/ExamAnswerConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/ExamConfigurations/ExamConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/ExamConfigurations/ExamConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/ExamConfigurations/ExamQuestionConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/ExamConfigurations/ExamQuestionConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/ExamConfigurations/ExamQuestionOptionConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/ExamConfigurations/ExamQuestionOptionConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/IdentityRoleClaimConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/IdentityRoleClaimConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/IdentityUserClaimConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/IdentityUserClaimConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/IdentityUserLoginConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/IdentityUserLoginConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/IdentityUserTokenConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/IdentityUserTokenConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/Role/BaseRoleConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/Role/BaseRoleConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/User/BaseUserConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/User/BaseUserConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/User/UserRoleConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/User/UserRoleConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/IdentityConfigurations/UserRefreshToken/UserRefreshTokenConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/IdentityConfigurations/UserRefreshToken/UserRefreshTokenConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/RoomConfigurations/RoomConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/RoomConfigurations/RoomConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/RoomConfigurations/RoomMessageConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/RoomConfigurations/RoomMessageConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/RoomConfigurations/RoomSupervisorConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/RoomConfigurations/RoomSupervisorConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/RoomConfigurations/UserRoomConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/RoomConfigurations/UserRoomConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/StudentConfigurations/StudentConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/StudentConfigurations/StudentConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/EntityConfigurations/StudentConfigurations/StudentCourseConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/EntityConfigurations/StudentConfigurations/StudentCourseConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Extensions/UtcDateAnnotation.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Extensions/UtcDateAnnotation.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240131215608_ConfigureTables.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240131215608_ConfigureTables.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240131215608_ConfigureTables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240131215608_ConfigureTables.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240131215807_MockDatabase.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240131215807_MockDatabase.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240131215807_MockDatabase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240131215807_MockDatabase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240203190203_EditTableStudentCourseConfigurations.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240203190203_EditTableStudentCourseConfigurations.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240203190203_EditTableStudentCourseConfigurations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240203190203_EditTableStudentCourseConfigurations.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240204181601_EditColumnUserIdInUserRoomTableConfigurations.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240204181601_EditColumnUserIdInUserRoomTableConfigurations.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240204181601_EditColumnUserIdInUserRoomTableConfigurations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240204181601_EditColumnUserIdInUserRoomTableConfigurations.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240204224224_RemoveRoomSupervisorTable.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240204224224_RemoveRoomSupervisorTable.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/20240204224224_RemoveRoomSupervisorTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/20240204224224_RemoveRoomSupervisorTable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/Persistence.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/Kollity.Persistence.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/PersistenceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/PersistenceExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Persistence/mock.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.Persistence/mock.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayAroundConsoleApp/PlayAroundConsoleApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Killity.PlayAroundConsoleApp/Killity.PlayAroundConsoleApp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayAroundConsoleApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Killity.PlayAroundConsoleApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.API/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kollity.sln.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Kollity.sln.DotSettings" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -540,7 +245,7 @@
       <workItem from="1706661844196" duration="52644000" />
       <workItem from="1707138037040" duration="3088000" />
       <workItem from="1707243073271" duration="24260000" />
-      <workItem from="1707588657875" duration="1410000" />
+      <workItem from="1707588657875" duration="3760000" />
     </task>
     <task id="LOCAL-00001" summary="Add Course, Assistant, Assignment (&amp; assignment groups), Room, and RoomMessage Models with its associated models.">
       <option name="closed" value="true" />
@@ -638,7 +343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707492880585</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Apply Refactoring and Naming Convention.">
+      <option name="closed" value="true" />
+      <created>1707590326291</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1707590326291</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -688,7 +401,8 @@
     <MESSAGE value="Add Identity Operations &amp; (de/assign student from/to course) Operations" />
     <MESSAGE value="Add Room Operations. eg: add, delete, get, edit, get members, join, accept/accept all/deny join request." />
     <MESSAGE value="Add Add/Delete Room Supervisor &amp; Change Profile Image operations &amp; update Get Doctor List endpoint." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Add/Delete Room Supervisor &amp; Change Profile Image operations &amp; update Get Doctor List endpoint." />
+    <MESSAGE value="Apply Refactoring and Naming Convention." />
+    <option name="LAST_COMMIT_MESSAGE" value="Apply Refactoring and Naming Convention." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
