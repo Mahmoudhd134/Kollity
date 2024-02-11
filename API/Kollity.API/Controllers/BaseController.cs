@@ -20,7 +20,7 @@ public class BaseController : ControllerBase
 {
     private ISender _sender;
     private ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
-
+    protected const long MaxFileSize = 1L * 1024L * 1024L * 1024L;
     protected string Username => User?.Claims?.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
     protected string Id => User?.Claims?.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Sid))?.Value;
     protected string UserAgent => HttpContext.Request.Headers.UserAgent;

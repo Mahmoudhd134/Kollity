@@ -22,8 +22,10 @@ public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserPr
 
     public async Task<Result> Handle(ChangeUserProfileImageCommand request, CancellationToken cancellationToken)
     {
+        Console.WriteLine("here");
         var id = _userAccessor.GetCurrentUserId();
-        var newImage = request.ImageDto.Image;
+        var newImage = request.ImageDto.ImageStream;
+        var extension = request.ImageDto.Extensions;
 
         string oldImage;
         try
@@ -40,7 +42,7 @@ public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserPr
 
         if (string.IsNullOrWhiteSpace(oldImage) == false) await _imageAccessor.DeleteImage(oldImage);
 
-        var path = await _imageAccessor.UploadImage(newImage);
+        var path = await _imageAccessor.UploadImage(newImage, extension);
         var result = await _context.Users
             .Where(x => x.Id == id)
             .ExecuteUpdateAsync(calls => calls

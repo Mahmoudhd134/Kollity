@@ -15,6 +15,17 @@ public abstract class PhysicalBaseFileAccessor
         _fullPath = Path.Combine(rootPath, relativePath);
     }
 
+    public async Task<string> UploadFile(Stream file, string extension)
+    {
+        if (Directory.Exists(_fullPath) == false)
+            Directory.CreateDirectory(_fullPath);
+        var fileName = $"{Guid.NewGuid()}{extension}";
+        var filePath = Path.Combine(_fullPath, fileName);
+        await using var fileStream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(fileStream);
+        return Path.Combine(_relativePath, fileName);
+    }
+
     protected async Task<string> UploadFile(IFormFile file)
     {
         if (Directory.Exists(_fullPath) == false)

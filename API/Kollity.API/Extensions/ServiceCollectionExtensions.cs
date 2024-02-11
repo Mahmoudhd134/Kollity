@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Kollity.API.Abstractions;
+using Kollity.API.Controllers;
 using Kollity.API.Helpers;
 using Kollity.API.Hubs;
 using Kollity.API.Implementation;
@@ -129,7 +130,11 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddModelBindingErrorsMap(this IServiceCollection services)
     {
-        services.AddControllers(opt => opt.Filters.Add(typeof(CustomValidationFilterAttribute)));
+        services.AddControllers(opt =>
+        {
+            opt.Filters.Add(typeof(CustomValidationFilterAttribute));
+            // opt.Filters.Add(new DisableFormValueModelBindingAttribute());
+        });
         services.Configure<ApiBehaviorOptions>(opt => opt.SuppressModelStateInvalidFilter = true);
 
         return services;
