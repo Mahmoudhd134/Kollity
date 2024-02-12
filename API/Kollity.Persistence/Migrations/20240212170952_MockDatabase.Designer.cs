@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Kollity.Persistence.Data;
 
 #nullable disable
 
 namespace Kollity.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240131215807_MockDatabase")]
+    [Migration("20240212170952_MockDatabase")]
     partial class MockDatabase
     {
         /// <inheritdoc />
@@ -461,6 +460,32 @@ namespace Kollity.Persistence.Migrations
                         .HasFilter("[normalized_name] IS NOT NULL");
 
                     b.ToTable("Role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f"),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("126abefb-6d50-4d58-9419-c8e1f39a01d8"),
+                            Name = "Doctor",
+                            NormalizedName = "DOCTOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("bf9c94d0-ca32-4b64-aa5a-3c03b44db740"),
+                            Name = "Student",
+                            NormalizedName = "STUDENT"
+                        },
+                        new
+                        {
+                            Id = new Guid("6ddc2275-7ae1-40ca-9f6f-c5b5c637c5d8"),
+                            Name = "Assistant",
+                            NormalizedName = "ASSISTANT"
+                        });
                 });
 
             modelBuilder.Entity("Kollity.Domain.Identity.User.BaseUser", b =>
@@ -647,6 +672,43 @@ namespace Kollity.Persistence.Migrations
                     b.ToTable("Room", (string)null);
                 });
 
+            modelBuilder.Entity("Kollity.Domain.RoomModels.RoomContent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(511)
+                        .HasColumnType("nvarchar(511)")
+                        .HasColumnName("file_path");
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("room_id");
+
+                    b.Property<DateTime>("UploadTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("upload_time");
+
+                    b.Property<Guid?>("UploaderId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("uploader_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_room_content");
+
+                    b.HasIndex("RoomId")
+                        .HasDatabaseName("ix_room_content_room_id");
+
+                    b.HasIndex("UploaderId")
+                        .HasDatabaseName("ix_room_content_uploader_id");
+
+                    b.ToTable("RoomContent", (string)null);
+                });
+
             modelBuilder.Entity("Kollity.Domain.RoomModels.RoomMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -692,40 +754,16 @@ namespace Kollity.Persistence.Migrations
                     b.ToTable("RoomMessage", (string)null);
                 });
 
-            modelBuilder.Entity("Kollity.Domain.RoomModels.RoomSupervisor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("room_id");
-
-                    b.Property<Guid>("SupervisorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("supervisor_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_room_supervisor");
-
-                    b.HasIndex("SupervisorId")
-                        .HasDatabaseName("ix_room_supervisor_supervisor_id");
-
-                    b.HasIndex("RoomId", "SupervisorId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_room_supervisor_room_id_supervisor_id");
-
-                    b.ToTable("RoomSupervisor", (string)null);
-                });
-
             modelBuilder.Entity("Kollity.Domain.RoomModels.UserRoom", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
+
+                    b.Property<bool>("IsSupervisor")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_supervisor");
 
                     b.Property<bool>("JoinRequestAccepted")
                         .HasColumnType("bit")
@@ -745,6 +783,9 @@ namespace Kollity.Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_user_room");
+
+                    b.HasIndex("IsSupervisor")
+                        .HasDatabaseName("ix_user_room_is_supervisor");
 
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_user_room_room_id");
@@ -777,8 +818,9 @@ namespace Kollity.Persistence.Migrations
                     b.HasIndex("CourseId")
                         .HasDatabaseName("ix_student_course_course_id");
 
-                    b.HasIndex("StudentId")
-                        .HasDatabaseName("ix_student_course_student_id");
+                    b.HasIndex("StudentId", "CourseId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_student_course_student_id_course_id");
 
                     b.ToTable("StudentCourse", (string)null);
                 });
@@ -889,6 +931,13 @@ namespace Kollity.Persistence.Migrations
                         .HasDatabaseName("ix_user_role_role_id");
 
                     b.ToTable("UserRole", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
+                            RoleId = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -922,6 +971,24 @@ namespace Kollity.Persistence.Migrations
                     b.HasBaseType("Kollity.Domain.Identity.User.BaseUser");
 
                     b.HasDiscriminator().HasValue("Doctor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a443bf96-da75-4046-8452-7d64553b4533",
+                            Email = "nassermahmoud571@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "NASSERMAHMOUD571@GMAIL.COM",
+                            NormalizedUserName = "MAHMOUDHD134",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPRFyxksWTOaY3gzYwnqUGS8FT0q1kCjlaUo1KP/Uu3R1seoxDWoi1tlyw8Uc69YNA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "6TPMB3KY7R4NAIGXTMKLOWGRE2HQOOBY",
+                            TwoFactorEnabled = false,
+                            UserName = "Mahmoudhd134"
+                        });
                 });
 
             modelBuilder.Entity("Kollity.Domain.StudentModels.Student", b =>
@@ -996,7 +1063,7 @@ namespace Kollity.Persistence.Migrations
             modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentGroupModels.AssignmentGroup", b =>
                 {
                     b.HasOne("Kollity.Domain.RoomModels.Room", "Room")
-                        .WithMany()
+                        .WithMany("AssignmentGroups")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1176,6 +1243,26 @@ namespace Kollity.Persistence.Migrations
                     b.Navigation("Doctor");
                 });
 
+            modelBuilder.Entity("Kollity.Domain.RoomModels.RoomContent", b =>
+                {
+                    b.HasOne("Kollity.Domain.RoomModels.Room", "Room")
+                        .WithMany("RoomContents")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_room_content_room_room_id");
+
+                    b.HasOne("Kollity.Domain.Identity.User.BaseUser", "Uploader")
+                        .WithMany()
+                        .HasForeignKey("UploaderId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_room_content_user_uploader_id");
+
+                    b.Navigation("Room");
+
+                    b.Navigation("Uploader");
+                });
+
             modelBuilder.Entity("Kollity.Domain.RoomModels.RoomMessage", b =>
                 {
                     b.HasOne("Kollity.Domain.RoomModels.Room", "Room")
@@ -1196,27 +1283,6 @@ namespace Kollity.Persistence.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Kollity.Domain.RoomModels.RoomSupervisor", b =>
-                {
-                    b.HasOne("Kollity.Domain.RoomModels.Room", "Room")
-                        .WithMany("RoomsSupervisors")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_room_supervisor_room_room_id");
-
-                    b.HasOne("Kollity.Domain.Identity.User.BaseUser", "Supervisor")
-                        .WithMany("RoomsSupervisors")
-                        .HasForeignKey("SupervisorId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_room_supervisor_user_supervisor_id");
-
-                    b.Navigation("Room");
-
-                    b.Navigation("Supervisor");
-                });
-
             modelBuilder.Entity("Kollity.Domain.RoomModels.UserRoom", b =>
                 {
                     b.HasOne("Kollity.Domain.RoomModels.Room", "Room")
@@ -1229,7 +1295,7 @@ namespace Kollity.Persistence.Migrations
                     b.HasOne("Kollity.Domain.Identity.User.BaseUser", "User")
                         .WithMany("UsersRooms")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_user_room_user_user_id");
 
@@ -1250,7 +1316,7 @@ namespace Kollity.Persistence.Migrations
                     b.HasOne("Kollity.Domain.StudentModels.Student", "Student")
                         .WithMany("StudentsCourses")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_student_course_user_student_id");
 
@@ -1299,7 +1365,7 @@ namespace Kollity.Persistence.Migrations
                         .HasConstraintName("fk_user_role_role_role_id");
 
                     b.HasOne("Kollity.Domain.Identity.User.BaseUser", null)
-                        .WithMany()
+                        .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1358,7 +1424,7 @@ namespace Kollity.Persistence.Migrations
 
             modelBuilder.Entity("Kollity.Domain.Identity.User.BaseUser", b =>
                 {
-                    b.Navigation("RoomsSupervisors");
+                    b.Navigation("Roles");
 
                     b.Navigation("UserRefreshTokens");
 
@@ -1367,13 +1433,15 @@ namespace Kollity.Persistence.Migrations
 
             modelBuilder.Entity("Kollity.Domain.RoomModels.Room", b =>
                 {
+                    b.Navigation("AssignmentGroups");
+
                     b.Navigation("Assignments");
 
                     b.Navigation("Exams");
 
-                    b.Navigation("RoomMessages");
+                    b.Navigation("RoomContents");
 
-                    b.Navigation("RoomsSupervisors");
+                    b.Navigation("RoomMessages");
 
                     b.Navigation("UsersRooms");
                 });

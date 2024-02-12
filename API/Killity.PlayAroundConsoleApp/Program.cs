@@ -1,20 +1,103 @@
-﻿using Kollity.Domain.AssignmentModels;
+﻿using Kollity.Application;
+using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Domain.CourseModels;
+using Kollity.Domain.DoctorModels;
 using Kollity.Domain.ExamModels;
 using Kollity.Domain.RoomModels;
+using Kollity.Domain.StudentModels;
+using Kollity.Infrastructure;
+using Kollity.Persistence;
 using Kollity.Persistence.Data;
+using Kollity.Persistence.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-var optionsBuilder = new DbContextOptionsBuilder()
-    .UseSqlServer("server=.;database=MyCollege;trusted_connection=true;encrypt=false;");
-var context = new ApplicationDbContext(optionsBuilder.Options);
+var connectionString = "server=.;database=MyCollege;trusted_connection=true;encrypt=false;";
+IServiceProvider provider = new ServiceCollection()
+    .AddPersistenceConfigurations(connectionString)
+    .AddInfrastructureServices()
+    .BuildServiceProvider();
+
+var context = provider.GetRequiredService<ApplicationDbContext>();
+var studentManager = provider.GetRequiredService<UserManager<Student>>();
+var doctorManager = provider.GetRequiredService<UserManager<Doctor>>();
+
+var studentRole = context.Roles.First(x => x.Name == "Student");
+var assistantRole = context.Roles.First(x => x.Name == "Assistant");
+var doctorRole = context.Roles.First(x => x.Name == "Doctor");
+
+// var s = new Student()
+// {
+//     UserName = "mah",
+//     NormalizedUserName = "MAH",
+//     FullNameInArabic = "afs",
+//     Code = "af",
+//     // ConcurrencyStamp = Guid.NewGuid().ToString()
+// };
+// var passwordHash = studentManager.PasswordHasher.HashPassword(s, "Mahmoud2320030@");
+// s.PasswordHash = passwordHash;
+// context.Add(s);
+// context.SaveChanges();
+var ss = await studentManager.FindByNameAsync("mah");
+var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
+await studentManager.UpdateSecurityStampAsync(ss);
+Console.WriteLine();
+
+// Enumerable.Range(1, 100)
+//     .Select(x => new Student
+//     {
+//         UserName = $"MahmoudStudent{x}",
+//         FullNameInArabic = $"this is my {x}'th full name",
+//         Code = x.ToString(),
+//         Roles =
+//         [
+//             new IdentityUserRole<Guid>
+//             {
+//                 RoleId = studentRole.Id
+//             }
+//         ]
+//     })
+//     .Select(x => studentManager.CreateAsync(x, "Mahmoud2320030@").Result)
+//     .ToList();
+//
+//
+// Enumerable.Range(1, 50)
+//     .Select(x => new Doctor
+//     {
+//         UserName = $"MahmoudAssistant{x}",
+//         Roles =
+//         [
+//             new IdentityUserRole<Guid>
+//             {
+//                 RoleId = assistantRole.Id
+//             }
+//         ]
+//     })
+//     .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
+//     .ToList();
+//
+//
+// Enumerable.Range(1, 25)
+//     .Select(x => new Doctor
+//     {
+//         UserName = $"MahmoudDoctor{x}",
+//         Roles =
+//         [
+//             new IdentityUserRole<Guid>
+//             {
+//                 RoleId = doctorRole.Id
+//             }
+//         ]
+//     })
+//     .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
+//     .ToList();
 
 // CreateCourse(context);
 // CreateAssignment(context);
 
-
-Console.WriteLine();
 return;
 
 void CreateCourse(ApplicationDbContext applicationDbContext)

@@ -4,6 +4,7 @@ using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240212164101_AddRoomContentTable")]
+    partial class AddRoomContentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -457,32 +460,6 @@ namespace Kollity.Persistence.Migrations
                         .HasFilter("[normalized_name] IS NOT NULL");
 
                     b.ToTable("Role", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f"),
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("126abefb-6d50-4d58-9419-c8e1f39a01d8"),
-                            Name = "Doctor",
-                            NormalizedName = "DOCTOR"
-                        },
-                        new
-                        {
-                            Id = new Guid("bf9c94d0-ca32-4b64-aa5a-3c03b44db740"),
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        },
-                        new
-                        {
-                            Id = new Guid("6ddc2275-7ae1-40ca-9f6f-c5b5c637c5d8"),
-                            Name = "Assistant",
-                            NormalizedName = "ASSISTANT"
-                        });
                 });
 
             modelBuilder.Entity("Kollity.Domain.Identity.User.BaseUser", b =>
@@ -928,13 +905,6 @@ namespace Kollity.Persistence.Migrations
                         .HasDatabaseName("ix_user_role_role_id");
 
                     b.ToTable("UserRole", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
-                            RoleId = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -968,24 +938,6 @@ namespace Kollity.Persistence.Migrations
                     b.HasBaseType("Kollity.Domain.Identity.User.BaseUser");
 
                     b.HasDiscriminator().HasValue("Doctor");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a443bf96-da75-4046-8452-7d64553b4533",
-                            Email = "nassermahmoud571@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = true,
-                            NormalizedEmail = "NASSERMAHMOUD571@GMAIL.COM",
-                            NormalizedUserName = "MAHMOUDHD134",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPRFyxksWTOaY3gzYwnqUGS8FT0q1kCjlaUo1KP/Uu3R1seoxDWoi1tlyw8Uc69YNA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "6TPMB3KY7R4NAIGXTMKLOWGRE2HQOOBY",
-                            TwoFactorEnabled = false,
-                            UserName = "Mahmoudhd134"
-                        });
                 });
 
             modelBuilder.Entity("Kollity.Domain.StudentModels.Student", b =>

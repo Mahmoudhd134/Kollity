@@ -4,6 +4,7 @@ using Kollity.API.Hubs;
 using Kollity.Application;
 using Kollity.Infrastructure;
 using Kollity.Persistence;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,13 @@ builder.Services.AddCustomSwaggerGen();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.Configure<SecurityStampValidatorOptions>(o =>
+{
+    // WARNING: this will issue a query for every request
+    // You might want to rather just compromise with an interval
+    // less than 30 minutes (5 minutes, 10 minutes, etc.)
+    o.ValidationInterval = TimeSpan.Zero;
+});
 
 var connectionString = builder.Configuration["ConnectionStrings:Default"];
 builder.Services

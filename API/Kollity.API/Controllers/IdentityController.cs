@@ -7,12 +7,11 @@ using Kollity.Application.Commands.Identity.ResetPassword.SendToken;
 using Kollity.Application.Commands.Identity.SetEmail.Confirm;
 using Kollity.Application.Commands.Identity.SetEmail.Set;
 using Kollity.Application.Dtos.Identity;
-using Kollity.Application.Dtos.Student;
+using Kollity.Domain.ErrorHandlers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
-using Exception = System.Exception;
 
 namespace Kollity.API.Controllers;
 
@@ -43,11 +42,43 @@ public class IdentityController : BaseController
     [DisableFormValueModelBinding]
     public async Task<IResult> ChangeImagePhoto()
     {
-        var fileResult = await Request.GetSectionAndFileInfos(MaxFileSize);
-        if (fileResult.IsSuccess == false)
-            return fileResult.ToIResult();
+        if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+            return Result.Failure(Error.Validation("UploadFile", "Not a multipart request")).ToIResult();
 
-        var (section, fileName) = fileResult.Data;
+        var boundary = MultipartRequestHelper.GetBoundary(MediaTypeHeaderValue.Parse(Request.ContentType), MaxFileSize);
+        if (boundary.IsSuccess == false)
+            return Result.Failure(boundary.Errors).ToIResult();
+        var reader = new MultipartReader(boundary.Data, Request.Body);
+
+        // note: this is for a single file, you could also process multiple files
+        MultipartSection section;
+        ContentDispositionHeaderValue contentDisposition = null;
+        do
+        {
+            section = await reader.ReadNextSectionAsync();
+
+            if (section == null)
+                break;
+
+            if (!ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out contentDisposition))
+                return Result.Failure(Error.Validation("UploadFile", "No content disposition in multipart defined"))
+                    .ToIResult();
+        } while (contentDisposition.Name.ToString().ToLower() != "image");
+
+        if (section is null)
+            return Result.Failure(Error.Validation("Image", "Image Is Required.")).ToIResult();
+        if (contentDisposition?.IsFileDisposition() == false)
+            return Result.Failure(Error.Validation("Image", "Image Must Be a File.")).ToIResult();
+
+        var fileName = contentDisposition.FileNameStar.ToString();
+        if (string.IsNullOrEmpty(fileName))
+        {
+            fileName = contentDisposition.FileName.ToString();
+        }
+
+        if (string.IsNullOrEmpty(fileName))
+            return Result.Failure(Error.Validation("UploadFile", "No filename defined.")).ToIResult();
+
 
         await using var fileStream = section.Body;
         var result = await Send(new ChangeUserProfileImageCommand(new ChangeImagePhotoDto
