@@ -12,6 +12,7 @@ public class BaseUserConfig : IEntityTypeConfiguration<BaseUser>
 
         builder.Property(u => u.ProfileImage).HasMaxLength(255);
         builder.Property(u => u.PhoneNumber).HasMaxLength(127);
+        builder.Property(s => s.FullNameInArabic).HasMaxLength(127);
 
         builder.HasIndex(u => u.Email).IsUnique();
         builder.HasIndex(u => u.NormalizedEmail).IsUnique();

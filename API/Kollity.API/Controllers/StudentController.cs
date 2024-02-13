@@ -1,9 +1,12 @@
 ﻿using Kollity.Application.Commands.Student.Add;
 using Kollity.Application.Commands.Student.Delete;
 using Kollity.Application.Commands.Student.Edit;
+using Kollity.Application.Dtos.Course;
 using Kollity.Application.Dtos.Student;
+using Kollity.Application.Queries.Student.Courses;
 using Kollity.Application.Queries.Student.GetById;
 using Kollity.Application.Queries.Student.GetList;
+using Kollity.Application.Queries.Student.Profile;
 using Kollity.Domain.Identity.Role;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +28,20 @@ public class StudentController : BaseController
     public Task<IResult> Get(Guid id)
     {
         return Send(new GetStudentByIdQuery(id));
+    }
+
+    [HttpGet("{id:guid}/profile")]
+    [SwaggerResponse(200, type: typeof(StudentProfileDto))]
+    public Task<IResult> Profile(Guid id)
+    {
+        return Send(new GetStudentProfileByIdQuery(id));
+    }
+
+    [HttpGet("{id:guid}/courses")]
+    [SwaggerResponse(200, type: typeof(List<CourseForListDto>))]
+    public Task<IResult> Courses(Guid id)
+    {
+        return Send(new GetStudentCoursesByIdQuery(id));
     }
 
     [HttpGet]

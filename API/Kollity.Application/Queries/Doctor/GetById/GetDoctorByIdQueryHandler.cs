@@ -30,6 +30,7 @@ public class GetDoctorByIdQueryHandler : IQueryHandler<GetDoctorByIdQuery, Docto
                 Id = x.Id,
                 ProfileImage = x.ProfileImage,
                 UserName = x.UserName,
+                FullNameInArabic = x.FullNameInArabic,
                 Courses = x.CoursesAssistants.Select(ca =>
                     new CourseForListDto
                     {

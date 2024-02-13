@@ -1,6 +1,6 @@
 ﻿namespace Kollity.Application.Dtos.Doctor;
 
-public class DoctorForListDto
+public class DoctorProfileDto
 {
     public Guid Id { get; set; }
     public string UserName { get; set; }
