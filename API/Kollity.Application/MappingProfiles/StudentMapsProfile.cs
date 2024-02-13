@@ -11,6 +11,7 @@ public class StudentMapsProfile : Profile
         CreateMap<AddStudentDto, Student>();
         CreateMap<EditStudentDto, Student>();
 
+        CreateMap<Student, StudentProfileDto>();
         CreateMap<Student, StudentDto>()
             .ForMember(dest => dest.Courses, opt =>
                 opt.MapFrom(src => src.StudentsCourses.Select(sc => new CourseForListDto
