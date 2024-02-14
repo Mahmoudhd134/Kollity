@@ -15,7 +15,7 @@ public abstract class PhysicalBaseFileAccessor
         _fullPath = Path.Combine(rootPath, relativePath);
     }
 
-    public async Task<string> UploadFile(Stream file, string extension)
+    public virtual async Task<string> UploadFile(Stream file, string extension)
     {
         if (Directory.Exists(_fullPath) == false)
             Directory.CreateDirectory(_fullPath);
@@ -26,7 +26,7 @@ public abstract class PhysicalBaseFileAccessor
         return Path.Combine(_relativePath, fileName);
     }
 
-    protected async Task<string> UploadFile(IFormFile file)
+    public virtual async Task<string> UploadFile(IFormFile file)
     {
         if (Directory.Exists(_fullPath) == false)
             Directory.CreateDirectory(_fullPath);
@@ -37,7 +37,7 @@ public abstract class PhysicalBaseFileAccessor
         return Path.Combine(_relativePath, fileName);
     }
 
-    protected Task<bool> DeleteFile(string path)
+    public virtual Task<bool> DeleteFile(string path)
     {
         try
         {

@@ -11,6 +11,7 @@ public class RoomContentConfig : IEntityTypeConfiguration<RoomContent>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.FilePath).HasMaxLength(511).IsRequired();
+        builder.Property(x => x.Name).HasMaxLength(511).IsRequired();
 
         builder
             .HasOne(x => x.Room)

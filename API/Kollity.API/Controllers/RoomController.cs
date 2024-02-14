@@ -1,15 +1,21 @@
-﻿using Kollity.Application.Commands.Room.AcceptAllJoins;
+﻿using System.Globalization;
+using Kollity.API.Extensions;
+using Kollity.Application.Commands.Room.AcceptAllJoins;
 using Kollity.Application.Commands.Room.AcceptJoin;
 using Kollity.Application.Commands.Room.Add;
+using Kollity.Application.Commands.Room.AddContent;
 using Kollity.Application.Commands.Room.AddSupervisor;
 using Kollity.Application.Commands.Room.Delete;
+using Kollity.Application.Commands.Room.DeleteContent;
 using Kollity.Application.Commands.Room.DeleteSupervisor;
 using Kollity.Application.Commands.Room.DenyJoin;
 using Kollity.Application.Commands.Room.Edit;
 using Kollity.Application.Commands.Room.Join;
 using Kollity.Application.Dtos.Room;
 using Kollity.Application.Queries.Room.GetById;
+using Kollity.Application.Queries.Room.GetContent;
 using Kollity.Application.Queries.Room.GetMembers;
+using Kollity.Application.Queries.Room.GetSingleContent;
 using Kollity.Domain.Identity.Role;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +25,8 @@ namespace Kollity.API.Controllers;
 
 public class RoomController : BaseController
 {
+    // start room specific endpoints
+
     [HttpPost]
     [Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
     public Task<IResult> Add(AddRoomDto addRoomDto)
@@ -89,4 +97,47 @@ public class RoomController : BaseController
     {
         return Send(new DeleteRoomSupervisorCommand(ids));
     }
+
+    //end room specific endpoints
+
+
+    //start room content specific endpoints
+
+    [HttpPost("{id:guid}/content")]
+    [RequestSizeLimit(MaxFileSize)]
+    [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
+    public Task<IResult> AddContent(Guid id, [FromForm] AddRoomContentDto addRoomContentDto)
+    {
+        return Send(new AddRoomContentCommand(id, addRoomContentDto));
+    }
+
+    [HttpGet("{id:guid}/content"), SwaggerResponse(200, type: typeof(List<RoomContentDto>))]
+    public Task<IResult> GetContent(Guid id)
+    {
+        return Send(new GetRoomContentQuery(id));
+    }
+
+    [AllowAnonymous, HttpGet("content/{contentId:guid}"), SwaggerResponse(200, type: typeof(File))]
+    public async Task<IResult> GetSingleContent(Guid contentId)
+    {
+        var response = await Sender.Send(new GetRoomSingleContentQuery(contentId));
+        if (response.IsSuccess == false)
+            return response.ToIResult();
+
+        Response.Headers.Add("Content-Disposition",
+            "attachment; filename=" + response.Data.Name + response.Data.Extension);
+        Response.Headers.Append("Content-Type", "application/octet-stream");
+        Response.Headers.Add("Content-Length", response.Data.Size.ToString(CultureInfo.InvariantCulture));
+        await response.Data.Stream.CopyToAsync(Response.Body);
+        response.Data.Stream.Close();
+        return Results.NoContent();
+    }
+
+    [HttpDelete("{roomId:guid}/content/{contentId:guid}")]
+    public Task<IResult> DeleteContent(Guid roomId, Guid contentId)
+    {
+        return Send(new DeleteRoomContentCommand(roomId, contentId));
+    }
+
+    //end room content specific endpoints
 }

@@ -28,7 +28,14 @@ public static class RoomErrors
     public static readonly Error DoctorMustBeAnSupervisor = Error.Validation("Room.DoctorMustBeAnSupervisor",
         "The room doctor must be an supervisor");
 
+    public static readonly Error UnAuthorizeAddContent = Error.Validation("Room.UnAuthorizedAddContent",
+        "You can not add content to a room you are not in a supervisor position");
+    
+    public static readonly Error UnAuthorizeDeleteContent = Error.Validation("Room.UnAuthorizedDeleteContent",
+        "You can not delete content to a room you are not in a supervisor position");
+
     public static Error IdNotFound(Guid roomId) => Error.NotFound("Room.WrongId", $"The id '{roomId}' is wrong.");
+    public static Error ContentIdNotFound(Guid contentId) => Error.NotFound("RoomContent.WrongId", $"The id '{contentId}' is wrong.");
 
     public static Error UserIsNotJoined(Guid userId) => Error.Validation("Room.UserIdNotJoined",
         $"There are no user with id '{userId} in this room.");

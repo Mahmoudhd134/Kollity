@@ -1,4 +1,5 @@
-﻿using Kollity.Application.Dtos.Room;
+﻿using Kollity.Application.Dtos.Identity;
+using Kollity.Application.Dtos.Room;
 using Kollity.Domain.RoomModels;
 
 namespace Kollity.Application.MappingProfiles;
@@ -23,6 +24,14 @@ public class RoomMapsProfile : Profile
                 {
                     Id = s.CourseId,
                     Name = s.Course.Name
+                }));
+        CreateMap<RoomContent, RoomContentDto>()
+            .ForMember(d => d.Uploader, opt =>
+                opt.MapFrom(s => new BaseUserDto
+                {
+                    Id = s.Uploader.Id,
+                    ProfileImage = s.Uploader.ProfileImage,
+                    UserName = s.Uploader.UserName
                 }));
     }
 }
