@@ -10,7 +10,7 @@ public class AssignmentGroupConfig : IEntityTypeConfiguration<AssignmentGroup>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Code).IsRequired();
+        builder.Property(x => x.Code).ValueGeneratedOnAdd().IsRequired();
 
         builder
             .HasOne(x => x.Room)

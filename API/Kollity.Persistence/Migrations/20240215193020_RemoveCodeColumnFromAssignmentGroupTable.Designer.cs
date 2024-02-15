@@ -4,6 +4,7 @@ using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240215193020_RemoveCodeColumnFromAssignmentGroupTable")]
+    partial class RemoveCodeColumnFromAssignmentGroupTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,23 +123,12 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    b.Property<int>("Code")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("code");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Code"));
-
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_id");
 
                     b.HasKey("Id")
                         .HasName("pk_assignment_group");
-
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasDatabaseName("ix_assignment_group_code");
 
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_assignment_group_room_id");
@@ -455,11 +447,6 @@ namespace Kollity.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_role");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasDatabaseName("ix_role_name")
-                        .HasFilter("[name] IS NOT NULL");
-
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
@@ -596,11 +583,6 @@ namespace Kollity.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[normalized_user_name] IS NOT NULL");
-
-                    b.HasIndex("UserName")
-                        .IsUnique()
-                        .HasDatabaseName("ix_user_user_name")
-                        .HasFilter("[user_name] IS NOT NULL");
 
                     b.ToTable("User", (string)null);
 

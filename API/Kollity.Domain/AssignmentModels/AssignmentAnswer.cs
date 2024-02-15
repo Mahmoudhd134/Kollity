@@ -11,7 +11,7 @@ public class AssignmentAnswer
     public DateTime UploadDate { get; set; }
     public string File { get; set; }
 
-    public Guid? StudentId { get; set; }
+    public Guid StudentId { get; set; }
     public Student Student { get; set; }
 
     public Guid? AssignmentGroupId { get; set; }
