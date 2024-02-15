@@ -1,5 +1,6 @@
 ﻿using Kollity.API.Helpers;
 using Kollity.Domain.ErrorHandlers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Kollity.API.Extensions;
 
@@ -41,6 +42,13 @@ public static class ResultExtensions
             Type = GetType(result.Errors.First().Type),
             Errors = result.Errors
         };
+    }
+
+    public static ActionResult ToActionResult<T>(this Result<T> result)
+    {
+        if (result.Errors.Any())
+            return new ObjectResult(result.ToFailureType());
+        return new OkObjectResult(result.Data);
     }
 
     private static string GetType(ErrorType type)

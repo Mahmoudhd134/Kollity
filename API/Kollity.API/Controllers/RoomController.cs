@@ -118,19 +118,19 @@ public class RoomController : BaseController
     }
 
     [AllowAnonymous, HttpGet("content/{contentId:guid}"), SwaggerResponse(200, type: typeof(File))]
-    public async Task<IResult> GetSingleContent(Guid contentId)
+    public async Task<ActionResult> GetSingleContent(Guid contentId)
     {
         var response = await Sender.Send(new GetRoomSingleContentQuery(contentId));
         if (response.IsSuccess == false)
-            return response.ToIResult();
+            return response.ToActionResult();
 
-        Response.Headers.Add("Content-Disposition",
+        Response.Headers.Append("Content-Disposition",
             "attachment; filename=" + response.Data.Name + response.Data.Extension);
         Response.Headers.Append("Content-Type", "application/octet-stream");
-        Response.Headers.Add("Content-Length", response.Data.Size.ToString(CultureInfo.InvariantCulture));
+        Response.Headers.Append("Content-Length", response.Data.Size.ToString(CultureInfo.InvariantCulture));
         await response.Data.Stream.CopyToAsync(Response.Body);
         response.Data.Stream.Close();
-        return Results.NoContent();
+        return new EmptyResult();
     }
 
     [HttpDelete("{roomId:guid}/content/{contentId:guid}")]
