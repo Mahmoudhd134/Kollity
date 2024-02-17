@@ -37,6 +37,8 @@ public static class RoomErrors
     public static Error IdNotFound(Guid roomId) => Error.NotFound("Room.WrongId", $"The id '{roomId}' is wrong.");
     public static Error ContentIdNotFound(Guid contentId) => Error.NotFound("RoomContent.WrongId", $"The id '{contentId}' is wrong.");
 
+    public static Error UserIsNotJoined(string userName) => Error.Validation("Room.UserIdNotJoined",
+        $"There are no user with user name '{userName} in this room.");
     public static Error UserIsNotJoined(Guid userId) => Error.Validation("Room.UserIdNotJoined",
         $"There are no user with id '{userId} in this room.");
 }

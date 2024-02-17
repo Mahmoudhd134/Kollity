@@ -47,9 +47,9 @@ public class GetCourseListQueryHandler : IQueryHandler<GetCourseListQuery, List<
         var courseDtos = courses.ProjectTo<CourseForListDto>(_mapper.ConfigurationProvider);
 
         return await courseDtos
+            .OrderBy(c => c.Name)
             .Skip(filters.PageIndex * filters.PageSize)
             .Take(filters.PageSize)
-            .OrderBy(c => c.Name)
             .ToListAsync(cancellationToken);
     }
 }
