@@ -41,16 +41,17 @@ var doctorRole = context.Roles.First(x => x.Name == "Doctor");
 // s.PasswordHash = passwordHash;
 // context.Add(s);
 // context.SaveChanges();
-var ss = await studentManager.FindByNameAsync("mah");
-var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
-await studentManager.UpdateSecurityStampAsync(ss);
-Console.WriteLine();
+// var ss = await studentManager.FindByNameAsync("mah");
+// var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
+// await studentManager.UpdateSecurityStampAsync(ss);
+// Console.WriteLine();
 
 // Enumerable.Range(1, 100)
 //     .Select(x => new Student
 //     {
-//         UserName = $"MahmoudStudent{x}",
-//         FullNameInArabic = $"this is my {x}'th full name",
+//         UserName = $"student_username{x}",
+//         FullNameInArabic = $"اسم عربي {x}",
+//         Email = $"emailbyme{x}@qalbi.bahbeek",
 //         Code = x.ToString(),
 //         Roles =
 //         [
@@ -62,38 +63,42 @@ Console.WriteLine();
 //     })
 //     .Select(x => studentManager.CreateAsync(x, "Mahmoud2320030@").Result)
 //     .ToList();
-//
-//
-// Enumerable.Range(1, 50)
-//     .Select(x => new Doctor
-//     {
-//         UserName = $"MahmoudAssistant{x}",
-//         Roles =
-//         [
-//             new IdentityUserRole<Guid>
-//             {
-//                 RoleId = assistantRole.Id
-//             }
-//         ]
-//     })
-//     .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
-//     .ToList();
-//
-//
-// Enumerable.Range(1, 25)
-//     .Select(x => new Doctor
-//     {
-//         UserName = $"MahmoudDoctor{x}",
-//         Roles =
-//         [
-//             new IdentityUserRole<Guid>
-//             {
-//                 RoleId = doctorRole.Id
-//             }
-//         ]
-//     })
-//     .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
-//     .ToList();
+
+
+Enumerable.Range(1, 50)
+    .Select(x => new Doctor
+    {
+        UserName = $"MahmoudAssistant{x}",
+        FullNameInArabic = $"اسم عربي {x}",
+        Email = $"emailbyme{x}@qalbiyadoctor.bahbeek",
+        Roles =
+        [
+            new IdentityUserRole<Guid>
+            {
+                RoleId = assistantRole.Id
+            }
+        ]
+    })
+    .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
+    .ToList();
+
+
+Enumerable.Range(1, 25)
+    .Select(x => new Doctor
+    {
+        UserName = $"MahmoudDoctor{x}",
+        FullNameInArabic = $"اسم عربي {x}",
+        Email = $"emailbyme{x}@qalbiyamoeed.bahbeek",
+        Roles =
+        [
+            new IdentityUserRole<Guid>
+            {
+                RoleId = doctorRole.Id
+            }
+        ]
+    })
+    .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
+    .ToList();
 
 // CreateCourse(context);
 // CreateAssignment(context);
