@@ -2,6 +2,7 @@ import { Role } from "@/constants";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 export interface IAuth {
+  id: string;
   roles: Role[];
   token: string;
   userName: string;
@@ -10,6 +11,7 @@ export interface IAuth {
 }
 
 const initialState: IAuth & { isAuthed: boolean } = {
+  id: "",
   roles: [],
   token: "",
   userName: "",
@@ -23,11 +25,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     signIn(state, action: PayloadAction<IAuth>) {
-      const { roles, token, userName, email, profileImage } = action.payload;
+      const { id, roles, token, userName, email, profileImage } =
+        action.payload;
 
+      state.id = id;
       state.roles = roles;
       state.token = token;
-      // state.username = username;
       state.userName = userName;
       state.email = email;
       // state.profileImage = profileImage;

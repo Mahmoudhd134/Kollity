@@ -1,17 +1,21 @@
-import { IAuth } from "@/redux/authSlice";
-import { useOutletContext } from "react-router-dom";
+import { IAuth, logOut } from "@/redux/authSlice";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import api from "@/api/api";
+import { useDispatch } from "react-redux";
 
 export default function ChangePasswordPage() {
   const oldPasswordRef = useRef<HTMLInputElement>(null);
   const newPasswordRef = useRef<HTMLInputElement>(null);
   const confirmNewPasswordRef = useRef<HTMLInputElement>(null);
   const passedData: { authData: IAuth } = useOutletContext();
+  const authData = passedData.authData;
   const { toast } = useToast();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChangePassword = async () => {
     const oldPassword = oldPasswordRef.current?.value;
@@ -20,9 +24,7 @@ export default function ChangePasswordPage() {
 
     if (!oldPassword || !newPassword || !confirmNewPassword) {
       toast({
-        title: "خطأ",
         description: "الرجاء ملء جميع الحقول",
-        variant: "destructive",
       });
       return;
     }
@@ -37,14 +39,35 @@ export default function ChangePasswordPage() {
     }
 
     try {
-      const res = await api.post("/Identity/change-password", {
-        oldPassword,
-        newPassword,
-      });
+      if (authData.token === undefined) {
+        dispatch(logOut());
+        navigate("/");
+        return toast({
+          description: "الرجاء تسجيل الدخول",
+        });
+      }
 
-      const data = res.data;
+      const res = await api.patch(
+        "/Identity/change-password",
+        {
+          oldPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authData.token}`,
+          },
+          withCredentials: true,
+        }
+      );
 
-      console.log(data);
+      if (res.status === 200) {
+        toast({
+          description: "تم تغيير الباسورد بنجاح",
+        });
+
+        navigate("/profile/profile-data");
+      }
     } catch (error) {
       toast({
         title: "خطأ",

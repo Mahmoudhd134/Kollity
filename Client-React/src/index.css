@@ -105,4 +105,8 @@
   .profile-page-h3-title {
     @apply py-4 border-b w-full mb-10;
   }
+
+  #overlay.active {
+    @apply opacity-40 w-screen h-screen;
+  }
 }

@@ -38,7 +38,8 @@ export default function SignInPage() {
 
       const data: IAuth = res.data;
 
-      console.log(data);
+      dispatch(signIn(data));
+      navigate("/profile");
     } catch (error) {
       toast({
         title: "خطأ",
@@ -46,8 +47,6 @@ export default function SignInPage() {
         variant: "destructive",
       });
     }
-
-    // navigate("/profile");
   };
 
   return (

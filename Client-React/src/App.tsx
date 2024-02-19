@@ -7,6 +7,9 @@ import ProfilePage from "./pages/ProfilePage";
 import { Toaster } from "@/components/ui/toaster";
 import ProfileDataPage from "./pages/ProfileDataPage";
 import ChangePasswordPage from "./pages/ChangePasswordPage";
+import CoursesPage from "./pages/CoursesPage";
+import StatsPage from "./pages/StatsPage";
+import Overlay from "./components/shared/Overlay";
 
 function App() {
   return (
@@ -19,12 +22,12 @@ function App() {
             <Route path="profile" element={<ProfilePage />}>
               <Route path="profile-data" element={<ProfileDataPage />} />
               <Route path="change-password" element={<ChangePasswordPage />} />
-              {/* 
-              <Route path="/courses" />
-              <Route path="/statistics" /> */}
+              <Route path="courses" element={<CoursesPage />} />
+              <Route path="statistics" element={<StatsPage />} />
             </Route>
           </Routes>
         </AuthProvider>
+        <Overlay />
       </main>
       <Toaster />
     </>

@@ -75,7 +75,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddCores(this IServiceCollection services)
+    public static IServiceCollection AddCorsExtension(this IServiceCollection services)
     {
         services.AddCors(opt => opt.AddPolicy("allowLocalInDevelopment", builder =>
         {
@@ -83,7 +83,6 @@ public static class ServiceCollectionExtensions
                 .WithOrigins(
                     "http://localhost:5173",
                     "http://localhost:3000")
-                // .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()

@@ -1,16 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { navItems } from "@/constants";
 import { selectAuth } from "@/redux/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import blob from "@/assets/svg/blob_1.svg";
-import { useEffect } from "react";
+import { useEffect, MouseEvent } from "react";
+import { LogOut } from "lucide-react";
+import { logOut } from "@/redux/authSlice";
+import api from "@/api/api";
 
 export default function ProfilePage() {
   const authData = useSelector(selectAuth);
   const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const pathname = location.pathname;
 
@@ -35,6 +39,23 @@ export default function ProfilePage() {
       </>
     );
 
+  const handleLogOut = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    const overlay = document.getElementById("overlay");
+
+    overlay?.classList.add("active");
+
+    try {
+      await api.delete("/Auth/logout");
+    } catch (error) {
+      dispatch(logOut());
+    } finally {
+      navigate("/");
+      document.getElementById("overlay")?.classList.remove("active");
+    }
+  };
+
   return (
     <div className="flex flex-row">
       <aside className="w-[300px] h-screen border-l bg-zinc-800 text-white overflow-hidden relative">
@@ -56,6 +77,16 @@ export default function ProfilePage() {
                 </Link>
               </li>
             ))}
+
+            <li>
+              <Button
+                className="w-full flex justify-start gap-3"
+                variant={"destructive"}
+                onClick={handleLogOut}
+              >
+                <LogOut /> تسجيل الخروج
+              </Button>
+            </li>
           </ul>
         </nav>
         <div className="z-10 bottom-0 left-12 opacity-5 w-[350px] h-[350px]">

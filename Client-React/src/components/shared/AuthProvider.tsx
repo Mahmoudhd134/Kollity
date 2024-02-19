@@ -17,8 +17,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     let counter: NodeJS.Timeout;
     const isProtectedRoute = protectedRoutes.includes(location.pathname);
 
-    console.log("isProtectedRoute", location.pathname);
-
     try {
       setIsLoading(true);
       const res = await api.post("/Auth/refresh-token");
