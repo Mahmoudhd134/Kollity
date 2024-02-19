@@ -32,7 +32,8 @@ public class CourseMapsProfile : Profile
                 {
                     Id = r.Id,
                     Image = r.Image,
-                    Name = r.Name
+                    Name = r.Name,
+                    DoctorId = r.DoctorId ?? Guid.Empty
                 })));
 
         CreateMap<EditCourseDto, Course>();

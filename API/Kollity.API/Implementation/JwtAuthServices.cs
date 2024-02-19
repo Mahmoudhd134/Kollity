@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using Azure.Identity;
 using Kollity.API.Abstractions;
 using Kollity.API.Dtos.Auth;
 using Kollity.API.Helpers;
@@ -101,7 +102,8 @@ public class JwtAuthServices : IAuthServices
             UserName = userRefreshToken.User.UserName,
             Email = userRefreshToken.User.Email,
             ProfileImage = userRefreshToken.User.ProfileImage,
-            Id = userRefreshToken.UserId
+            Id = userRefreshToken.UserId,
+            Expiry = result.Data.Expiry
         };
 
         userRefreshToken.RefreshToken = newRefreshTokenDto.RefreshToken;
@@ -115,12 +117,13 @@ public class JwtAuthServices : IAuthServices
     {
         var (roles, claims) = await GetRolesAndClaimsAsync(user);
         var refreshToken = GenerateRefreshToken();
-        var token = GenerateToken(claims);
+        var (token, expiry) = GenerateToken(claims);
 
         return new RefreshTokenDto
         {
             RefreshToken = refreshToken,
             Token = token,
+            Expiry = expiry,
             Roles = roles,
             UserId = user.Id.ToString()
         };
@@ -144,7 +147,7 @@ public class JwtAuthServices : IAuthServices
         return Convert.ToBase64String(randomNumber);
     }
 
-    private string GenerateToken(IEnumerable<Claim> claims)
+    private (string token, DateTime expiry) GenerateToken(IEnumerable<Claim> claims)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -156,6 +159,7 @@ public class JwtAuthServices : IAuthServices
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityToken = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
-        return tokenHandler.WriteToken(securityToken);
+        return (tokenHandler.WriteToken(securityToken),
+            tokenDescriptor.Expires ?? DateTime.UtcNow.AddMinutes(_jwtConfiguration.ExpiryInMinutes));
     }
 }
