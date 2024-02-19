@@ -90,7 +90,7 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("nvarchar(511)")
                         .HasColumnName("file");
 
-                    b.Property<Guid?>("StudentId")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("student_id");
 
@@ -121,8 +121,11 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnName("id");
 
                     b.Property<int>("Code")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("code");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Code"));
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier")
@@ -166,8 +169,9 @@ namespace Kollity.Persistence.Migrations
                     b.HasIndex("AssignmentGroupId")
                         .HasDatabaseName("ix_assignment_group_student_assignment_group_id");
 
-                    b.HasIndex("StudentId")
-                        .HasDatabaseName("ix_assignment_group_student_student_id");
+                    b.HasIndex("StudentId", "AssignmentGroupId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_assignment_group_student_student_id_assignment_group_id");
 
                     b.ToTable("AssignmentGroupStudent", (string)null);
                 });
@@ -451,6 +455,11 @@ namespace Kollity.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_role");
 
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_role_name")
+                        .HasFilter("[name] IS NOT NULL");
+
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
@@ -587,6 +596,11 @@ namespace Kollity.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[normalized_user_name] IS NOT NULL");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasDatabaseName("ix_user_user_name")
+                        .HasFilter("[user_name] IS NOT NULL");
 
                     b.ToTable("User", (string)null);
 
@@ -1055,6 +1069,8 @@ namespace Kollity.Persistence.Migrations
                     b.HasOne("Kollity.Domain.StudentModels.Student", "Student")
                         .WithMany("AssignmentsAnswers")
                         .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_assignment_answer_asp_net_users_student_id");
 
                     b.Navigation("Assignment");

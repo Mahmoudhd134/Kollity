@@ -23,7 +23,7 @@ builder.Services
     .AddApplicationConfiguration(builder.Configuration)
     .AddPersistenceConfigurations(connectionString)
     .AddInfrastructureServices()
-    .AddCorsExtension()
+    .AddCors()
     .AddJwtAuthentication(builder.Configuration)
     .AddClassesConfigurations(builder.Configuration)
     .AddServicesInjection()

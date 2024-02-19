@@ -75,7 +75,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddCorsExtension(this IServiceCollection services)
+    public static IServiceCollection AddCores(this IServiceCollection services)
     {
         services.AddCors(opt => opt.AddPolicy("allowLocalInDevelopment", builder =>
         {

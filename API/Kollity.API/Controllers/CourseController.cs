@@ -26,7 +26,7 @@ public class CourseController : BaseController
         return Send(new AddCourseCommand(addCourseDto));
     }
 
-    [HttpPost("assign-doctor")]
+    [HttpPatch("assign-doctor")]
     [Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> AssignDoctor([FromBody] CourseDoctorIdsMap ids)
     {
@@ -75,24 +75,32 @@ public class CourseController : BaseController
         return Send(new DeleteCourseCommand(id));
     }
 
-    [HttpDelete("deassign-doctor/{courseId:guid}")]
+    [HttpDelete("{courseId:guid}/deassign-doctor")]
     [Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> DeAssignDoctor(Guid courseId)
     {
         return Send(new DeAssignDoctorFromCourseCommand(courseId));
     }
 
-    [HttpDelete("delete-assistant")]
+    [HttpDelete("{courseId:guid}/delete-assistant/{assistantId:guid}")]
     [Authorize(Roles = $"{Role.Admin}")]
-    public Task<IResult> DeleteAssistant([FromBody] CourseDoctorIdsMap ids)
+    public Task<IResult> DeleteAssistant(Guid courseId, Guid assistantId)
     {
-        return Send(new DeleteAssistantFromCourseCommand(ids));
+        return Send(new DeleteAssistantFromCourseCommand(new CourseDoctorIdsMap()
+        {
+            CourseId = courseId,
+            DoctorId = assistantId
+        }));
     }
 
-    [HttpDelete("deassign-student")]
+    [HttpDelete("{courseId:guid}/deassign-student/{studentId:guid}")]
     [Authorize(Roles = $"{Role.Admin}")]
-    public Task<IResult> DeAssignStudent([FromBody] CourseStudentIdsMap ids)
+    public Task<IResult> DeAssignStudent(Guid courseId, Guid studentId)
     {
-        return Send(new DeAssignStudentFromCourseCommand(ids));
+        return Send(new DeAssignStudentFromCourseCommand(new CourseStudentIdsMap()
+        {
+            CourseId = courseId,
+            StudentId = studentId
+        }));
     }
 }

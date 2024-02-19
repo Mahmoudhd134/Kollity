@@ -68,6 +68,7 @@ public class JwtAuthServices : IAuthServices
         result.Data.UserName = user.UserName;
         result.Data.Email = user.Email;
         result.Data.ProfileImage = user.ProfileImage;
+        result.Data.Id = user.Id;
         return result.Data;
     }
 
@@ -99,7 +100,8 @@ public class JwtAuthServices : IAuthServices
             RefreshToken = result.Data.RefreshToken,
             UserName = userRefreshToken.User.UserName,
             Email = userRefreshToken.User.Email,
-            ProfileImage = userRefreshToken.User.ProfileImage
+            ProfileImage = userRefreshToken.User.ProfileImage,
+            Id = userRefreshToken.UserId
         };
 
         userRefreshToken.RefreshToken = newRefreshTokenDto.RefreshToken;

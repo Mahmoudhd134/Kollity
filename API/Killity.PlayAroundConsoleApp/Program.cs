@@ -1,4 +1,5 @@
-﻿using Kollity.Application;
+﻿using Bogus;
+using Kollity.Application;
 using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Domain.CourseModels;
@@ -16,12 +17,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 var connectionString = "server=.;database=MyCollege;trusted_connection=true;encrypt=false;";
+var connectionString2 = "server=sql.bsite.net\\MSSQL2016;database=mahmoudhd1345_;user id=mahmoudhd1345_;password=Freeasphosting;encrypt=false;";
 IServiceProvider provider = new ServiceCollection()
-    .AddPersistenceConfigurations(connectionString)
+    .AddPersistenceConfigurations(connectionString2)
     .AddInfrastructureServices()
     .BuildServiceProvider();
 
 var context = provider.GetRequiredService<ApplicationDbContext>();
+context.Database.Migrate();
 var studentManager = provider.GetRequiredService<UserManager<Student>>();
 var doctorManager = provider.GetRequiredService<UserManager<Doctor>>();
 
@@ -41,17 +44,16 @@ var doctorRole = context.Roles.First(x => x.Name == "Doctor");
 // s.PasswordHash = passwordHash;
 // context.Add(s);
 // context.SaveChanges();
-// var ss = await studentManager.FindByNameAsync("mah");
-// var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
-// await studentManager.UpdateSecurityStampAsync(ss);
-// Console.WriteLine();
+var ss = await studentManager.FindByNameAsync("mah");
+var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
+await studentManager.UpdateSecurityStampAsync(ss);
+Console.WriteLine();
 
 // Enumerable.Range(1, 100)
 //     .Select(x => new Student
 //     {
-//         UserName = $"student_username{x}",
-//         FullNameInArabic = $"اسم عربي {x}",
-//         Email = $"emailbyme{x}@qalbi.bahbeek",
+//         UserName = $"MahmoudStudent{x}",
+//         FullNameInArabic = $"this is my {x}'th full name",
 //         Code = x.ToString(),
 //         Roles =
 //         [
@@ -63,42 +65,38 @@ var doctorRole = context.Roles.First(x => x.Name == "Doctor");
 //     })
 //     .Select(x => studentManager.CreateAsync(x, "Mahmoud2320030@").Result)
 //     .ToList();
-
-
-Enumerable.Range(1, 50)
-    .Select(x => new Doctor
-    {
-        UserName = $"MahmoudAssistant{x}",
-        FullNameInArabic = $"اسم عربي {x}",
-        Email = $"emailbyme{x}@qalbiyadoctor.bahbeek",
-        Roles =
-        [
-            new IdentityUserRole<Guid>
-            {
-                RoleId = assistantRole.Id
-            }
-        ]
-    })
-    .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
-    .ToList();
-
-
-Enumerable.Range(1, 25)
-    .Select(x => new Doctor
-    {
-        UserName = $"MahmoudDoctor{x}",
-        FullNameInArabic = $"اسم عربي {x}",
-        Email = $"emailbyme{x}@qalbiyamoeed.bahbeek",
-        Roles =
-        [
-            new IdentityUserRole<Guid>
-            {
-                RoleId = doctorRole.Id
-            }
-        ]
-    })
-    .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
-    .ToList();
+//
+//
+// Enumerable.Range(1, 50)
+//     .Select(x => new Doctor
+//     {
+//         UserName = $"MahmoudAssistant{x}",
+//         Roles =
+//         [
+//             new IdentityUserRole<Guid>
+//             {
+//                 RoleId = assistantRole.Id
+//             }
+//         ]
+//     })
+//     .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
+//     .ToList();
+//
+//
+// Enumerable.Range(1, 25)
+//     .Select(x => new Doctor
+//     {
+//         UserName = $"MahmoudDoctor{x}",
+//         Roles =
+//         [
+//             new IdentityUserRole<Guid>
+//             {
+//                 RoleId = doctorRole.Id
+//             }
+//         ]
+//     })
+//     .Select(x => doctorManager.CreateAsync(x, "Mahmoud2320030@").Result)
+//     .ToList();
 
 // CreateCourse(context);
 // CreateAssignment(context);

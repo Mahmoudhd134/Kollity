@@ -25,6 +25,8 @@ public class AssignmentGroupStudentConfig : IEntityTypeConfiguration<AssignmentG
         //     .WithMany()
         //     .HasForeignKey(x => x.RoomId);
 
+        builder.HasIndex(x => new { x.StudentId, x.AssignmentGroupId }).IsUnique();
+
         builder.ToTable("AssignmentGroupStudent");
     }
 }

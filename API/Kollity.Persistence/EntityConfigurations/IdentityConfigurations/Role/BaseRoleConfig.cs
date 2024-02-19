@@ -8,6 +8,10 @@ public class BaseRoleConfig : IEntityTypeConfiguration<BaseRole>
 {
     public void Configure(EntityTypeBuilder<BaseRole> builder)
     {
+
+        builder.HasIndex(x => x.Name).IsUnique();
+        builder.HasIndex(x => x.NormalizedName).IsUnique();
+        
         builder.HasData([
             new BaseRole
             {

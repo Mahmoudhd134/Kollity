@@ -26,7 +26,7 @@ public class JoinRoomCommandHandler : ICommandHandler<JoinRoomCommand>
 
         var room = await _context.Rooms.FirstOrDefaultAsync(x => x.Id == roomId, cancellationToken);
         if (room is null)
-            return RoomErrors.IdNotFound(roomId);
+            return RoomErrors.NotFound(roomId);
 
         room.UsersRooms.Add(new UserRoom
         {

@@ -17,26 +17,26 @@ namespace Kollity.API.Controllers;
 
 public class IdentityController : BaseController
 {
-    [HttpPost("change-password")]
+    [HttpPatch("change-password")]
     public Task<IResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto) =>
         Send(new ChangePasswordCommand(changePasswordDto));
 
     [AllowAnonymous]
-    [HttpPost("reset-password-1/{email}")]
+    [HttpPatch("reset-password-1/{email}")]
     public Task<IResult> ResetPassword(string email) => Send(new SendResetPasswordTokenToEmailCommand(email));
 
     [AllowAnonymous]
-    [HttpPost("reset-password-2")]
+    [HttpPatch("reset-password-2")]
     public Task<IResult> ResetPassword2(ResetPasswordDto resetPasswordDto) =>
         Send(new ResetPasswordCommand(resetPasswordDto));
 
-    [HttpPost("set-email")]
+    [HttpPatch("set-email")]
     public Task<IResult> SetEmail(string email) => Send(new SetEmailCommand(email));
 
-    [HttpPost("confirm-email")]
+    [HttpPatch("confirm-email")]
     public Task<IResult> ConfirmEmail(string token) => Send(new ConfirmEmailCommand(token));
 
-    [HttpPost("change-profile-image")]
+    [HttpPatch("change-profile-image")]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
     [DisableFormValueModelBinding]
