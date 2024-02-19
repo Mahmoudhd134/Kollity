@@ -34,7 +34,8 @@ public static class RoomErrors
     public static readonly Error UnAuthorizeDeleteContent = Error.Validation("Room.UnAuthorizedDeleteContent",
         "You can not delete content to a room you are not in a supervisor position");
 
-    public static Error IdNotFound(Guid roomId) => Error.NotFound("Room.WrongId", $"The id '{roomId}' is wrong.");
+    public static Error NotFound(Guid roomId) => Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");
+    public static Error NotFound(string roomName) => Error.NotFound("Room.NotFound", $"The name '{roomName}' is wrong.");
     public static Error ContentIdNotFound(Guid contentId) => Error.NotFound("RoomContent.WrongId", $"The id '{contentId}' is wrong.");
 
     public static Error UserIsNotJoined(string userName) => Error.Validation("Room.UserIdNotJoined",

@@ -20,7 +20,7 @@ public class DeleteRoomCommandHandler : ICommandHandler<DeleteRoomCommand>
     {
         var room = await _context.Rooms.FirstOrDefaultAsync(x => x.Id == request.RoomId, cancellationToken);
         if (room is null)
-            return RoomErrors.IdNotFound(request.RoomId);
+            return RoomErrors.NotFound(request.RoomId);
 
         var isAdmin = _userAccessor.GetCurrentUserRoles().Contains(Role.Admin);
         var id = _userAccessor.GetCurrentUserId();

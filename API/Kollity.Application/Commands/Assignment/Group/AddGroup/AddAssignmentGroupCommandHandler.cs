@@ -30,7 +30,7 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
         var roomExists = await _context.Rooms
             .AnyAsync(x => x.Id == roomId, cancellationToken);
         if (roomExists == false)
-            return RoomErrors.IdNotFound(roomId);
+            return RoomErrors.NotFound(roomId);
 
         //check if all students are in the room 
         var usersInRoom = await _context.UserRooms

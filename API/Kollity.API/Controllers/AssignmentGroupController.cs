@@ -9,6 +9,9 @@ using Kollity.Application.Dtos.Assignment.Group;
 using Kollity.Application.Queries.Assignment.Group.GetAll;
 using Kollity.Application.Queries.Assignment.Group.GetById;
 using Kollity.Application.Queries.Assignment.Group.GetInvitations;
+using Kollity.Application.Queries.Assignment.Group.GetUserGroup;
+using Kollity.Domain.Identity.Role;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -17,13 +20,21 @@ namespace Kollity.API.Controllers;
 [Route("api/room/{roomId:guid}/assignment-group")]
 public class AssignmentGroupController : BaseController
 {
-    [HttpGet, SwaggerResponse(200, type: typeof(List<AssignmentGroupForListDto>))]
+    [HttpGet, Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
+     SwaggerResponse(200, type: typeof(List<AssignmentGroupForListDto>))]
     public Task<IResult> GetAll(Guid roomId)
     {
         return Send(new GetAllAssignmentGroupsForRoomQuery(roomId));
     }
 
-    [HttpGet("{groupId:guid}"), SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
+    [HttpGet("my-group"), SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
+    public Task<IResult> Get(Guid roomId)
+    {
+        return Send(new GetUserAssignmentGroupQuery(roomId));
+    }
+
+    [HttpGet("{groupId:guid}"), Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
+     SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
     public Task<IResult> Get(Guid roomId, Guid groupId)
     {
         return Send(new GetAssignmentGroupByIdQuery(groupId));

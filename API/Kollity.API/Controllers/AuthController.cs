@@ -65,6 +65,7 @@ public class AuthController : BaseController
         return new TokenDto()
         {
             Token = tokenDto.Token,
+            Id = tokenDto.Id,
             Email = tokenDto.Email,
             Roles = tokenDto.Roles,
             UserName = tokenDto.UserName,

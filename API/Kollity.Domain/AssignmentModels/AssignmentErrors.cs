@@ -21,4 +21,7 @@ public static class AssignmentErrors
 
     public static readonly Error StudentIsWaitingOnThisGroup = Error.Conflict("Assignment.StudentIsWaitingOnThisGroup",
         "The student is already waiting to join this group");
+
+    public static Error UserIsNotInAnyGroupInRoom(string roomName) => Error.NotFound("Group.UserIsNotInAnyGroupInRoom",
+        $"The user is not in any group for the given room '{roomName}'");
 }

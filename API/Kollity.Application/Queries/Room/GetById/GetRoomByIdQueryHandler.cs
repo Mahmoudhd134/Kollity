@@ -26,7 +26,7 @@ public class GetRoomByIdQueryHandler : IQueryHandler<GetRoomByIdQuery, RoomDto>
             .ProjectTo<RoomDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
         if (roomDto is null)
-            return RoomErrors.IdNotFound(request.Id);
+            return RoomErrors.NotFound(request.Id);
 
         var id = _userAccessor.GetCurrentUserId();
         var userJoin = await _context.UserRooms
