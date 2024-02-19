@@ -60,6 +60,14 @@ public class AuthController : BaseController
         return Results.Ok(tokenDto);
     }
 
+    [HttpDelete("logout")]
+    public IResult Logout()
+    {
+        Response.Cookies.Delete("id");
+        Response.Cookies.Delete("refreshToken");
+        return Results.Empty;
+    }
+
     private TokenDto ToTokenDto(TokenDto tokenDto)
     {
         return new TokenDto()
