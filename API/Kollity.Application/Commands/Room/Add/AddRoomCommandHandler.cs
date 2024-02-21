@@ -43,9 +43,11 @@ public class AddRoomCommandHandler : ICommandHandler<AddRoomCommand>
         var room = new Domain.RoomModels.Room
         {
             Name = request.AddRoomDto.Name,
-            EnsureJoinRequest = request.AddRoomDto.EnsureJoinRequest,
             CourseId = request.AddRoomDto.CourseId,
-            DoctorId = id
+            DoctorId = id,
+            EnsureJoinRequest = false,
+            AssignmentGroupOperationsEnabled = true,
+            AssignmentGroupMaxLength = 10,
         };
         room.UsersRooms.Add(new UserRoom
         {

@@ -42,7 +42,7 @@ public class DeleteRoomContentCommandHandler : ICommandHandler<DeleteRoomContent
         if (path is null)
             return RoomErrors.ContentIdNotFound(contentId);
 
-        await _fileAccessor.DeleteFile(path);
+        await _fileAccessor.Delete(path);
         var result = await _context.RoomContents
             .Where(x => x.Id == contentId)
             .ExecuteDeleteAsync(cancellationToken);

@@ -1,9 +1,11 @@
 ﻿namespace Kollity.Domain.AssignmentModels;
 
-public class AssignmentImage
+public class AssignmentFile
 {
     public Guid Id { get; set; }
     public Guid AssignmentId { get; set; }
     public Assignment Assignment { get; set; }
-    public string Image { get; set; }
+    public string Name { get; set; }
+    public string FilePath { get; set; }
+    public DateTime UploadDate { get; set; }
 }

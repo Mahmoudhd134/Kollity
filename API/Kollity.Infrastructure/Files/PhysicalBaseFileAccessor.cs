@@ -37,7 +37,7 @@ public abstract class PhysicalBaseFileAccessor
         return Path.Combine(_relativePath, fileName);
     }
 
-    public virtual Task<bool> DeleteFile(string path)
+    public virtual Task<bool> Delete(string path)
     {
         try
         {

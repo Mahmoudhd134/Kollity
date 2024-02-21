@@ -39,6 +39,6 @@ public class PhysicalImageAccessor : PhysicalBaseFileAccessor, IImageAccessor
 
     public Task<bool> DeleteImage(string path)
     {
-        return DeleteFile(path);
+        return Delete(path);
     }
 }

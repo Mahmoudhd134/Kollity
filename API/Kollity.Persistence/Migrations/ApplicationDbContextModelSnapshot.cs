@@ -43,6 +43,10 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("doctor_id");
 
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("last_update_date");
+
                     b.Property<int>("Mode")
                         .HasColumnType("int")
                         .HasColumnName("mode");
@@ -113,6 +117,42 @@ namespace Kollity.Persistence.Migrations
                     b.ToTable("AssignmentAnswer", (string)null);
                 });
 
+            modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AssignmentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("assignment_id");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(511)
+                        .HasColumnType("nvarchar(511)")
+                        .HasColumnName("file_path");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(511)
+                        .HasColumnType("nvarchar(511)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("UploadDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("upload_date");
+
+                    b.HasKey("Id")
+                        .HasName("pk_assignment_file");
+
+                    b.HasIndex("AssignmentId")
+                        .HasDatabaseName("ix_assignment_file_assignment_id");
+
+                    b.ToTable("AssignmentFile", (string)null);
+                });
+
             modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentGroupModels.AssignmentGroup", b =>
                 {
                     b.Property<Guid>("Id")
@@ -174,32 +214,6 @@ namespace Kollity.Persistence.Migrations
                         .HasDatabaseName("ix_assignment_group_student_student_id_assignment_group_id");
 
                     b.ToTable("AssignmentGroupStudent", (string)null);
-                });
-
-            modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("AssignmentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("assignment_id");
-
-                    b.Property<string>("Image")
-                        .IsRequired()
-                        .HasMaxLength(511)
-                        .HasColumnType("nvarchar(511)")
-                        .HasColumnName("image");
-
-                    b.HasKey("Id")
-                        .HasName("pk_assignment_image");
-
-                    b.HasIndex("AssignmentId")
-                        .HasDatabaseName("ix_assignment_image_assignment_id");
-
-                    b.ToTable("AssignmentImage", (string)null);
                 });
 
             modelBuilder.Entity("Kollity.Domain.CourseModels.Course", b =>
@@ -652,6 +666,14 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+                    b.Property<byte>("AssignmentGroupMaxLength")
+                        .HasColumnType("tinyint")
+                        .HasColumnName("assignment_group_max_length");
+
+                    b.Property<bool>("AssignmentGroupOperationsEnabled")
+                        .HasColumnType("bit")
+                        .HasColumnName("assignment_group_operations_enabled");
+
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("course_id");
@@ -665,7 +687,6 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnName("ensure_join_request");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(511)
                         .HasColumnType("nvarchar(511)")
                         .HasColumnName("image");
@@ -1080,6 +1101,18 @@ namespace Kollity.Persistence.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentFile", b =>
+                {
+                    b.HasOne("Kollity.Domain.AssignmentModels.Assignment", "Assignment")
+                        .WithMany("AssignmentFiles")
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_assignment_file_assigment_assignment_id");
+
+                    b.Navigation("Assignment");
+                });
+
             modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentGroupModels.AssignmentGroup", b =>
                 {
                     b.HasOne("Kollity.Domain.RoomModels.Room", "Room")
@@ -1111,18 +1144,6 @@ namespace Kollity.Persistence.Migrations
                     b.Navigation("AssignmentGroup");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Kollity.Domain.AssignmentModels.AssignmentImage", b =>
-                {
-                    b.HasOne("Kollity.Domain.AssignmentModels.Assignment", "Assignment")
-                        .WithMany("AssignmentImages")
-                        .HasForeignKey("AssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_assignment_image_assigment_assignment_id");
-
-                    b.Navigation("Assignment");
                 });
 
             modelBuilder.Entity("Kollity.Domain.CourseModels.Course", b =>
@@ -1404,7 +1425,7 @@ namespace Kollity.Persistence.Migrations
 
             modelBuilder.Entity("Kollity.Domain.AssignmentModels.Assignment", b =>
                 {
-                    b.Navigation("AssignmentImages");
+                    b.Navigation("AssignmentFiles");
 
                     b.Navigation("AssignmentsAnswers");
                 });

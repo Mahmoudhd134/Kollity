@@ -37,7 +37,7 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     public DbSet<CourseAssistant> CourseAssistants { get; set; }
     public DbSet<StudentCourse> StudentCourses { get; set; }
     public DbSet<Assignment> Assignments { get; set; }
-    public DbSet<AssignmentImage> AssignmentImages { get; set; }
+    public DbSet<AssignmentFile> AssignmentFiles { get; set; }
     public DbSet<AssignmentAnswer> AssignmentAnswers { get; set; }
     public DbSet<AssignmentGroup> AssignmentGroups { get; set; }
     public DbSet<AssignmentGroupStudent> AssignmentGroupStudents { get; set; }

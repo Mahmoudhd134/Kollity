@@ -27,10 +27,16 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
         var userId = _userAccessor.GetCurrentUserId();
         var ids = request.AddAssignmentGroupDto.Ids.Append(userId).ToList();
 
-        var roomExists = await _context.Rooms
-            .AnyAsync(x => x.Id == roomId, cancellationToken);
-        if (roomExists == false)
+        var room = await _context.Rooms
+            .FirstOrDefaultAsync(x => x.Id == roomId, cancellationToken);
+        if (room is null)
             return RoomErrors.NotFound(roomId);
+
+        if (room.AssignmentGroupOperationsEnabled == false)
+            return AssignmentErrors.OperationIsOff;
+
+        if (ids.Count > room.AssignmentGroupMaxLength)
+            return AssignmentErrors.MaxLengthExceeds(room.AssignmentGroupMaxLength);
 
         //check if all students are in the room 
         var usersInRoom = await _context.UserRooms

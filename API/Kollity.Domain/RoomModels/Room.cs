@@ -10,12 +10,14 @@ public class Room
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Image { get; set; } = "default.png";
+    public string Image { get; set; }
     public Guid CourseId { get; set; }
     public Course Course { get; set; }
     public Guid? DoctorId { get; set; }
     public Doctor Doctor { get; set; }
     public bool EnsureJoinRequest { get; set; }
+    public byte AssignmentGroupMaxLength { get; set; }
+    public bool AssignmentGroupOperationsEnabled { get; set; }
 
     public List<RoomMessage> RoomMessages { get; set; } = [];
 

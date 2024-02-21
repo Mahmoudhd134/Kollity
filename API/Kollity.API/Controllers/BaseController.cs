@@ -1,7 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System.Globalization;
+using System.Security.Claims;
 using Kollity.API.Extensions;
 using Kollity.API.Helpers;
 using Kollity.Application.Abstractions.Messages;
+using Kollity.Application.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,5 +45,15 @@ public class BaseController : ControllerBase
     protected async Task<IResult> Send<T>(ICommand<T> command)
     {
         return (await Sender.Send(command)).ToIResult();
+    }
+
+    protected async Task CopyFileToResponse(FileStreamDto fileStreamDto)
+    {
+        Response.Headers.Append("Content-Disposition",
+            "attachment; filename=" + fileStreamDto.Name + fileStreamDto.Extension);
+        Response.Headers.Append("Content-Type", "application/octet-stream");
+        Response.Headers.Append("Content-Length", fileStreamDto.Size.ToString(CultureInfo.InvariantCulture));
+        await fileStreamDto.Stream.CopyToAsync(Response.Body);
+        fileStreamDto.Stream.Close();
     }
 }

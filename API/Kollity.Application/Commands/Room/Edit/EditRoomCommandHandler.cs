@@ -30,6 +30,6 @@ public class EditRoomCommandHandler : ICommandHandler<EditRoomCommand>
 
         var result = await _context.SaveChangesAsync(cancellationToken);
 
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        return Result.Success();
     }
 }

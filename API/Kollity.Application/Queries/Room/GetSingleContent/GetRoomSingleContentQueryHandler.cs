@@ -1,13 +1,12 @@
-﻿using Kollity.Application.Abstractions;
-using Kollity.Application.Abstractions.Files;
-using Kollity.Application.Dtos.Room;
+﻿using Kollity.Application.Abstractions.Files;
+using Kollity.Application.Dtos;
 using Kollity.Domain.RoomModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Room.GetSingleContent;
 
-public class GetRoomSingleContentQueryHandler : IQueryHandler<GetRoomSingleContentQuery, RoomContentFileDto>
+public class GetRoomSingleContentQueryHandler : IQueryHandler<GetRoomSingleContentQuery, FileStreamDto>
 {
     private readonly IFileAccessor _fileAccessor;
     private readonly ApplicationDbContext _context;
@@ -21,7 +20,7 @@ public class GetRoomSingleContentQueryHandler : IQueryHandler<GetRoomSingleConte
         _webHostEnvironment = webHostEnvironment;
     }
 
-    public async Task<Result<RoomContentFileDto>> Handle(GetRoomSingleContentQuery request,
+    public async Task<Result<FileStreamDto>> Handle(GetRoomSingleContentQuery request,
         CancellationToken cancellationToken)
     {
         var id = request.ContentId;
@@ -39,7 +38,7 @@ public class GetRoomSingleContentQueryHandler : IQueryHandler<GetRoomSingleConte
             return RoomErrors.ContentIdNotFound(id);
 
         var file = await _fileAccessor.GetStream(Path.Combine(_webHostEnvironment.WebRootPath, content.FilePath));
-        return new RoomContentFileDto()
+        return new FileStreamDto()
         {
             Name = content.Name,
             Size = file.Size,

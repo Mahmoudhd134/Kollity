@@ -1,5 +1,5 @@
-﻿using Kollity.Application.Dtos.Room;
+﻿using Kollity.Application.Dtos;
 
 namespace Kollity.Application.Queries.Room.GetSingleContent;
 
-public record GetRoomSingleContentQuery(Guid ContentId) : IQuery<RoomContentFileDto>;
+public record GetRoomSingleContentQuery(Guid ContentId) : IQuery<FileStreamDto>;

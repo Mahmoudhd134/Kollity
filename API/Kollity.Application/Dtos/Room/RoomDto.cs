@@ -6,6 +6,8 @@ public class RoomDto
     public string Name { get; set; }
     public string Image { get; set; }
     public bool EnsureJoinRequest { get; set; }
+    public byte AssignmentGroupMaxLength { get; set; }
+    public bool AssignmentGroupOperationsEnabled { get; set; }
     public CourseForRoomDto Course { get; set; }
     public DoctorForRoomDto Doctor { get; set; }
     public UserRoomState? UserState { get; set; }

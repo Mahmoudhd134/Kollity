@@ -7,6 +7,7 @@ public interface IFileAccessor
 {
     Task<string> UploadFile(Stream file, string extension);
     Task<string> UploadFile(IFormFile file);
-    Task<bool> DeleteFile(string path);
+    Task<bool> Delete(string path);
+    Task<bool> Delete(List<string> paths);
     Task<FileStreamDto> GetStream(string path);
 }
