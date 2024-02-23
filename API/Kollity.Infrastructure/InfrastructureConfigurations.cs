@@ -10,7 +10,7 @@ public static class InfrastructureConfigurations
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-        services.AddScoped<IImageAccessor, PhysicalImageAccessor>();
+        services.AddScoped<IProfileImageAccessor, PhysicalProfileImageAccessor>();
         services.AddScoped<IFileAccessor, PhysicalFileAccessor>();
         services.AddScoped<IEmailService, EmailService>();
 

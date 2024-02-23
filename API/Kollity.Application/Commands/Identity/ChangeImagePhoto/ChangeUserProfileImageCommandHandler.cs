@@ -9,15 +9,15 @@ namespace Kollity.Application.Commands.Identity.ChangeImagePhoto;
 public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserProfileImageCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IImageAccessor _imageAccessor;
+    private readonly IProfileImageAccessor _profileImageAccessor;
     private readonly IUserAccessor _userAccessor;
 
     public ChangeUserProfileImageCommandHandler(ApplicationDbContext context,
-        IImageAccessor imageAccessor,
+        IProfileImageAccessor profileImageAccessor,
         IUserAccessor userAccessor)
     {
         _context = context;
-        _imageAccessor = imageAccessor;
+        _profileImageAccessor = profileImageAccessor;
         _userAccessor = userAccessor;
     }
 
@@ -41,9 +41,9 @@ public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserPr
             return UserErrors.IdNotFound(id);
         }
 
-        if (string.IsNullOrWhiteSpace(oldImage) == false) await _imageAccessor.DeleteImage(oldImage);
+        if (string.IsNullOrWhiteSpace(oldImage) == false) await _profileImageAccessor.DeleteImage(oldImage);
 
-        var path = await _imageAccessor.UploadImage(newImage, extension);
+        var path = await _profileImageAccessor.UploadImage(newImage, extension);
         var result = await _context.Users
             .Where(x => x.Id == id)
             .ExecuteUpdateAsync(calls => calls

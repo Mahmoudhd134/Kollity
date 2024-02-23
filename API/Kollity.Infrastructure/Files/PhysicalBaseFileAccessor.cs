@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Kollity.Application.Abstractions.Files;
+using Microsoft.AspNetCore.Http;
 
 namespace Kollity.Infrastructure.Files;
 
 public abstract class PhysicalBaseFileAccessor
 {
-    private readonly string _fullPath;
-    private readonly string _relativePath;
+    private string _fullPath;
+    private string _relativePath;
     private readonly string _rootPath;
 
     protected PhysicalBaseFileAccessor(string rootPath, string relativePath)
@@ -13,6 +14,12 @@ public abstract class PhysicalBaseFileAccessor
         _rootPath = rootPath;
         _relativePath = relativePath;
         _fullPath = Path.Combine(rootPath, relativePath);
+    }
+
+    protected void UpdateFullPath(Category category)
+    {
+        _relativePath = Path.Combine(_relativePath, category.ToString());
+        _fullPath = Path.Combine(_rootPath, _relativePath);
     }
 
     public virtual async Task<string> UploadFile(Stream file, string extension)

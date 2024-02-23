@@ -2,7 +2,7 @@
 
 namespace Kollity.Application.Abstractions.Files;
 
-public interface IImageAccessor
+public interface IProfileImageAccessor
 {
     Task<string> UploadImage(IFormFile image);
     Task<string> UploadImage(Stream image, string extension);

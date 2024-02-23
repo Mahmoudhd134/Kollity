@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace Kollity.Infrastructure.Files;
 
-public class PhysicalImageAccessor : PhysicalBaseFileAccessor, IImageAccessor
+public class PhysicalProfileImageAccessor : PhysicalBaseFileAccessor, IProfileImageAccessor
 {
-    public PhysicalImageAccessor(IWebHostEnvironment webHostEnvironment) : base(
-        webHostEnvironment.WebRootPath, Path.Combine("files", "images"))
+    public PhysicalProfileImageAccessor(IWebHostEnvironment webHostEnvironment) : base(
+        webHostEnvironment.WebRootPath, Path.Combine("files", "profile-images"))
     {
     }
 

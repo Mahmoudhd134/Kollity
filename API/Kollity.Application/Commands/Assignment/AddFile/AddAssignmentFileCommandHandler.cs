@@ -38,7 +38,7 @@ public class AddAssignmentFileCommandHandler : ICommandHandler<AddAssignmentFile
         if (assignmentDoctorId != userId)
             return AssignmentErrors.UnAuthorizedAddFile;
 
-        var path = await _fileAccessor.UploadFile(file);
+        var path = await _fileAccessor.UploadFile(file, Category.AssignmentFile);
         _context.AssignmentFiles.Add(new AssignmentFile
         {
             AssignmentId = assignmentId,

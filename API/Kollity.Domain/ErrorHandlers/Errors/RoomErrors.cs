@@ -32,7 +32,7 @@ public static class RoomErrors
         "You can not add content to a room you are not in a supervisor position");
 
     public static readonly Error UnAuthorizeDeleteContent = Error.Validation("Room.UnAuthorizedDeleteContent",
-        "You can not delete content to a room you are not in a supervisor position");
+        "You can not delete content from a room you are not in a supervisor position");
 
     public static Error NotFound(Guid roomId)
     {

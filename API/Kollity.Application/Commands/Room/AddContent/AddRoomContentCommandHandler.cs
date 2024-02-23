@@ -34,7 +34,7 @@ public class AddRoomContentCommandHandler : ICommandHandler<AddRoomContentComman
         if (isSupervisor == false)
             return RoomErrors.UnAuthorizeAddContent;
 
-        var path = await _fileAccessor.UploadFile(request.AddRoomContentDto.File);
+        var path = await _fileAccessor.UploadFile(request.AddRoomContentDto.File, Category.RoomContent);
         var content = new RoomContent
         {
             Name = request.AddRoomContentDto.Name,
