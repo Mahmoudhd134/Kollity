@@ -1,5 +1,4 @@
 ﻿using Kollity.Domain.DoctorModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,7 +21,7 @@ public class DoctorConfig : IEntityTypeConfiguration<Doctor>
                 SecurityStamp = "6TPMB3KY7R4NAIGXTMKLOWGRE2HQOOBY",
                 ConcurrencyStamp = "a443bf96-da75-4046-8452-7d64553b4533",
                 LockoutEnabled = true,
-                AccessFailedCount = 0,
+                AccessFailedCount = 0
             }
         ]);
     }

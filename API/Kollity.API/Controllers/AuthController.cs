@@ -2,8 +2,8 @@
 using Kollity.API.Dtos.Auth;
 using Kollity.API.Extensions;
 using Kollity.API.Helpers;
-using Kollity.Domain.ErrorHandlers;
-using Kollity.Domain.Identity.User;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -70,7 +70,7 @@ public class AuthController : BaseController
 
     private TokenDto ToTokenDto(TokenDto tokenDto)
     {
-        return new TokenDto()
+        return new TokenDto
         {
             Token = tokenDto.Token,
             Expiry = tokenDto.Expiry,

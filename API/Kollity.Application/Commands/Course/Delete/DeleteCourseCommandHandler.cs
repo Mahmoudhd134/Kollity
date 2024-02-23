@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Course.Delete;
 

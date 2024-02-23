@@ -4,8 +4,6 @@ using Kollity.API.Hubs;
 using Kollity.Application;
 using Kollity.Infrastructure;
 using Kollity.Persistence;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 

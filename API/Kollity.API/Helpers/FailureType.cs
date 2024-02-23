@@ -1,4 +1,4 @@
-﻿using Kollity.Domain.ErrorHandlers;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
 
 namespace Kollity.API.Helpers;
 

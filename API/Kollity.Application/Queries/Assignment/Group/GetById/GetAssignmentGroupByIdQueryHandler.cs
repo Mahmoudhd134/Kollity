@@ -1,6 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Application.Dtos.Assignment;
 using Kollity.Application.Dtos.Assignment.Group;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Assignment.Group.GetById;
@@ -24,7 +24,7 @@ public class GetAssignmentGroupByIdQueryHandler : IQueryHandler<GetAssignmentGro
 
         var group = await _context.AssignmentGroups
             .Where(x => x.Id == groupId)
-            .Select(x => new AssignmentGroupDto()
+            .Select(x => new AssignmentGroupDto
             {
                 Id = x.Id,
                 Code = x.Code,

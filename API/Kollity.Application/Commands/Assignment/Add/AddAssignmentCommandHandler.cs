@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Domain.AssignmentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Add;
@@ -38,7 +39,7 @@ public class AddAssignmentCommandHandler : ICommandHandler<AddAssignmentCommand>
             return AssignmentErrors.UnAuthorizedAdd;
 
 
-        var assignment = new Domain.AssignmentModels.Assignment()
+        var assignment = new Domain.AssignmentModels.Assignment
         {
             RoomId = roomId,
             DoctorId = userId,

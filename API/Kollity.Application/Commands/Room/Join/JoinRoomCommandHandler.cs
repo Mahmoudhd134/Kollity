@@ -1,4 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.RoomModels;
 using Microsoft.EntityFrameworkCore;
 

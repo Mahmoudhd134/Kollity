@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Domain.AssignmentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Group.Leave;
@@ -19,7 +20,7 @@ public class LeaveAssignmentGroupCommandHandler : ICommandHandler<LeaveAssignmen
     {
         Guid userId = _userAccessor.GetCurrentUserId(),
             groupId = request.GroupId;
-        
+
         var roomOperationsState = await _context.Rooms
             .Where(x => x.AssignmentGroups.Any(xx => xx.Id == groupId))
             .Select(x => x.AssignmentGroupOperationsEnabled)

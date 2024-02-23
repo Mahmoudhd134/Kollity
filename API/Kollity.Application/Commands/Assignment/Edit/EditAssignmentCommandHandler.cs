@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Domain.AssignmentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Edit;
@@ -7,8 +8,8 @@ namespace Kollity.Application.Commands.Assignment.Edit;
 public class EditAssignmentCommandHandler : ICommandHandler<EditAssignmentCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUserAccessor _userAccessor;
     private readonly IMapper _mapper;
+    private readonly IUserAccessor _userAccessor;
 
     public EditAssignmentCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor, IMapper mapper)
     {

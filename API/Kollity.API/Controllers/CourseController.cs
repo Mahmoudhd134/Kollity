@@ -86,7 +86,7 @@ public class CourseController : BaseController
     [Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> DeleteAssistant(Guid courseId, Guid assistantId)
     {
-        return Send(new DeleteAssistantFromCourseCommand(new CourseDoctorIdsMap()
+        return Send(new DeleteAssistantFromCourseCommand(new CourseDoctorIdsMap
         {
             CourseId = courseId,
             DoctorId = assistantId
@@ -97,7 +97,7 @@ public class CourseController : BaseController
     [Authorize(Roles = $"{Role.Admin}")]
     public Task<IResult> DeAssignStudent(Guid courseId, Guid studentId)
     {
-        return Send(new DeAssignStudentFromCourseCommand(new CourseStudentIdsMap()
+        return Send(new DeAssignStudentFromCourseCommand(new CourseStudentIdsMap
         {
             CourseId = courseId,
             StudentId = studentId

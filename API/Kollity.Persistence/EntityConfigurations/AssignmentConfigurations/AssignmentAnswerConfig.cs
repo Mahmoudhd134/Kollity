@@ -22,7 +22,7 @@ public class AssignmentAnswerConfig : IEntityTypeConfiguration<AssignmentAnswer>
             .WithMany(x => x.AssignmentsAnswers)
             .HasForeignKey(x => x.StudentId)
             .OnDelete(DeleteBehavior.Cascade);
-            // .IsRequired(false);
+        // .IsRequired(false);
 
         builder
             .HasOne(x => x.AssignmentGroup)

@@ -1,6 +1,6 @@
-﻿using Kollity.Domain.ErrorHandlers;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
 
-namespace Kollity.Domain.DoctorModels;
+namespace Kollity.Domain.ErrorHandlers.Errors;
 
 public static class DoctorErrors
 {

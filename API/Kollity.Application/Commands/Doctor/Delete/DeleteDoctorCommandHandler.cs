@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Extensions;
-using Kollity.Domain.DoctorModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

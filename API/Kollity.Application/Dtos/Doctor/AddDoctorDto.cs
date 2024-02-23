@@ -8,6 +8,5 @@ public class AddDoctorDto
     [Required] public string Password { get; set; }
     [Required] public string FullNameInArabic { get; set; }
 
-    [Required]
-    public string Role { get; set; }
+    [Required] public string Role { get; set; }
 }

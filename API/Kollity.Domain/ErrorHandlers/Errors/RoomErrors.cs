@@ -1,6 +1,6 @@
-﻿using Kollity.Domain.ErrorHandlers;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
 
-namespace Kollity.Domain.RoomModels;
+namespace Kollity.Domain.ErrorHandlers.Errors;
 
 public static class RoomErrors
 {
@@ -30,16 +30,34 @@ public static class RoomErrors
 
     public static readonly Error UnAuthorizeAddContent = Error.Validation("Room.UnAuthorizedAddContent",
         "You can not add content to a room you are not in a supervisor position");
-    
+
     public static readonly Error UnAuthorizeDeleteContent = Error.Validation("Room.UnAuthorizedDeleteContent",
         "You can not delete content to a room you are not in a supervisor position");
 
-    public static Error NotFound(Guid roomId) => Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");
-    public static Error NotFound(string roomName) => Error.NotFound("Room.NotFound", $"The name '{roomName}' is wrong.");
-    public static Error ContentIdNotFound(Guid contentId) => Error.NotFound("RoomContent.WrongId", $"The id '{contentId}' is wrong.");
+    public static Error NotFound(Guid roomId)
+    {
+        return Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");
+    }
 
-    public static Error UserIsNotJoined(string userName) => Error.Validation("Room.UserIdNotJoined",
-        $"There are no user with user name '{userName} in this room.");
-    public static Error UserIsNotJoined(Guid userId) => Error.Validation("Room.UserIdNotJoined",
-        $"There are no user with id '{userId} in this room.");
+    public static Error NotFound(string roomName)
+    {
+        return Error.NotFound("Room.NotFound", $"The name '{roomName}' is wrong.");
+    }
+
+    public static Error ContentIdNotFound(Guid contentId)
+    {
+        return Error.NotFound("RoomContent.WrongId", $"The id '{contentId}' is wrong.");
+    }
+
+    public static Error UserIsNotJoined(string userName)
+    {
+        return Error.Validation("Room.UserIdNotJoined",
+            $"There are no user with user name '{userName} in this room.");
+    }
+
+    public static Error UserIsNotJoined(Guid userId)
+    {
+        return Error.Validation("Room.UserIdNotJoined",
+            $"There are no user with id '{userId} in this room.");
+    }
 }

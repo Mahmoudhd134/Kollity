@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Domain.CourseModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.Identity.User;
 using Kollity.Domain.RoomModels;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +48,7 @@ public class AddRoomCommandHandler : ICommandHandler<AddRoomCommand>
             DoctorId = id,
             EnsureJoinRequest = false,
             AssignmentGroupOperationsEnabled = true,
-            AssignmentGroupMaxLength = 10,
+            AssignmentGroupMaxLength = 10
         };
         room.UsersRooms.Add(new UserRoom
         {

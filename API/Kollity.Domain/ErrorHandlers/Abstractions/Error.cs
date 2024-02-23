@@ -1,4 +1,4 @@
-namespace Kollity.Domain.ErrorHandlers;
+namespace Kollity.Domain.ErrorHandlers.Abstractions;
 
 public record Error
 {

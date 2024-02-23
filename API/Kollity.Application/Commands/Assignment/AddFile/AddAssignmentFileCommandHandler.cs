@@ -1,6 +1,8 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
 using Kollity.Domain.AssignmentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.AddFile;
@@ -8,8 +10,8 @@ namespace Kollity.Application.Commands.Assignment.AddFile;
 public class AddAssignmentFileCommandHandler : ICommandHandler<AddAssignmentFileCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUserAccessor _userAccessor;
     private readonly IFileAccessor _fileAccessor;
+    private readonly IUserAccessor _userAccessor;
 
     public AddAssignmentFileCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor,
         IFileAccessor fileAccessor)
@@ -55,7 +57,7 @@ public class AddAssignmentFileCommandHandler : ICommandHandler<AddAssignmentFile
                 c.SetProperty(x => x.LastUpdateDate, DateTime.UtcNow), cancellationToken);
         if (result == 0)
             return Error.UnKnown;
-        
+
         return Result.Success();
     }
 }

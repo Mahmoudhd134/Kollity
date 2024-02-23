@@ -1,5 +1,5 @@
 ﻿using Kollity.API.Extensions;
-using Kollity.Domain.ErrorHandlers;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 

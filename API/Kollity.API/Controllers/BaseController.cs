@@ -20,9 +20,9 @@ namespace Kollity.API.Controllers;
 [SwaggerResponse(500, type: typeof(FailureType))]
 public class BaseController : ControllerBase
 {
+    protected const long MaxFileSize = 1L * 1024L * 1024L * 1024L;
     private ISender _sender;
     protected ISender Sender => _sender ??= HttpContext.RequestServices.GetRequiredService<ISender>();
-    protected const long MaxFileSize = 1L * 1024L * 1024L * 1024L;
     protected string Username => User?.Claims?.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value;
     protected string Id => User?.Claims?.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Sid))?.Value;
     protected string UserAgent => HttpContext.Request.Headers.UserAgent;

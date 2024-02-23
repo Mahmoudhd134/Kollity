@@ -1,10 +1,8 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Application.Dtos.Assignment;
 using Kollity.Application.Dtos.Assignment.Group;
-using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
-using Kollity.Domain.Identity.User;
-using Kollity.Domain.RoomModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Group.AddGroup;
@@ -78,7 +76,7 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
 
         //add the group with students
 
-        var group = new AssignmentGroup()
+        var group = new AssignmentGroup
         {
             RoomId = roomId,
             AssignmentGroupsStudents = ids.Select(x => new AssignmentGroupStudent
@@ -94,7 +92,7 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
             return Error.UnKnown;
         var members = await _context.Students
             .Where(x => ids.Contains(x.Id))
-            .Select(x => new AssignmentGroupMemberDto()
+            .Select(x => new AssignmentGroupMemberDto
             {
                 Id = x.Id,
                 UserName = x.UserName,
@@ -104,7 +102,7 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
             .ToListAsync(cancellationToken);
         members.ForEach(x => x.IsJoined = x.Id == userId);
 
-        return new AssignmentGroupDto()
+        return new AssignmentGroupDto
         {
             Id = group.Id,
             Code = group.Code,

@@ -20,33 +20,38 @@ namespace Kollity.API.Controllers;
 [Route("api/room/{roomId:guid}/assignment-group")]
 public class AssignmentGroupController : BaseController
 {
-    [HttpGet, Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
-     SwaggerResponse(200, type: typeof(List<AssignmentGroupForListDto>))]
+    [HttpGet]
+    [Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}")]
+    [SwaggerResponse(200, type: typeof(List<AssignmentGroupForListDto>))]
     public Task<IResult> GetAll(Guid roomId)
     {
         return Send(new GetAllAssignmentGroupsForRoomQuery(roomId));
     }
 
-    [HttpGet("my-group"), SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
+    [HttpGet("my-group")]
+    [SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
     public Task<IResult> Get(Guid roomId)
     {
         return Send(new GetUserAssignmentGroupQuery(roomId));
     }
 
-    [HttpGet("{groupId:guid}"), Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
-     SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
+    [HttpGet("{groupId:guid}")]
+    [Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}")]
+    [SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
     public Task<IResult> Get(Guid roomId, Guid groupId)
     {
         return Send(new GetAssignmentGroupByIdQuery(groupId));
     }
 
-    [HttpGet("invitations"), SwaggerResponse(200, type: typeof(List<AssignmentGroupInvitationDto>))]
+    [HttpGet("invitations")]
+    [SwaggerResponse(200, type: typeof(List<AssignmentGroupInvitationDto>))]
     public Task<IResult> GetInvitations(Guid roomId)
     {
         return Send(new GetAssignmentGroupsInvitationsQuery(roomId));
     }
 
-    [HttpPost, SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
+    [HttpPost]
+    [SwaggerResponse(200, type: typeof(AssignmentGroupDto))]
     public Task<IResult> Add(Guid roomId, [FromBody] AddAssignmentGroupDto dto)
     {
         return Send(new AddAssignmentGroupCommand(roomId, dto));

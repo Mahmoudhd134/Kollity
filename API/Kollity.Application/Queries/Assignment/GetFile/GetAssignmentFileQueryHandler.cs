@@ -1,8 +1,7 @@
 ﻿using Kollity.Application.Abstractions.Files;
 using Kollity.Application.Dtos;
-using Kollity.Application.Dtos.Assignment;
-using Kollity.Domain.AssignmentModels;
-using Kollity.Domain.RoomModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +30,7 @@ public class GetAssignmentFileQueryHandler : IQueryHandler<GetAssignmentFileQuer
                 new
                 {
                     x.FilePath,
-                    x.Name,
+                    x.Name
                 })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -39,7 +38,7 @@ public class GetAssignmentFileQueryHandler : IQueryHandler<GetAssignmentFileQuer
             return AssignmentErrors.FileNotFound(id);
 
         var file = await _fileAccessor.GetStream(Path.Combine(_webHostEnvironment.WebRootPath, fileDto.FilePath));
-        return new FileStreamDto()
+        return new FileStreamDto
         {
             Name = fileDto.Name,
             Size = file.Size,

@@ -1,6 +1,7 @@
 ﻿using Kollity.Application.Dtos.Course;
 using Kollity.Application.Dtos.Doctor;
-using Kollity.Domain.DoctorModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

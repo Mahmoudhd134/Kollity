@@ -1,6 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
-using Kollity.Domain.AssignmentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.DeleteFile;
@@ -8,8 +9,8 @@ namespace Kollity.Application.Commands.Assignment.DeleteFile;
 public class DeleteAssignmentFileCommandHandler : ICommandHandler<DeleteAssignmentFileCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUserAccessor _userAccessor;
     private readonly IFileAccessor _fileAccessor;
+    private readonly IUserAccessor _userAccessor;
 
     public DeleteAssignmentFileCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor,
         IFileAccessor fileAccessor)

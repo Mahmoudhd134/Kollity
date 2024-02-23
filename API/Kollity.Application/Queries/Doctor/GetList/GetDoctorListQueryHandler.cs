@@ -1,6 +1,7 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Dtos.Doctor;
-using Kollity.Domain.Identity.Role;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Doctor.GetList;

@@ -1,4 +1,5 @@
-﻿using Kollity.Domain.CourseModels;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Course.DeleteAssistant;

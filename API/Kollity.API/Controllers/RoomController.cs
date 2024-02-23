@@ -74,7 +74,7 @@ public class RoomController : BaseController
     [HttpDelete("{roomId:guid}/deny-join-request/{userId:guid}")]
     public Task<IResult> DenyJoinRequest(Guid roomId, Guid userId)
     {
-        return Send(new DenyRoomJoinRequestCommand(new RoomUserIdsMap()
+        return Send(new DenyRoomJoinRequestCommand(new RoomUserIdsMap
         {
             RoomId = roomId,
             UserId = userId
@@ -91,7 +91,7 @@ public class RoomController : BaseController
     [HttpDelete("{roomId:guid}/delete-supervisor/{supervisorId:guid}")]
     public Task<IResult> DeleteSupervisor(Guid roomId, Guid supervisorId)
     {
-        return Send(new DeleteRoomSupervisorCommand(new RoomUserIdsMap()
+        return Send(new DeleteRoomSupervisorCommand(new RoomUserIdsMap
         {
             RoomId = roomId,
             UserId = supervisorId

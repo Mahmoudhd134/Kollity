@@ -1,6 +1,6 @@
-﻿using Kollity.Domain.ErrorHandlers;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
 
-namespace Kollity.Domain.Identity.Role;
+namespace Kollity.Domain.ErrorHandlers.Errors;
 
 public static class RoleErrors
 {

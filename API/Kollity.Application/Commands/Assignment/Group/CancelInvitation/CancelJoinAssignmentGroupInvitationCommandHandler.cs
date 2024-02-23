@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Domain.AssignmentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Group.CancelInvitation;
@@ -22,7 +23,7 @@ public class
         Guid userId = _userAccessor.GetCurrentUserId(),
             groupId = request.InvitationDto.GroupId,
             studentId = request.InvitationDto.StudentId;
-        
+
         //check user is in the group
         var isJoined = await _context.AssignmentGroupStudents
             .AnyAsync(x => x.StudentId == userId && x.AssignmentGroupId == groupId && x.JoinRequestAccepted,
@@ -33,7 +34,7 @@ public class
         await _context.AssignmentGroupStudents
             .Where(x => x.StudentId == studentId && x.AssignmentGroupId == groupId && x.JoinRequestAccepted == false)
             .ExecuteDeleteAsync(cancellationToken);
-        
+
         return Result.Success();
     }
 }

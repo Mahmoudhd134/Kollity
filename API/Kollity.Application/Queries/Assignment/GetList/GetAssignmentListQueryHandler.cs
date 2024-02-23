@@ -1,5 +1,6 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Dtos.Assignment;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Assignment.GetList;

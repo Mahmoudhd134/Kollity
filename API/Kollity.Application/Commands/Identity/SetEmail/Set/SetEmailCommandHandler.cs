@@ -1,6 +1,8 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Dtos.Email;
 using Kollity.Application.Extensions;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.Identity.User;
 using Microsoft.AspNetCore.Identity;
 

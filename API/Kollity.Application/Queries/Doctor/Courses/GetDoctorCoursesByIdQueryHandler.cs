@@ -1,8 +1,6 @@
 ﻿using AutoMapper.QueryableExtensions;
-using Kollity.Application.Abstractions;
 using Kollity.Application.Dtos.Course;
-using Kollity.Domain.Identity.Role;
-using Microsoft.AspNetCore.Identity;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Doctor.Courses;

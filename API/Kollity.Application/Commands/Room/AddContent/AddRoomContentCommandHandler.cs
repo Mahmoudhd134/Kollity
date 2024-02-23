@@ -1,5 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.RoomModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +10,8 @@ namespace Kollity.Application.Commands.Room.AddContent;
 public class AddRoomContentCommandHandler : ICommandHandler<AddRoomContentCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUserAccessor _userAccessor;
     private readonly IFileAccessor _fileAccessor;
+    private readonly IUserAccessor _userAccessor;
 
     public AddRoomContentCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor,
         IFileAccessor fileAccessor)

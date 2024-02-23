@@ -1,5 +1,5 @@
-﻿using Kollity.Application.Dtos.Assignment;
-using Kollity.Application.Dtos.Assignment.Group;
+﻿using Kollity.Application.Dtos.Assignment.Group;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Assignment.Group.GetAll;

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Kollity.Domain.AssignmentModels;
+﻿using Kollity.Domain.AssignmentModels;
 
 namespace Kollity.Application.Dtos.Assignment;
 

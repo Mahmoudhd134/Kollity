@@ -1,7 +1,8 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Abstractions;
 using Kollity.Application.Dtos.Room;
-using Kollity.Domain.RoomModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Room.GetById;

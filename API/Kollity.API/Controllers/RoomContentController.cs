@@ -11,7 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Kollity.API.Controllers;
 
-[Route(("api/room/{id:guid}/content"))]
+[Route("api/room/{id:guid}/content")]
 public class RoomContentController : BaseController
 {
     [HttpPost]
@@ -22,13 +22,16 @@ public class RoomContentController : BaseController
         return Send(new AddRoomContentCommand(id, addRoomContentDto));
     }
 
-    [HttpGet, SwaggerResponse(200, type: typeof(List<RoomContentDto>))]
+    [HttpGet]
+    [SwaggerResponse(200, type: typeof(List<RoomContentDto>))]
     public Task<IResult> GetContent(Guid id)
     {
         return Send(new GetRoomContentQuery(id));
     }
 
-    [AllowAnonymous, HttpGet("{contentId:guid}"), SwaggerResponse(200, type: typeof(File))]
+    [AllowAnonymous]
+    [HttpGet("{contentId:guid}")]
+    [SwaggerResponse(200, type: typeof(File))]
     public async Task<ActionResult> GetSingleContent(Guid id, Guid contentId)
     {
         var response = await Sender.Send(new GetRoomSingleContentQuery(contentId));

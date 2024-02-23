@@ -1,6 +1,7 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Dtos.Student;
-using Kollity.Domain.StudentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Student.Profile;

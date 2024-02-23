@@ -1,5 +1,5 @@
 ﻿using Kollity.API.Dtos.Auth;
-using Kollity.Domain.ErrorHandlers;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 
 namespace Kollity.API.Abstractions;
 

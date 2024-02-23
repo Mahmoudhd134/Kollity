@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Azure.Identity;
 using Kollity.API.Abstractions;
 using Kollity.API.Dtos.Auth;
 using Kollity.API.Helpers;
-using Kollity.Domain.ErrorHandlers;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.Identity.User;
 using Kollity.Domain.Identity.UserRefreshToken;
 using Kollity.Persistence.Data;

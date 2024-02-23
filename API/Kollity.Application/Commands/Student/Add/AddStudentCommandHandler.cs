@@ -1,7 +1,7 @@
 ﻿using Kollity.Application.Queries.Identity.IsUserNameUsed;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.Identity.Role;
-using Kollity.Domain.Identity.User;
-using Kollity.Domain.StudentModels;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

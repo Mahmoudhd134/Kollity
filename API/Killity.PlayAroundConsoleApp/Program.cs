@@ -1,6 +1,4 @@
-﻿using Bogus;
-using Kollity.Application;
-using Kollity.Domain.AssignmentModels;
+﻿using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Domain.CourseModels;
 using Kollity.Domain.DoctorModels;
@@ -10,14 +8,13 @@ using Kollity.Domain.StudentModels;
 using Kollity.Infrastructure;
 using Kollity.Persistence;
 using Kollity.Persistence.Data;
-using Kollity.Persistence.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 var connectionString = "server=.;database=MyCollege;trusted_connection=true;encrypt=false;";
-var connectionString2 = "server=sql.bsite.net\\MSSQL2016;database=mahmoudhd1345_;user id=mahmoudhd1345_;password=Freeasphosting;encrypt=false;";
+var connectionString2 =
+    "server=sql.bsite.net\\MSSQL2016;database=mahmoudhd1345_;user id=mahmoudhd1345_;password=Freeasphosting;encrypt=false;";
 IServiceProvider provider = new ServiceCollection()
     .AddPersistenceConfigurations(connectionString2)
     .AddInfrastructureServices()

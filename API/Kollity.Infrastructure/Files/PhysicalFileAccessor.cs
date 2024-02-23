@@ -1,7 +1,6 @@
 ﻿using Kollity.Application.Abstractions.Files;
 using Kollity.Application.Dtos;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 
 namespace Kollity.Infrastructure.Files;
 
@@ -15,10 +14,8 @@ public class PhysicalFileAccessor : PhysicalBaseFileAccessor, IFileAccessor
     public async Task<bool> Delete(List<string> paths)
     {
         foreach (var path in paths)
-        {
             if (await Delete(path) == false)
                 return false;
-        }
 
         return true;
     }
@@ -27,7 +24,7 @@ public class PhysicalFileAccessor : PhysicalBaseFileAccessor, IFileAccessor
     {
         var info = new FileInfo(path);
         var stream = File.OpenRead(path);
-        return Task.FromResult(new FileStreamDto()
+        return Task.FromResult(new FileStreamDto
         {
             Stream = stream,
             Size = info.Length,

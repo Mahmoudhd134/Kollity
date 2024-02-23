@@ -1,7 +1,8 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Abstractions;
 using Kollity.Application.Dtos.Course;
-using Kollity.Domain.CourseModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Queries.Course.GetById;

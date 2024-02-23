@@ -1,5 +1,5 @@
-﻿using Kollity.Domain.CourseModels;
-using Kollity.Domain.DoctorModels;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.Identity.Role;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

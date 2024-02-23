@@ -7,7 +7,7 @@ using Kollity.Application.Commands.Identity.ResetPassword.SendToken;
 using Kollity.Application.Commands.Identity.SetEmail.Confirm;
 using Kollity.Application.Commands.Identity.SetEmail.Set;
 using Kollity.Application.Dtos.Identity;
-using Kollity.Domain.ErrorHandlers;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -18,23 +18,36 @@ namespace Kollity.API.Controllers;
 public class IdentityController : BaseController
 {
     [HttpPatch("change-password")]
-    public Task<IResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto) =>
-        Send(new ChangePasswordCommand(changePasswordDto));
+    public Task<IResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+    {
+        return Send(new ChangePasswordCommand(changePasswordDto));
+    }
 
     [AllowAnonymous]
     [HttpPatch("reset-password-1/{email}")]
-    public Task<IResult> ResetPassword(string email) => Send(new SendResetPasswordTokenToEmailCommand(email));
+    public Task<IResult> ResetPassword(string email)
+    {
+        return Send(new SendResetPasswordTokenToEmailCommand(email));
+    }
 
     [AllowAnonymous]
     [HttpPatch("reset-password-2")]
-    public Task<IResult> ResetPassword2(ResetPasswordDto resetPasswordDto) =>
-        Send(new ResetPasswordCommand(resetPasswordDto));
+    public Task<IResult> ResetPassword2(ResetPasswordDto resetPasswordDto)
+    {
+        return Send(new ResetPasswordCommand(resetPasswordDto));
+    }
 
     [HttpPatch("set-email")]
-    public Task<IResult> SetEmail(string email) => Send(new SetEmailCommand(email));
+    public Task<IResult> SetEmail(string email)
+    {
+        return Send(new SetEmailCommand(email));
+    }
 
     [HttpPatch("confirm-email")]
-    public Task<IResult> ConfirmEmail(string token) => Send(new ConfirmEmailCommand(token));
+    public Task<IResult> ConfirmEmail(string token)
+    {
+        return Send(new ConfirmEmailCommand(token));
+    }
 
     [HttpPatch("change-profile-image")]
     [RequestSizeLimit(MaxFileSize)]
@@ -71,10 +84,7 @@ public class IdentityController : BaseController
             return Result.Failure(Error.Validation("Image", "Image Must Be a File.")).ToIResult();
 
         var fileName = contentDisposition.FileNameStar.ToString();
-        if (string.IsNullOrEmpty(fileName))
-        {
-            fileName = contentDisposition.FileName.ToString();
-        }
+        if (string.IsNullOrEmpty(fileName)) fileName = contentDisposition.FileName.ToString();
 
         if (string.IsNullOrEmpty(fileName))
             return Result.Failure(Error.Validation("UploadFile", "No filename defined.")).ToIResult();

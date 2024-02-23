@@ -1,5 +1,6 @@
 ﻿using Kollity.Application.Extensions;
-using Kollity.Domain.StudentModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.AspNetCore.Identity;
 
 namespace Kollity.Application.Commands.Student.Delete;

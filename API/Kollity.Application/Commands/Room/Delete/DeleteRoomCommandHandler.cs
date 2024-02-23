@@ -1,6 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.Identity.Role;
-using Kollity.Domain.RoomModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Room.Delete;

@@ -8,10 +8,9 @@ public class BaseRoleConfig : IEntityTypeConfiguration<BaseRole>
 {
     public void Configure(EntityTypeBuilder<BaseRole> builder)
     {
-
         builder.HasIndex(x => x.Name).IsUnique();
         builder.HasIndex(x => x.NormalizedName).IsUnique();
-        
+
         builder.HasData([
             new BaseRole
             {
@@ -36,7 +35,7 @@ public class BaseRoleConfig : IEntityTypeConfiguration<BaseRole>
                 Id = new Guid("6ddc2275-7ae1-40ca-9f6f-c5b5c637c5d8"),
                 Name = "Assistant",
                 NormalizedName = "ASSISTANT"
-            },
+            }
         ]);
 
         builder.ToTable("Role");

@@ -1,5 +1,4 @@
-﻿using Kollity.Application.Dtos.Course;
-using Kollity.Application.Dtos.Doctor;
+﻿using Kollity.Application.Dtos.Doctor;
 using Kollity.Domain.DoctorModels;
 
 namespace Kollity.Application.MappingProfiles;

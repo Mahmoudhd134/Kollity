@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Kollity.Domain.ErrorHandlers.Abstractions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Kollity.Application.Extensions;
 

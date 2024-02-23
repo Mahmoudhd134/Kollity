@@ -1,7 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
-using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
-using Kollity.Domain.RoomModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Group.SendInvitation;
@@ -46,10 +46,12 @@ public class SendAssignmentGroupJoinInvitationCommandHandler : ICommandHandler<S
             .ToDictionaryAsync(x => x.StudentId, cancellationToken);
         if (users[userId].JoinRequestAccepted == false)
             return AssignmentErrors.UserIsNotInTheGroup;
-        
+
         //check student is not waiting
         if (users.TryGetValue(studentId, out var user))
-            return user.JoinRequestAccepted ? AssignmentErrors.StudentIsInThisGroup: AssignmentErrors.StudentIsWaitingOnThisGroup;
+            return user.JoinRequestAccepted
+                ? AssignmentErrors.StudentIsInThisGroup
+                : AssignmentErrors.StudentIsWaitingOnThisGroup;
 
 
         //check student is in the room
@@ -68,7 +70,7 @@ public class SendAssignmentGroupJoinInvitationCommandHandler : ICommandHandler<S
             return AssignmentErrors.StudentIsInAnotherGroup;
 
         //add the invitation
-        var invitation = new AssignmentGroupStudent()
+        var invitation = new AssignmentGroupStudent
         {
             StudentId = studentId,
             AssignmentGroupId = groupId,
