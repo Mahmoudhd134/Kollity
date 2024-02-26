@@ -4,6 +4,7 @@ using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223162933_EditAssignmentConfigurations")]
+    partial class EditAssignmentConfigurations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,10 +59,6 @@ namespace Kollity.Persistence.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)")
                         .HasColumnName("name");
-
-                    b.Property<DateTime>("OpenUntilDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("open_until_date");
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier")
@@ -689,6 +688,11 @@ namespace Kollity.Persistence.Migrations
                     b.Property<bool>("EnsureJoinRequest")
                         .HasColumnType("bit")
                         .HasColumnName("ensure_join_request");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(511)
+                        .HasColumnType("nvarchar(511)")
+                        .HasColumnName("image");
 
                     b.Property<string>("Name")
                         .IsRequired()

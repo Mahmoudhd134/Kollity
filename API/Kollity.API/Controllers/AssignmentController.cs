@@ -1,7 +1,9 @@
 ﻿using Kollity.API.Extensions;
 using Kollity.Application.Commands.Assignment.Add;
 using Kollity.Application.Commands.Assignment.AddFile;
+using Kollity.Application.Commands.Assignment.Answer;
 using Kollity.Application.Commands.Assignment.Delete;
+using Kollity.Application.Commands.Assignment.DeleteAnswer;
 using Kollity.Application.Commands.Assignment.DeleteFile;
 using Kollity.Application.Commands.Assignment.Edit;
 using Kollity.Application.Dtos.Assignment;
@@ -38,6 +40,12 @@ public class AssignmentController : BaseController
         return new EmptyResult();
     }
 
+    [HttpPost("{assignmentId:guid}/submit-answer")]
+    public Task<IResult> SubmitAnswer(Guid assignmentId, [FromForm] AddAssignmentAnswerDto dto)
+    {
+        return Send(new AddAssignmentAnswerCommand(assignmentId, dto));
+    }
+
     [HttpPost]
     public Task<IResult> Add(Guid roomId, AddAssignmentDto dto)
     {
@@ -60,6 +68,12 @@ public class AssignmentController : BaseController
     public Task<IResult> Delete(Guid assignmentId)
     {
         return Send(new DeleteAssignmentCommand(assignmentId));
+    }
+
+    [HttpDelete("{assignmentId:guid}/delete-answer")]
+    public Task<IResult> DeleteAnswer(Guid assignmentId)
+    {
+        return Send(new DeleteAssignmentAnswerCommand(assignmentId));
     }
 
     [HttpDelete("delete-file/{fileId:guid}")]

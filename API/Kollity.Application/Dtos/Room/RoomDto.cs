@@ -4,7 +4,6 @@ public class RoomDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Image { get; set; }
     public bool EnsureJoinRequest { get; set; }
     public byte AssignmentGroupMaxLength { get; set; }
     public bool AssignmentGroupOperationsEnabled { get; set; }

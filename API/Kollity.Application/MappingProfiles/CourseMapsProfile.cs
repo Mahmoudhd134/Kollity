@@ -31,7 +31,6 @@ public class CourseMapsProfile : Profile
                 opt.MapFrom(src => src.Rooms.Select(r => new RoomForCourseDto
                 {
                     Id = r.Id,
-                    Image = r.Image,
                     Name = r.Name,
                     DoctorId = r.DoctorId ?? Guid.Empty
                 })));

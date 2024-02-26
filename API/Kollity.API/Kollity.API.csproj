@@ -32,6 +32,12 @@
         <_ContentIncludedByDefault Remove="wwwroot\files\images\77be0512-d56f-4669-9174-9b6c266ce84ebeautify-picture.png"/>
         <_ContentIncludedByDefault Remove="wwwroot\files\images\94ce0eee-186f-463c-83f0-f10162f4951aScreenshot 2023-12-11 190958.png"/>
         <_ContentIncludedByDefault Remove="wwwroot\files\images\index.html"/>
+        <_ContentIncludedByDefault Remove="wwwroot\files\AssignmentAnswer\059ebf78-cda4-44a0-b66d-8fc0738ba6e2.jpg" />
+        <_ContentIncludedByDefault Remove="wwwroot\files\AssignmentAnswer\99aca48a-d175-48d0-97a0-921f46e49b93.pdf" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\files\AssignmentAnswer\" />
     </ItemGroup>
 
 </Project>

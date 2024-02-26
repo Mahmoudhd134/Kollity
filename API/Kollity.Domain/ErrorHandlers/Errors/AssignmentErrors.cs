@@ -1,4 +1,5 @@
-﻿using Kollity.Domain.ErrorHandlers.Abstractions;
+﻿using System.Globalization;
+using Kollity.Domain.ErrorHandlers.Abstractions;
 
 namespace Kollity.Domain.ErrorHandlers.Errors;
 
@@ -41,8 +42,20 @@ public static class AssignmentErrors
     public static readonly Error UnAuthorizedAddFile = Error.Validation("Assignment.UnAuthorizedAddFile",
         "You can not add a file to an assignment you not created");
 
-    public static readonly Error UnAuthorizedAddDelete = Error.Validation("Assignment.UnAuthorizedAddDelete",
+    public static readonly Error UnAuthorizedDeleteFile = Error.Validation("Assignment.UnAuthorizedDeleteFile",
         "You can not delete a file from an assignment you not created");
+
+    public static readonly Error AlreadyAnswered = Error.Validation("Assignment.AlreadyAnswered",
+        "You are already answered this assignment before");
+
+    public static readonly Error DecreaseOpenDate = Error.Validation("Assignment.DecreaseOpenDate",
+        "You can not set the open until date before the current open until date");
+
+    public static readonly Error UnAuthorizedDeleteAnswer = Error.Validation("Assingment.UnAuthorizedDeleteAnswer",
+        "You can not delete another one answer");
+
+    public static readonly Error AnswerNotFound = Error.NotFound("Assignment.AnswerNotFound",
+        $"There are no answer with for the given assignment");
 
     public static Error UserIsInAnotherGroup(string userName)
     {
@@ -61,6 +74,9 @@ public static class AssignmentErrors
         return Error.NotFound("Group.NotFound",
             $"There is no group with id '{groupId}'");
     }
+
+    public static readonly Error UserIsNotInAnyGroup = Error.NotFound("Group.UserIsNotInAnyGroup",
+        $"The user is not in any group for the given room");
 
     public static Error UserIsNotInAnyGroupInRoom(string roomName)
     {
@@ -84,5 +100,11 @@ public static class AssignmentErrors
     {
         return Error.NotFound("Assignment.FileNotFound",
             $"There is no file with id '{id}'");
+    }
+
+    public static Error SubmitTimeEnd(DateTime openUntilDate)
+    {
+        return Error.Validation("Assignment.SubmitTimeEnd",
+            $"This assignment can not be submit its answers after {openUntilDate:yyyy-M-d dddd}");
     }
 }

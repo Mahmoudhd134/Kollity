@@ -4,6 +4,7 @@ using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240223182239_MakeStudentIdRequiredInAssignmentAnswerTable")]
+    partial class MakeStudentIdRequiredInAssignmentAnswerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,10 +60,6 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("nvarchar(512)")
                         .HasColumnName("name");
 
-                    b.Property<DateTime>("OpenUntilDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("open_until_date");
-
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_id");
@@ -98,7 +97,7 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("nvarchar(511)")
                         .HasColumnName("file");
 
-                    b.Property<Guid?>("StudentId")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("student_id");
 
@@ -1090,6 +1089,7 @@ namespace Kollity.Persistence.Migrations
                         .WithMany("AssignmentsAnswers")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_assignment_answer_asp_net_users_student_id");
 
                     b.Navigation("Assignment");

@@ -11,6 +11,7 @@ public class Assignment
     public AssignmentMode Mode { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime LastUpdateDate { get; set; }
+    public DateTime OpenUntilDate { get; set; }
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
     public Guid? DoctorId { get; set; }

@@ -35,7 +35,7 @@ public class DeleteAssignmentFileCommandHandler : ICommandHandler<DeleteAssignme
         if (fileInfo.DoctorId == Guid.Empty)
             return AssignmentErrors.AssignmentHasNoDoctor;
         if (fileInfo.DoctorId != userId)
-            return AssignmentErrors.UnAuthorizedAddFile;
+            return AssignmentErrors.UnAuthorizedDeleteFile;
 
         var result = await _context.AssignmentFiles
             .Where(x => x.Id == fileId)

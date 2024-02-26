@@ -32,4 +32,9 @@ public class HttpUserAccessor : IUserAccessor
             .Select(c => c.Value)
             .ToList();
     }
+
+    public bool IsInRole(string role)
+    {
+        return GetCurrentUserRoles()?.Contains(role) ?? false;
+    }
 }

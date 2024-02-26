@@ -11,7 +11,6 @@ public class RoomConfig : IEntityTypeConfiguration<Room>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name).HasMaxLength(227).IsRequired();
-        builder.Property(x => x.Image).HasMaxLength(511);
 
         builder
             .HasOne(x => x.Course)

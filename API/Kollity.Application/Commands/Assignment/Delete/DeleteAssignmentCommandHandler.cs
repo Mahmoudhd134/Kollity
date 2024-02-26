@@ -43,11 +43,17 @@ public class DeleteAssignmentCommandHandler : ICommandHandler<DeleteAssignmentCo
             .Select(x => x.FilePath)
             .ToListAsync(cancellationToken);
 
+        var answers = await _context.AssignmentAnswers
+            .Where(x => x.AssignmentId == assignmentId)
+            .Select(x => x.File)
+            .ToListAsync(cancellationToken);
+
         var result = await _context.Assignments
             .Where(x => x.Id == assignmentId)
             .ExecuteDeleteAsync(cancellationToken);
 
         await _fileAccessor.Delete(files);
+        await _fileAccessor.Delete(answers);
 
         return result > 0 ? Result.Success() : Error.UnKnown;
     }

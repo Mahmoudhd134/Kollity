@@ -42,6 +42,9 @@ public class EditAssignmentCommandHandler : ICommandHandler<EditAssignmentComman
                 return AssignmentErrors.CanNotChangeMode;
         }
 
+        if (assignment.OpenUntilDate > request.EditAssignmentDto.OpenUntilDate)
+            return AssignmentErrors.DecreaseOpenDate;
+
         _mapper.Map(request.EditAssignmentDto, assignment);
         assignment.LastUpdateDate = DateTime.UtcNow;
         await _context.SaveChangesAsync(cancellationToken);
