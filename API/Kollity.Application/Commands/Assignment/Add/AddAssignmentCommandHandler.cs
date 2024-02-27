@@ -47,7 +47,9 @@ public class AddAssignmentCommandHandler : ICommandHandler<AddAssignmentCommand>
             Description = request.AddAssignmentDto.Description,
             Mode = request.AddAssignmentDto.Mode,
             CreatedDate = DateTime.UtcNow,
-            LastUpdateDate = DateTime.UtcNow
+            LastUpdateDate = DateTime.UtcNow,
+            OpenUntilDate = request.AddAssignmentDto.OpenUntilDate,
+            Degree = request.AddAssignmentDto.Degree
         };
 
         _context.Assignments.Add(assignment);

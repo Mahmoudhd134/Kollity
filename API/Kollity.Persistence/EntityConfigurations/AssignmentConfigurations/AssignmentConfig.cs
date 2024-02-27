@@ -12,6 +12,7 @@ public class AssignmentConfig : IEntityTypeConfiguration<Assignment>
 
         builder.Property(x => x.Name).HasMaxLength(512).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(4095).IsRequired();
+        builder.Property(x => x.Degree).IsRequired().HasDefaultValue(20);
 
         builder
             .HasOne(x => x.Room)

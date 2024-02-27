@@ -23,7 +23,6 @@ public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserPr
 
     public async Task<Result> Handle(ChangeUserProfileImageCommand request, CancellationToken cancellationToken)
     {
-        Console.WriteLine("here");
         var id = _userAccessor.GetCurrentUserId();
         var newImage = request.ImageDto.ImageStream;
         var extension = request.ImageDto.Extensions;

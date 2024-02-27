@@ -34,12 +34,13 @@ public class EditAssignmentCommandHandler : ICommandHandler<EditAssignmentComman
         if (assignment.DoctorId != userId)
             return AssignmentErrors.UnAuthorizedEdit;
 
-        if (assignment.Mode != request.EditAssignmentDto.Mode)
+        if (assignment.Mode != request.EditAssignmentDto.Mode ||
+            assignment.Degree != request.EditAssignmentDto.Degree)
         {
             var hasAnswers = await _context.AssignmentAnswers
                 .AnyAsync(x => x.AssignmentId == assignmentId, cancellationToken);
             if (hasAnswers)
-                return AssignmentErrors.CanNotChangeMode;
+                return AssignmentErrors.CanNotChangeIfAnswered(nameof(assignment.Mode), nameof(assignment.Degree));
         }
 
         if (assignment.OpenUntilDate > request.EditAssignmentDto.OpenUntilDate)

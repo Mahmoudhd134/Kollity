@@ -10,6 +10,7 @@ public class AssignmentAnswer
     public Assignment Assignment { get; }
     public DateTime UploadDate { get; set; }
     public string File { get; set; }
+    public byte? Degree { get; set; }
 
     public Guid? StudentId { get; set; }
     public Student Student { get; set; }

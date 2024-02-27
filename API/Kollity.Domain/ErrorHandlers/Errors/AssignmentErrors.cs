@@ -30,9 +30,6 @@ public static class AssignmentErrors
     public static readonly Error UnAuthorizedEdit = Error.Validation("Assignment.UnAuthorizedEdit",
         "You can not edit an assignment you not created");
 
-    public static readonly Error CanNotChangeMode = Error.Validation("Assignment.CanNotChangeMode",
-        "You can not change the assignment mode if it has at least one answer");
-
     public static readonly Error OperationIsOff = Error.Validation("Assignment.RegistrationIsOff",
         "You can not make this operation while the operations state of the room is off");
 
@@ -77,6 +74,12 @@ public static class AssignmentErrors
 
     public static readonly Error UserIsNotInAnyGroup = Error.NotFound("Group.UserIsNotInAnyGroup",
         $"The user is not in any group for the given room");
+
+    public static Error CanNotChangeIfAnswered(params string[] names)
+    {
+        return Error.Validation("Assignment.CanNotChangeIfAnswered",
+            $"You can not change the assignment {string.Join(", ", names)} if it has at least one answer");
+    }
 
     public static Error UserIsNotInAnyGroupInRoom(string roomName)
     {

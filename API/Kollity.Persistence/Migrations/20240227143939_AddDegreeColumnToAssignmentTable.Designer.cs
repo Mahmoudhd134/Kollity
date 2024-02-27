@@ -4,6 +4,7 @@ using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240227143939_AddDegreeColumnToAssignmentTable")]
+    partial class AddDegreeColumnToAssignmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,9 +37,7 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnName("created_date");
 
                     b.Property<byte>("Degree")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)20)
                         .HasColumnName("degree");
 
                     b.Property<string>("Description")
@@ -97,10 +98,6 @@ namespace Kollity.Persistence.Migrations
                     b.Property<Guid>("AssignmentId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("assignment_id");
-
-                    b.Property<byte?>("Degree")
-                        .HasColumnType("tinyint")
-                        .HasColumnName("degree");
 
                     b.Property<string>("File")
                         .IsRequired()

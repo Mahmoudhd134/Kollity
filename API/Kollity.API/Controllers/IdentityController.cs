@@ -98,4 +98,24 @@ public class IdentityController : BaseController
         }));
         return result;
     }
+
+    [HttpPatch("change-profile-image-non-streaming")]
+    [RequestSizeLimit(MaxFileSize)]
+    [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]
+    public async Task<IResult> Change([FromForm] ImageDto dto)
+    {
+        var stream = dto.Image.OpenReadStream();
+        var result = await Send(new ChangeUserProfileImageCommand(new ChangeImagePhotoDto()
+        {
+            ImageStream = stream,
+            Extensions = "." + dto.Image.FileName.Split(".").Last()
+        }));
+        stream.Close();
+        return result;
+    }
+}
+
+public class ImageDto
+{
+    public IFormFile Image { get; set; }
 }

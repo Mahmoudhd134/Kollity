@@ -7,6 +7,8 @@ public class AddAssignmentDto
 {
     public string Name { get; set; }
     public string Description { get; set; }
+    public DateTime OpenUntilDate { get; set; }
+    public byte Degree { get; set; }
 
     [EnumDataType(typeof(AssignmentMode))] public AssignmentMode Mode { get; set; }
 }

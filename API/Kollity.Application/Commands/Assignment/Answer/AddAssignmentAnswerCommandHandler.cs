@@ -66,7 +66,7 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
                 AssignmentId = assignmentId,
                 StudentId = userId,
                 UploadDate = DateTime.UtcNow,
-                AssignmentGroupId = null
+                AssignmentGroupId = null,
             };
             _context.AssignmentAnswers.Add(assignmentAnswer);
             var result = await _context.SaveChangesAsync(cancellationToken);
@@ -98,7 +98,7 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
             File = path,
             AssignmentId = assignmentId,
             UploadDate = DateTime.UtcNow,
-            AssignmentGroupId = groupId
+            AssignmentGroupId = groupId,
         };
         _context.AssignmentAnswers.AddRange(assignmentAnswers);
         var result1 = await _context.SaveChangesAsync(cancellationToken);

@@ -8,32 +8,55 @@ using Kollity.Application.Commands.Assignment.DeleteFile;
 using Kollity.Application.Commands.Assignment.Edit;
 using Kollity.Application.Dtos.Assignment;
 using Kollity.Application.Dtos.Assignment.Group;
+using Kollity.Application.Queries.Assignment.GetAnswerFile;
 using Kollity.Application.Queries.Assignment.GetById;
 using Kollity.Application.Queries.Assignment.GetFile;
+using Kollity.Application.Queries.Assignment.GetIndividualAnswers;
 using Kollity.Application.Queries.Assignment.GetList;
+using Kollity.Domain.Identity.Role;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Kollity.API.Controllers;
 
 [Route("api/room/{roomId:guid}/assignment")]
 public class AssignmentController : BaseController
 {
-    [HttpGet]
+    [HttpGet, SwaggerResponse(200, type: typeof(List<AssignmentForListDto>))]
     public Task<IResult> Get(Guid roomId)
     {
         return Send(new GetAssignmentListQuery(roomId));
     }
 
-    [HttpGet("{assignmentId:guid}")]
+    [HttpGet("{assignmentId:guid}"), SwaggerResponse(200, type: typeof(AssignmentDto))]
     public Task<IResult> GetOne(Guid assignmentId)
     {
         return Send(new GetAssignmentByIdQuery(assignmentId));
     }
 
-    [HttpGet("get-file/{fileId:guid}")]
+    [HttpGet("get-file/{fileId:guid}"), AllowAnonymous]
     public async Task<ActionResult> GetFile(Guid fileId)
     {
         var response = await Sender.Send(new GetAssignmentFileQuery(fileId));
+        if (response.IsSuccess == false)
+            return response.ToActionResult();
+        await CopyFileToResponse(response.Data);
+        return new EmptyResult();
+    }
+
+    [HttpGet("{assignmentId:guid}/individual-answers"),
+     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
+     SwaggerResponse(200, type: typeof(IndividualAssignmentAnswersDto))]
+    public Task<IResult> GetIndividualAnswers(Guid assignmentId, [FromQuery] AssignmentAnswersFilters filters)
+    {
+        return Send(new GetAssignmentIndividualAnswersQuery(assignmentId, filters));
+    }
+
+    [HttpGet("answer-file/{answerId:guid}"), AllowAnonymous]
+    public async Task<ActionResult> GetAnswerFile(Guid answerId)
+    {
+        var response = await Sender.Send(new GetAssignmentAnswerFileQuery(answerId));
         if (response.IsSuccess == false)
             return response.ToActionResult();
         await CopyFileToResponse(response.Data);
