@@ -12,5 +12,7 @@ public class AssignmentAnswerDegree
     public AssignmentGroup Group { get; set; }
     public Guid AnswerId { get; set; }
     public AssignmentAnswer Answer { get; set; }
+    public Guid AssignmentId { get; set; }
+    public Assignment Assignment { get; set; }
     public byte Degree { get; set; }
 }

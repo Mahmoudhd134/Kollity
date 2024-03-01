@@ -48,6 +48,10 @@ public class DeleteAssignmentCommandHandler : ICommandHandler<DeleteAssignmentCo
             .Select(x => x.File)
             .ToListAsync(cancellationToken);
 
+        await _context.AssignmentAnswerDegrees
+            .Where(x => x.AssignmentId == assignmentId)
+            .ExecuteDeleteAsync(cancellationToken);
+
         var result = await _context.Assignments
             .Where(x => x.Id == assignmentId)
             .ExecuteDeleteAsync(cancellationToken);

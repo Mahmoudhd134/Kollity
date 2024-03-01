@@ -21,6 +21,12 @@ public class AssignmentAnswerDegreeConfig : IEntityTypeConfiguration<AssignmentA
             .WithMany()
             .HasForeignKey(x => x.GroupId)
             .OnDelete(DeleteBehavior.NoAction);
+        
+        builder
+            .HasOne(x => x.Assignment)
+            .WithMany()
+            .HasForeignKey(x => x.AssignmentId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(x => x.Answer)

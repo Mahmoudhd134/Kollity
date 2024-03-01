@@ -29,16 +29,23 @@ public class SetStudentAnswerDegreeCommandHandler : ICommandHandler<SetStudentAn
         if (answer == null)
             return AssignmentErrors.AnswerNotFound;
 
-        var assignmentDoctorId = await _context.Assignments
+        var assignment = await _context.Assignments
             .Where(x => x.Id == answer.AssignmentId)
-            .Select(x => x.DoctorId)
+            .Select(x => new
+            {
+                x.DoctorId,
+                x.Degree
+            })
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (assignmentDoctorId is null || assignmentDoctorId == Guid.Empty)
+        if (assignment is null || assignment.DoctorId == Guid.Empty)
             return AssignmentErrors.AssignmentHasNoDoctor;
 
-        if (assignmentDoctorId != userId)
+        if (assignment.DoctorId != userId)
             return AssignmentErrors.UnAuthorizedAddDegree;
+
+        if (assignment.Degree < request.Dto.StudentDegree)
+            return AssignmentErrors.AssignmentDegreeOutOfRange(assignment.Degree);
 
         int result;
         if (answer.StudentId != null) // individual assignment
@@ -75,6 +82,7 @@ public class SetStudentAnswerDegreeCommandHandler : ICommandHandler<SetStudentAn
             AnswerId = answerId,
             StudentId = studentId,
             GroupId = answer.AssignmentGroupId ?? Guid.Empty,
+            AssignmentId = answer.AssignmentId,
             Degree = request.Dto.StudentDegree,
         };
 

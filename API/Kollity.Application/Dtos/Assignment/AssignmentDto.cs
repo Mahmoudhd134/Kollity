@@ -11,6 +11,8 @@ public class AssignmentDto
     public AssignmentMode Mode { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime LastUpdateDate { get; set; }
+    public DateTime OpenUntilDate { get; set; }
+    public byte? Degree { get; set; }
     public List<AssignmentFileDto> Files { get; set; }
     public bool IsSolved { get; set; }
     public AnswerDto Answer { get; set; }
