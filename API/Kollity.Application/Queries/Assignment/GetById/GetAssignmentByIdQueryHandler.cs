@@ -37,18 +37,23 @@ public class GetAssignmentByIdQueryHandler : IQueryHandler<GetAssignmentByIdQuer
         if (isStudent == false)
             return assignmentDto;
 
-        DateTime answeredDate;
+        AnswerDto answerDto;
         if (assignmentDto.Mode == AssignmentMode.Individual)
         {
-            answeredDate = await _context.AssignmentAnswers
+            answerDto = await _context.AssignmentAnswers
                 .Where(x => x.AssignmentId == request.AssignmentId && x.StudentId == userId)
-                .Select(x => x.UploadDate)
+                .Select(x => new AnswerDto()
+                {
+                    Id = x.Id,
+                    SolveDate = x.UploadDate,
+                    Degree = x.Degree
+                })
                 .FirstOrDefaultAsync(cancellationToken);
-            if (answeredDate == default)
+            if (answerDto == default)
                 return assignmentDto;
 
             assignmentDto.IsSolved = true;
-            assignmentDto.SolveDate = answeredDate;
+            assignmentDto.Answer = answerDto;
             return assignmentDto;
         }
 
@@ -60,14 +65,19 @@ public class GetAssignmentByIdQueryHandler : IQueryHandler<GetAssignmentByIdQuer
         if (groupId == default)
             return assignmentDto;
 
-        answeredDate = await _context.AssignmentAnswers
+        answerDto = await _context.AssignmentAnswers
             .Where(x => x.AssignmentId == request.AssignmentId && x.AssignmentGroupId == groupId)
-            .Select(x => x.UploadDate)
+            .Select(x => new AnswerDto()
+            {
+                Id = x.Id,
+                SolveDate = x.UploadDate,
+                Degree = x.GroupDegrees.FirstOrDefault(xx => xx.StudentId == userId).Degree 
+            })
             .FirstOrDefaultAsync(cancellationToken);
-        if (answeredDate == default)
+        if (answerDto == default)
             return assignmentDto;
         assignmentDto.IsSolved = true;
-        assignmentDto.SolveDate = answeredDate;
+        assignmentDto.Answer = answerDto;
         return assignmentDto;
     }
 }

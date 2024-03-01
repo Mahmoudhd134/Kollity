@@ -24,7 +24,7 @@ public class AssignmentAnswerDegreeConfig : IEntityTypeConfiguration<AssignmentA
 
         builder
             .HasOne(x => x.Answer)
-            .WithMany()
+            .WithMany(x => x.GroupDegrees)
             .HasForeignKey(x => x.AnswerId);
 
         builder.ToTable("AssignmentAnswerDegree");

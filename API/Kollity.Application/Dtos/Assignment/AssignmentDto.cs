@@ -13,5 +13,5 @@ public class AssignmentDto
     public DateTime LastUpdateDate { get; set; }
     public List<AssignmentFileDto> Files { get; set; }
     public bool IsSolved { get; set; }
-    public DateTime SolveDate { get; set; }
+    public AnswerDto Answer { get; set; }
 }

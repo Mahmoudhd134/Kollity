@@ -73,7 +73,7 @@ public class AssignmentController : BaseController
         return new EmptyResult();
     }
 
-    [HttpPost("/answer/set-student-degree")]
+    [HttpPost("answer/set-student-degree")]
     public Task<IResult> SetStudentDegree(SetAnswerDegreeDto dto)
     {
         return Send(new SetStudentAnswerDegreeCommand(dto));

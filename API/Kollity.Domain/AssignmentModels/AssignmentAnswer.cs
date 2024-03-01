@@ -17,4 +17,5 @@ public class AssignmentAnswer
 
     public Guid? AssignmentGroupId { get; set; }
     public AssignmentGroup AssignmentGroup { get; set; }
+    public List<AssignmentAnswerDegree> GroupDegrees { get; set; }
 }
