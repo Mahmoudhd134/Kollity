@@ -54,6 +54,15 @@ public static class AssignmentErrors
     public static readonly Error AnswerNotFound = Error.NotFound("Assignment.AnswerNotFound",
         $"There are no answer with for the given assignment");
 
+    public static readonly Error UnAuthorizedAddDegree = Error.Validation("Assignment.UnAuthorizedAddDegree", 
+        "You can not set a student degree for an assignment you not the creator");
+
+    public static readonly Error StudentIsNotInTheGroup = Error.Validation("Assignment.StudentIsNotInTheGroup",
+        "The student is not in this group");
+
+    public static readonly Error StudentDisMatch = Error.Conflict("Assignment.StudentDisMatch",
+        "The student id you send dis match with student id assosiated with the answer");
+
     public static Error UserIsInAnotherGroup(string userName)
     {
         return Error.Validation("Group.UserIsInAnotherGroup",

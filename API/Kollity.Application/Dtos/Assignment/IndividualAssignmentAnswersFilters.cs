@@ -2,7 +2,7 @@
 
 namespace Kollity.Application.Dtos.Assignment;
 
-public class AssignmentAnswersFilters
+public class IndividualAssignmentAnswersFilters
 {
     public string StudentFullName { get; set; }
     public string StudentCode { get; set; }

@@ -35,6 +35,7 @@ public class GetAssignmentGroupByIdQueryHandler : IQueryHandler<GetAssignmentGro
                         Code = s.Student.Code,
                         ProfileImage = s.Student.ProfileImage,
                         UserName = s.Student.UserName,
+                        FullName = s.Student.FullNameInArabic,
                         IsJoined = s.JoinRequestAccepted
                     })
                     .ToList()

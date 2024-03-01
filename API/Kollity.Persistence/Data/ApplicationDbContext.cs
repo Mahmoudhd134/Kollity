@@ -41,6 +41,7 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     public DbSet<AssignmentAnswer> AssignmentAnswers { get; set; }
     public DbSet<AssignmentGroup> AssignmentGroups { get; set; }
     public DbSet<AssignmentGroupStudent> AssignmentGroupStudents { get; set; }
+    public DbSet<AssignmentAnswerDegree> AssignmentAnswerDegrees { get; set; }
 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

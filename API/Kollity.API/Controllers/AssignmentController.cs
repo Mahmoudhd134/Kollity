@@ -6,11 +6,13 @@ using Kollity.Application.Commands.Assignment.Delete;
 using Kollity.Application.Commands.Assignment.DeleteAnswer;
 using Kollity.Application.Commands.Assignment.DeleteFile;
 using Kollity.Application.Commands.Assignment.Edit;
+using Kollity.Application.Commands.Assignment.SetDegree;
 using Kollity.Application.Dtos.Assignment;
 using Kollity.Application.Dtos.Assignment.Group;
 using Kollity.Application.Queries.Assignment.GetAnswerFile;
 using Kollity.Application.Queries.Assignment.GetById;
 using Kollity.Application.Queries.Assignment.GetFile;
+using Kollity.Application.Queries.Assignment.GetGroupAnswers;
 using Kollity.Application.Queries.Assignment.GetIndividualAnswers;
 using Kollity.Application.Queries.Assignment.GetList;
 using Kollity.Domain.Identity.Role;
@@ -45,10 +47,18 @@ public class AssignmentController : BaseController
         return new EmptyResult();
     }
 
+    [HttpGet("{assignmentId:guid}/group-answers"),
+     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
+     SwaggerResponse(200, type: typeof(GroupingAssignmentAnswersDto))]
+    public Task<IResult> GetGroupAnswers(Guid assignmentId, [FromQuery] GroupAssignmentAnswersFilters filters)
+    {
+        return Send(new GetGroupingAssignmentAnswersQuery(assignmentId, filters));
+    }
+
     [HttpGet("{assignmentId:guid}/individual-answers"),
      Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(IndividualAssignmentAnswersDto))]
-    public Task<IResult> GetIndividualAnswers(Guid assignmentId, [FromQuery] AssignmentAnswersFilters filters)
+    public Task<IResult> GetIndividualAnswers(Guid assignmentId, [FromQuery] IndividualAssignmentAnswersFilters filters)
     {
         return Send(new GetAssignmentIndividualAnswersQuery(assignmentId, filters));
     }
@@ -61,6 +71,12 @@ public class AssignmentController : BaseController
             return response.ToActionResult();
         await CopyFileToResponse(response.Data);
         return new EmptyResult();
+    }
+
+    [HttpPost("/answer/set-student-degree")]
+    public Task<IResult> SetStudentDegree(SetAnswerDegreeDto dto)
+    {
+        return Send(new SetStudentAnswerDegreeCommand(dto));
     }
 
     [HttpPost("{assignmentId:guid}/submit-answer")]

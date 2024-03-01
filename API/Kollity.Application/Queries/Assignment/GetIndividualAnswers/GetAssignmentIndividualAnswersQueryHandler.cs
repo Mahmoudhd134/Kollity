@@ -9,19 +9,16 @@ public class
     IndividualAssignmentAnswersDto>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUserAccessor _userAccessor;
 
-    public GetAssignmentIndividualAnswersQueryHandler(ApplicationDbContext context, IUserAccessor userAccessor)
+    public GetAssignmentIndividualAnswersQueryHandler(ApplicationDbContext context)
     {
         _context = context;
-        _userAccessor = userAccessor;
     }
 
     public async Task<Result<IndividualAssignmentAnswersDto>> Handle(GetAssignmentIndividualAnswersQuery request,
         CancellationToken cancellationToken)
     {
-        Guid userId = _userAccessor.GetCurrentUserId(),
-            assignmentId = request.AssignmentId;
+        var assignmentId = request.AssignmentId;
 
         var assignmentDto = await _context.Assignments
             .Where(x => x.Id == assignmentId)
@@ -31,7 +28,7 @@ public class
                 AssignmentDegree = x.Degree,
                 AssignmentName = x.Name,
                 AssignmentMode = x.Mode,
-                NumberOfAnswers = x.AssignmentsAnswers.Count(xx => xx.StudentId != null & xx.AssignmentGroupId == null),
+                NumberOfAnswers = x.AssignmentsAnswers.Count(xx => xx.StudentId != null),
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -51,6 +48,7 @@ public class
                 Id = x.StudentId ?? Guid.Empty,
                 Degree = x.Degree,
                 FullName = x.Student.FullNameInArabic,
+                UserName = x.Student.UserName,
                 ProfileImage = x.Student.ProfileImage,
                 Code = x.Student.Code,
                 UploadDate = x.UploadDate,

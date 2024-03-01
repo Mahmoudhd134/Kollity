@@ -38,6 +38,7 @@ public class GetUserAssignmentGroupQueryHandler : IQueryHandler<GetUserAssignmen
                         Code = xx.Student.Code,
                         ProfileImage = xx.Student.ProfileImage,
                         UserName = xx.Student.UserName,
+                        FullName = xx.Student.FullNameInArabic,
                         IsJoined = xx.JoinRequestAccepted
                     })
                     .ToList()

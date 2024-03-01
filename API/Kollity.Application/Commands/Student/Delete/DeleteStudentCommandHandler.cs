@@ -32,6 +32,10 @@ public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
             .Where(x => x.StudentId == request.Id && x.AssignmentGroupId == null)
             .Select(x => x.File)
             .ToListAsync(cancellationToken);
+
+        await _context.AssignmentAnswerDegrees
+            .Where(x => x.StudentId == student.Id)
+            .ExecuteDeleteAsync(cancellationToken);
         
         var result = await _studentManager.DeleteAsync(student);
         if (result.Succeeded == false) 

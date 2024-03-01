@@ -48,6 +48,10 @@ public class LeaveAssignmentGroupCommandHandler : ICommandHandler<LeaveAssignmen
             .Select(x => x.File)
             .ToListAsync(cancellationToken);
 
+        await _context.AssignmentAnswerDegrees
+            .Where(x => x.GroupId == groupId)
+            .ExecuteDeleteAsync(cancellationToken);
+
         await _context.AssignmentGroups
             .Where(x => x.Id == groupId)
             .ExecuteDeleteAsync(cancellationToken);
