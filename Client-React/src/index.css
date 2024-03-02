@@ -13,8 +13,13 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    /* --primary: 222.2 47.4% 11.2%; */
-    --primary: rgb(40 169 167);
+    --primary: 182 99 42;
+    --primary-100: 182 92 38;
+    --primary-200: 182 77 33;
+    --primary-300: 182 65 20;
+    --primary-400: 182 52 17;
+    --primary-500: 182 98 10;
+
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -70,43 +75,8 @@
 @layer base {
   * {
     @apply border-border;
-    font-family: "Cairo", sans-serif;
   }
   body {
-    @apply bg-background text-foreground overflow-x-hidden w-full;
-  }
-
-  section {
-    @apply px-4;
-  }
-
-  h1 {
-    @apply text-4xl font-bold;
-  }
-
-  h2 {
-    @apply text-3xl font-bold;
-  }
-
-  h3 {
-    @apply text-2xl font-bold;
-  }
-
-  h4 {
-    @apply text-xl font-bold;
-  }
-}
-
-@layer components {
-  .btn {
-    @apply !rounded-full flex items-center gap-1;
-  }
-
-  .profile-page-h3-title {
-    @apply py-4 border-b w-full mb-10;
-  }
-
-  #overlay.active {
-    @apply opacity-40 w-screen h-screen;
+    @apply bg-background text-foreground;
   }
 }
