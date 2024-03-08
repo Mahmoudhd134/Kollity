@@ -1,15 +1,17 @@
-﻿services:
+﻿version: "3.8"
+
+services:
   mssql:
     container_name: sql-server
-    image: mcr.microsoft.com/mssql/server
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Mahmoud2320030@"
     ports:
-      - 1433:1433
+      - "1433:1433"
     volumes:
       - sqlvolume:/var/opt/mssql
-    networks: 
+    networks:
       - api-and-mssql
   api:
     build:
@@ -17,10 +19,12 @@
       dockerfile: Dockerfile
     container_name: api
     ports:
-      - "5000:8080"
-    networks: 
+      - "8080:8080"
+    environment:
+      CONNECTION_STRING: "server=mssql,1433;database=Kollity;user id=sa;password=Mahmoud2320030@;encrypt=false;"
+    networks:
       - api-and-mssql
-    depends_on: 
+    depends_on:
       - mssql
 
 volumes:

@@ -1,0 +1,26 @@
+name: Build Docker Image And Push to Docker Hub
+
+on:
+  push:
+    paths:
+      - API/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag mahmoudhd134/kollity-api
+      working-directory: ./API
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: mahmoudhd134
+        password: ${{ secrets.DOCKER_HUB_SECRET }}
+    - name: Push The Image to Docker Hub
+      run: docker push mahmoudhd134/kollity-api
+      working-directory: ./API
+    
