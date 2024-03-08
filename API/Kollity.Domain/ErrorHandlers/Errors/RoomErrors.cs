@@ -34,6 +34,12 @@ public static class RoomErrors
     public static readonly Error UnAuthorizeDeleteContent = Error.Validation("Room.UnAuthorizedDeleteContent",
         "You can not delete content from a room you are not in a supervisor position");
 
+<<<<<<< HEAD
+=======
+    public static readonly Error RoomHasNoDoctor = Error.Validation("Room.RoomHasNoDoctor",
+        "You can not perform this action of a room that has no doctor");
+
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     public static Error NotFound(Guid roomId)
     {
         return Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");

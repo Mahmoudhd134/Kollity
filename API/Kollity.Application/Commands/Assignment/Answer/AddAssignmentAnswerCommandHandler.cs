@@ -1,5 +1,9 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
+<<<<<<< HEAD
+=======
+using Kollity.Application.Abstractions.Services;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Domain.AssignmentModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +12,7 @@ namespace Kollity.Application.Commands.Assignment.Answer;
 public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAnswerCommand>
 {
     private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
     private readonly IFileAccessor _fileAccessor;
     private readonly IUserAccessor _userAccessor;
 
@@ -17,13 +22,30 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
         _context = context;
         _fileAccessor = fileAccessor;
         _userAccessor = userAccessor;
+=======
+    private readonly IFileServices _fileServices;
+    private readonly IUserServices _userServices;
+
+    public AddAssignmentAnswerCommandHandler(ApplicationDbContext context, IFileServices fileServices,
+        IUserServices userServices)
+    {
+        _context = context;
+        _fileServices = fileServices;
+        _userServices = userServices;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 
     public async Task<Result> Handle(AddAssignmentAnswerCommand request, CancellationToken cancellationToken)
     {
+<<<<<<< HEAD
         Guid userId = _userAccessor.GetCurrentUserId(),
             assignmentId = request.AssignmentId;
         var username = _userAccessor.GetCurrentUserUserName();
+=======
+        Guid userId = _userServices.GetCurrentUserId(),
+            assignmentId = request.AssignmentId;
+        var username = _userServices.GetCurrentUserUserName();
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         var file = request.AddAssignmentAnswerDto.File;
 
         var assignment = await _context.Assignments
@@ -59,7 +81,11 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
             if (studentDidAnswer)
                 return AssignmentErrors.AlreadyAnswered;
 
+<<<<<<< HEAD
             path = await _fileAccessor.UploadFile(file, Category.AssignmentAnswer);
+=======
+            path = await _fileServices.UploadFile(file, Category.AssignmentAnswer);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
             AssignmentAnswer assignmentAnswer = new()
             {
                 File = path,
@@ -72,7 +98,11 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
             var result = await _context.SaveChangesAsync(cancellationToken);
             if (result != 0)
                 return Result.Success();
+<<<<<<< HEAD
             await _fileAccessor.Delete(path);
+=======
+            await _fileServices.Delete(path);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
             return Error.UnKnown;
         }
 
@@ -92,7 +122,11 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
         if (groupDidAnswer)
             return AssignmentErrors.AlreadyAnswered;
 
+<<<<<<< HEAD
         path = await _fileAccessor.UploadFile(file, Category.AssignmentAnswer);
+=======
+        path = await _fileServices.UploadFile(file, Category.AssignmentAnswer);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         var assignmentAnswers = new AssignmentAnswer
         {
             File = path,
@@ -104,7 +138,11 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
         var result1 = await _context.SaveChangesAsync(cancellationToken);
         if (result1 != 0)
             return Result.Success();
+<<<<<<< HEAD
         await _fileAccessor.Delete(path);
+=======
+        await _fileServices.Delete(path);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         return Error.UnKnown;
     }
 }

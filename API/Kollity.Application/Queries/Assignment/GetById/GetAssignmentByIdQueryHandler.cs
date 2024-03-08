@@ -1,5 +1,9 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Abstractions;
+<<<<<<< HEAD
+=======
+using Kollity.Application.Abstractions.Services;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Application.Dtos.Assignment;
 using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.ErrorHandlers.Abstractions;
@@ -13,6 +17,7 @@ public class GetAssignmentByIdQueryHandler : IQueryHandler<GetAssignmentByIdQuer
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+<<<<<<< HEAD
     private readonly IUserAccessor _userAccessor;
 
     public GetAssignmentByIdQueryHandler(ApplicationDbContext context, IMapper mapper, IUserAccessor userAccessor)
@@ -20,6 +25,15 @@ public class GetAssignmentByIdQueryHandler : IQueryHandler<GetAssignmentByIdQuer
         _context = context;
         _mapper = mapper;
         _userAccessor = userAccessor;
+=======
+    private readonly IUserServices _userServices;
+
+    public GetAssignmentByIdQueryHandler(ApplicationDbContext context, IMapper mapper, IUserServices userServices)
+    {
+        _context = context;
+        _mapper = mapper;
+        _userServices = userServices;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 
     public async Task<Result<AssignmentDto>> Handle(GetAssignmentByIdQuery request, CancellationToken cancellationToken)
@@ -32,8 +46,13 @@ public class GetAssignmentByIdQueryHandler : IQueryHandler<GetAssignmentByIdQuer
         if (assignmentDto is null)
             return AssignmentErrors.NotFound(request.AssignmentId);
 
+<<<<<<< HEAD
         var isStudent = _userAccessor.IsInRole(Role.Student);
         var userId = _userAccessor.GetCurrentUserId();
+=======
+        var isStudent = _userServices.IsInRole(Role.Student);
+        var userId = _userServices.GetCurrentUserId();
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         if (isStudent == false)
             return assignmentDto;
 

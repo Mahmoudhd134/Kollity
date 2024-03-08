@@ -1,4 +1,8 @@
 ﻿using Kollity.Application.Abstractions;
+<<<<<<< HEAD
+=======
+using Kollity.Application.Abstractions.Services;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Application.Dtos.Email;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
@@ -25,6 +29,7 @@ public class SendResetPasswordTokenToEmailCommandHandler : ICommandHandler<SendR
             return UserErrors.EmailNotFound(request.Email);
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+<<<<<<< HEAD
         var result = await _emailService.TrySendAsync(new EmailData
         {
             Subject = "Reset Password",
@@ -43,6 +48,9 @@ public class SendResetPasswordTokenToEmailCommandHandler : ICommandHandler<SendR
                         </div>
                         """
         });
+=======
+        var result = await _emailService.TrySendResetPasswordEmailAsync(user.Email, token);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 
         return result ? Result.Success() : Error.UnKnown;
     }
