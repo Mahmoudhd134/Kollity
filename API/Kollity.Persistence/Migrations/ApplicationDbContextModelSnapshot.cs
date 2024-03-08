@@ -450,10 +450,13 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
+<<<<<<< HEAD
+=======
                     b.Property<byte>("Degree")
                         .HasColumnType("tinyint")
                         .HasColumnName("degree");
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
                     b.Property<Guid>("ExamId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("exam_id");
@@ -596,10 +599,13 @@ namespace Kollity.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("email_confirmed");
 
+<<<<<<< HEAD
+=======
                     b.Property<bool>("EnabledEmailNotifications")
                         .HasColumnType("bit")
                         .HasColumnName("enabled_email_notifications");
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
                     b.Property<string>("FullNameInArabic")
                         .HasMaxLength(127)
                         .HasColumnType("nvarchar(127)")
@@ -726,6 +732,8 @@ namespace Kollity.Persistence.Migrations
                     b.ToTable("UserRefreshToken", (string)null);
                 });
 
+<<<<<<< HEAD
+=======
             modelBuilder.Entity("Kollity.Domain.Messages.OutboxMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -765,6 +773,7 @@ namespace Kollity.Persistence.Migrations
                     b.ToTable("OutboxMessage", (string)null);
                 });
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
             modelBuilder.Entity("Kollity.Domain.RoomModels.Room", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1124,7 +1133,10 @@ namespace Kollity.Persistence.Migrations
                             ConcurrencyStamp = "a443bf96-da75-4046-8452-7d64553b4533",
                             Email = "nassermahmoud571@gmail.com",
                             EmailConfirmed = false,
+<<<<<<< HEAD
+=======
                             EnabledEmailNotifications = false,
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
                             FullNameInArabic = "Mahmoud Ahmed Nasser Mahmoud",
                             LockoutEnabled = true,
                             NormalizedEmail = "NASSERMAHMOUD571@GMAIL.COM",

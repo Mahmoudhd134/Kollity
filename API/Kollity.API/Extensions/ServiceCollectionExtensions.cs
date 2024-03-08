@@ -4,7 +4,10 @@ using Kollity.API.Helpers;
 using Kollity.API.Hubs;
 using Kollity.API.Implementation;
 using Kollity.Application.Abstractions;
+<<<<<<< HEAD
+=======
 using Kollity.Application.Abstractions.Services;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,11 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddServicesInjection(this IServiceCollection services)
     {
         services.AddScoped<IAuthServices, JwtAuthServices>();
+<<<<<<< HEAD
+        services.AddScoped<IUserAccessor, HttpUserAccessor>();
+=======
         services.AddScoped<IUserServices, HttpUserServices>();
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 
         return services;
     }

@@ -1,6 +1,9 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
+<<<<<<< HEAD
+=======
 using Kollity.Application.Abstractions.Services;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +13,17 @@ namespace Kollity.Application.Commands.Assignment.DeleteFile;
 public class DeleteAssignmentFileCommandHandler : ICommandHandler<DeleteAssignmentFileCommand>
 {
     private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
+    private readonly IFileAccessor _fileAccessor;
+    private readonly IUserAccessor _userAccessor;
+
+    public DeleteAssignmentFileCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor,
+        IFileAccessor fileAccessor)
+    {
+        _context = context;
+        _userAccessor = userAccessor;
+        _fileAccessor = fileAccessor;
+=======
     private readonly IFileServices _fileServices;
     private readonly IUserServices _userServices;
 
@@ -19,11 +33,16 @@ public class DeleteAssignmentFileCommandHandler : ICommandHandler<DeleteAssignme
         _context = context;
         _userServices = userServices;
         _fileServices = fileServices;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 
     public async Task<Result> Handle(DeleteAssignmentFileCommand request, CancellationToken cancellationToken)
     {
+<<<<<<< HEAD
+        Guid userId = _userAccessor.GetCurrentUserId(),
+=======
         Guid userId = _userServices.GetCurrentUserId(),
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
             fileId = request.Id;
 
         var fileInfo = await _context.AssignmentFiles
@@ -44,7 +63,11 @@ public class DeleteAssignmentFileCommandHandler : ICommandHandler<DeleteAssignme
         if (result == 0)
             return Error.UnKnown;
 
+<<<<<<< HEAD
+        await _fileAccessor.Delete(fileInfo.FilePath);
+=======
         await _fileServices.Delete(fileInfo.FilePath);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         result = await _context.Assignments
             .Where(x => x.Id == fileInfo.AssignmentId)
             .ExecuteUpdateAsync(c =>

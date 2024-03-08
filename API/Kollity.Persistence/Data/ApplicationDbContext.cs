@@ -6,7 +6,10 @@ using Kollity.Domain.ExamModels;
 using Kollity.Domain.Identity.Role;
 using Kollity.Domain.Identity.User;
 using Kollity.Domain.Identity.UserRefreshToken;
+<<<<<<< HEAD
+=======
 using Kollity.Domain.Messages;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Domain.RoomModels;
 using Kollity.Domain.StudentModels;
 using Kollity.Persistence.Extensions;
@@ -44,8 +47,11 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     public DbSet<AssignmentGroupStudent> AssignmentGroupStudents { get; set; }
     public DbSet<AssignmentAnswerDegree> AssignmentAnswerDegrees { get; set; }
 
+<<<<<<< HEAD
+=======
     public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

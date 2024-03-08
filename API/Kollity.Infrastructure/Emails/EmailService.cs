@@ -1,6 +1,11 @@
+<<<<<<< HEAD
+﻿using Kollity.Application.Abstractions;
+using Kollity.Application.Dtos.Email;
+=======
 ﻿using Kollity.Application.Abstractions.Services;
 using Kollity.Application.Dtos.Email;
 using Kollity.Application.Dtos.Identity;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -24,12 +29,18 @@ public class EmailService : IEmailService
             await SendAsync(emailData);
             return true;
         }
+<<<<<<< HEAD
+        catch (Exception ex)
+=======
         catch
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         {
             return false;
         }
     }
 
+<<<<<<< HEAD
+=======
     public async Task<List<bool>> TrySendAsync(List<EmailData> emailsData)
     {
         return (await Task.WhenAll(emailsData.Select(TrySendAsync))).ToList();
@@ -169,6 +180,7 @@ public class EmailService : IEmailService
         });
     }
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     private async Task SendAsync(EmailData emailData)
     {
         using var emailMessage = new MimeMessage();

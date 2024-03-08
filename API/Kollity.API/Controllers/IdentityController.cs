@@ -2,30 +2,42 @@
 using Kollity.API.Helpers;
 using Kollity.Application.Commands.Identity.ChangeImagePhoto;
 using Kollity.Application.Commands.Identity.ChangePassword;
+<<<<<<< HEAD
+=======
 using Kollity.Application.Commands.Identity.EditSettings;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Application.Commands.Identity.ResetPassword.Reset;
 using Kollity.Application.Commands.Identity.ResetPassword.SendToken;
 using Kollity.Application.Commands.Identity.SetEmail.Confirm;
 using Kollity.Application.Commands.Identity.SetEmail.Set;
 using Kollity.Application.Dtos.Identity;
+<<<<<<< HEAD
+=======
 using Kollity.Application.Queries.Identity.GetMySettings;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
+<<<<<<< HEAD
+=======
 using Swashbuckle.AspNetCore.Annotations;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 
 namespace Kollity.API.Controllers;
 
 public class IdentityController : BaseController
 {
+<<<<<<< HEAD
+=======
     [HttpGet("settings"), SwaggerResponse(200, type: typeof(UserSettingsDto))]
     public Task<IResult> GetSettings()
     {
         return Send(new GetMyUserSettingsQuery());
     }
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     [HttpPatch("change-password")]
     public Task<IResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
@@ -58,12 +70,15 @@ public class IdentityController : BaseController
         return Send(new ConfirmEmailCommand(token));
     }
 
+<<<<<<< HEAD
+=======
     [HttpPatch("edit-settings")]
     public Task<IResult> EditSettings(UserSettingsDto dto)
     {
         return Send(new EditMyUserSettingsCommand(dto));
     }
 
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     [HttpPatch("change-profile-image")]
     [RequestSizeLimit(MaxFileSize)]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)]

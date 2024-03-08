@@ -1,4 +1,10 @@
 ﻿using Kollity.Application.Abstractions;
+<<<<<<< HEAD
+using Kollity.Application.Dtos.Assignment.Group;
+using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
+using Kollity.Domain.ErrorHandlers.Abstractions;
+using Kollity.Domain.ErrorHandlers.Errors;
+=======
 using Kollity.Application.Abstractions.Services;
 using Kollity.Application.Dtos.Assignment.Group;
 using Kollity.Application.Events;
@@ -8,6 +14,7 @@ using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
 using MediatR;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Group.AddGroup;
@@ -15,6 +22,14 @@ namespace Kollity.Application.Commands.Assignment.Group.AddGroup;
 public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGroupCommand, AssignmentGroupDto>
 {
     private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
+    private readonly IUserAccessor _userAccessor;
+
+    public AddAssignmentGroupCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor)
+    {
+        _context = context;
+        _userAccessor = userAccessor;
+=======
     private readonly IUserServices _userServices;
     private readonly EventCollection _eventCollection;
 
@@ -24,12 +39,20 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
         _context = context;
         _userServices = userServices;
         _eventCollection = eventCollection;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 
     public async Task<Result<AssignmentGroupDto>> Handle(AddAssignmentGroupCommand request,
         CancellationToken cancellationToken)
     {
         var roomId = request.RoomId;
+<<<<<<< HEAD
+        var userId = _userAccessor.GetCurrentUserId();
+        var ids = request.AddAssignmentGroupDto.Ids.Append(userId).ToList();
+
+        var room = await _context.Rooms
+            .FirstOrDefaultAsync(x => x.Id == roomId, cancellationToken);
+=======
         var userId = _userServices.GetCurrentUserId();
         var ids = request.AddAssignmentGroupDto.Ids.Append(userId).Distinct().ToList();
 
@@ -43,6 +66,7 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
                 CourseName = x.Course.Name
             })
             .FirstOrDefaultAsync(cancellationToken);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         if (room is null)
             return RoomErrors.NotFound(roomId);
 
@@ -113,21 +137,32 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
                 Id = x.Id,
                 UserName = x.UserName,
                 Code = x.Code,
+<<<<<<< HEAD
+                ProfileImage = x.ProfileImage
+=======
                 ProfileImage = x.ProfileImage,
                 FullName = x.FullNameInArabic
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
             })
             .ToListAsync(cancellationToken);
         members.ForEach(x => x.IsJoined = x.Id == userId);
 
+<<<<<<< HEAD
+        return new AssignmentGroupDto
+=======
         var dto = new AssignmentGroupDto
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         {
             Id = group.Id,
             Code = group.Code,
             Members = members
         };
+<<<<<<< HEAD
+=======
 
         _eventCollection.Raise(new AssignmentGroupCreatedEvent(dto, room.Name, room.CourseName));
 
         return dto;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 }

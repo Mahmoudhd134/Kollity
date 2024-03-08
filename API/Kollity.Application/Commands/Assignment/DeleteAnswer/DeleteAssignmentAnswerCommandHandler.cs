@@ -1,6 +1,9 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
+<<<<<<< HEAD
+=======
 using Kollity.Application.Abstractions.Services;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Domain.AssignmentModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +12,17 @@ namespace Kollity.Application.Commands.Assignment.DeleteAnswer;
 public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssignmentAnswerCommand>
 {
     private readonly ApplicationDbContext _context;
+<<<<<<< HEAD
+    private readonly IUserAccessor _userAccessor;
+    private readonly IFileAccessor _fileAccessor;
+
+    public DeleteAssignmentAnswerCommandHandler(ApplicationDbContext context, IUserAccessor userAccessor,
+        IFileAccessor fileAccessor)
+    {
+        _context = context;
+        _userAccessor = userAccessor;
+        _fileAccessor = fileAccessor;
+=======
     private readonly IUserServices _userServices;
     private readonly IFileServices _fileServices;
 
@@ -18,12 +32,17 @@ public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssign
         _context = context;
         _userServices = userServices;
         _fileServices = fileServices;
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 
     public async Task<Result> Handle(DeleteAssignmentAnswerCommand request, CancellationToken cancellationToken)
     {
         Guid assignmentId = request.AssignmentId,
+<<<<<<< HEAD
+            userId = _userAccessor.GetCurrentUserId();
+=======
             userId = _userServices.GetCurrentUserId();
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 
         var assignment = await _context.Assignments
             .Where(x => x.Id == assignmentId)
@@ -47,7 +66,11 @@ public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssign
                 .ExecuteDeleteAsync(cancellationToken);
             if (result == 0)
                 return Error.UnKnown;
+<<<<<<< HEAD
+            await _fileAccessor.Delete(filePath);
+=======
             await _fileServices.Delete(filePath);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
             return Result.Success();
         }
 
@@ -70,7 +93,11 @@ public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssign
             .ExecuteDeleteAsync(cancellationToken);
         if (result1 == 0)
             return Error.UnKnown;
+<<<<<<< HEAD
+        await _fileAccessor.Delete(filePath);
+=======
         await _fileServices.Delete(filePath);
+>>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         return Result.Success();
     }
 }

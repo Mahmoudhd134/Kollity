@@ -6,6 +6,6 @@ export default defineConfig({
   plugins: [react()],
   base: "/MyCollege",
   build: {
-    outDir: "./dist"
-  }
+    outDir: "./dist",
+  },
 });
