@@ -37,6 +37,9 @@ public static class RoomErrors
     public static readonly Error RoomHasNoDoctor = Error.Validation("Room.RoomHasNoDoctor",
         "You can not perform this action of a room that has no doctor");
 
+    public static readonly Error UnAuthorizeAddExam = Error.Validation("Room.UnAuthorizeAddExam",
+        "You can not add an exam to a room you not its doctor");
+
     public static Error NotFound(Guid roomId)
     {
         return Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");

@@ -28,6 +28,8 @@ public class AddExamCommandHandler : ICommandHandler<AddExamCommand>
             return RoomErrors.NotFound(roomId);
         if (room.DoctorId is null)
             return RoomErrors.RoomHasNoDoctor;
+        if(room.DoctorId != userId)
+            return RoomErrors.UnAuthorizeAddExam;
 
         if (request.Dto.StartDate >= request.Dto.EndDate)
             return ExamErrors.StartDateCanNotBeAfterEndDate;

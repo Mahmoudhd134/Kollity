@@ -18,7 +18,7 @@ builder.Services.AddHealthChecks();
 
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 connectionString = string.IsNullOrWhiteSpace(connectionString)
-    ? builder.Configuration["ConnectionStrings:Default"]
+    ? builder.Configuration["ConnectionStrings:LocalHost"]
     : connectionString;
 
 Console.WriteLine($"Connection String is => {connectionString}");
