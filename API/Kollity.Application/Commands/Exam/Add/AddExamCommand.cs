@@ -2,4 +2,4 @@
 
 namespace Kollity.Application.Commands.Exam.Add;
 
-public record AddExamCommand(Guid RoomId, AddExamDto Dto) : ICommand;
+public record AddExamCommand(Guid RoomId, AddExamDto Dto) : ICommandWithEvents<Guid>;

@@ -1,9 +1,6 @@
 ﻿using AutoMapper.QueryableExtensions;
 using Kollity.Application.Abstractions;
-<<<<<<< HEAD
-=======
 using Kollity.Application.Abstractions.Services;
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Application.Dtos.Course;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
@@ -15,15 +12,6 @@ public class GetCourseByIdQueryHandler : IQueryHandler<GetCourseByIdQuery, Cours
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
-<<<<<<< HEAD
-    private readonly IUserAccessor _userAccessor;
-
-    public GetCourseByIdQueryHandler(ApplicationDbContext context, IMapper mapper, IUserAccessor userAccessor)
-    {
-        _context = context;
-        _mapper = mapper;
-        _userAccessor = userAccessor;
-=======
     private readonly IUserServices _userServices;
 
     public GetCourseByIdQueryHandler(ApplicationDbContext context, IMapper mapper, IUserServices userServices)
@@ -31,7 +19,6 @@ public class GetCourseByIdQueryHandler : IQueryHandler<GetCourseByIdQuery, Cours
         _context = context;
         _mapper = mapper;
         _userServices = userServices;
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     }
 
     public async Task<Result<CourseDto>> Handle(GetCourseByIdQuery request, CancellationToken cancellationToken)
@@ -45,11 +32,7 @@ public class GetCourseByIdQueryHandler : IQueryHandler<GetCourseByIdQuery, Cours
         if (courseDto is null)
             return CourseErrors.IdNotFound(request.Id);
 
-<<<<<<< HEAD
-        var currentUserId = _userAccessor.GetCurrentUserId();
-=======
         var currentUserId = _userServices.GetCurrentUserId();
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         courseDto.IsTheDoctorAssigned = courseDto.Doctor?.Id == currentUserId ||
                                         courseDto.Assistants.Any(x => x.Id == currentUserId);
 

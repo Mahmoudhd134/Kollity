@@ -1,4 +1,4 @@
-﻿using Kollity.Application.Events;
+﻿using Kollity.Application.Abstractions;
 using Kollity.Domain.Messages;
 using MediatR;
 using Newtonsoft.Json;

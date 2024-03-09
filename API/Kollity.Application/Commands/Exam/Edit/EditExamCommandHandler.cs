@@ -20,12 +20,18 @@ public class EditExamCommandHandler : ICommandHandler<EditExamCommand>
         Guid examId = request.Dto.Id,
             userId = _userServices.GetCurrentUserId();
 
+        if (request.Dto.StartDate >= request.Dto.EndDate)
+            return ExamErrors.StartDateCanNotBeAfterEndDate;
+        
         var exam = await _context.Exams
             .Where(x => x.Id == examId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (exam is null)
             return ExamErrors.IdNotFound(examId);
+
+        if (DateTime.UtcNow >= exam.StartDate)
+            return ExamErrors.CanNotEditExamAfterItStarts;
 
         var room = await _context.Rooms
             .Where(x => x.Id == exam.RoomId)
@@ -37,12 +43,6 @@ public class EditExamCommandHandler : ICommandHandler<EditExamCommand>
 
         if (userId != room.DoctorId)
             return ExamErrors.UnAuthorizeAction;
-
-        if (DateTime.UtcNow >= exam.StartDate && DateTime.UtcNow <= exam.EndDate)
-            return ExamErrors.CanNotEditExamWhileItsOpen;
-
-        if (request.Dto.StartDate >= request.Dto.EndDate)
-            return ExamErrors.StartDateCanNotBeAfterEndDate;
 
         _mapper.Map(request.Dto, exam);
         exam.LastUpdatedDate = DateTime.UtcNow;

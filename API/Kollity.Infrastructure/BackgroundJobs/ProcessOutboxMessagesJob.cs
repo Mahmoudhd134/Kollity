@@ -1,4 +1,5 @@
-﻿using Kollity.Application.Abstractions.Events;
+﻿using Kollity.Contracts;
+using Kollity.Contracts.Events;
 using Kollity.Persistence.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Quartz;
 
 namespace Kollity.Infrastructure.BackgroundJobs;
 
+[DisallowConcurrentExecution]
 public class ProcessOutboxMessagesJob : IJob
 {
     private readonly ApplicationDbContext _context;
@@ -37,7 +39,19 @@ public class ProcessOutboxMessagesJob : IJob
                 continue;
             }
 
-            await _publisher.Publish(e, context.CancellationToken);
+            try
+            {
+                await _publisher.Publish(e, context.CancellationToken);
+            }
+            catch (Exception exception)
+            {
+                string GetMessage(Exception ex) =>
+                    ex.Message + (ex.InnerException != null
+                        ? "\nInner Exception => " + GetMessage(ex.InnerException)
+                        : "");
+
+                outboxMessage.Error = GetMessage(exception);
+            }
 
             outboxMessage.ProcessedOn = DateTime.UtcNow;
         }

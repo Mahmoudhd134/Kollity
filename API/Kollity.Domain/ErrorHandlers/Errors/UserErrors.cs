@@ -25,6 +25,9 @@ public static class UserErrors
     public static readonly Error NotSignedIn = Error.Validation("User.NotSignedIn",
         "You are not signed in, please sign in.");
 
+    public static readonly Error EmailIsNotConfirmed = Error.Validation("User.EmailIsNotConfirmed",
+        "You can not perform this action while your email is not confirmed");
+
     public static Error EmailNotFound(string email)
     {
         return Error.NotFound("User.EmailNotFound",

@@ -21,7 +21,10 @@ public class GetRoomMembersQueryHandler : IQueryHandler<GetRoomMembersQuery, Lis
     {
         var members = await _context.UserRooms
             .Where(x => x.RoomId == request.RoomId)
+            .Where(x => x.User.FullNameInArabic.StartsWith(request.Dto.FullName))
             .ProjectTo<RoomMemberDto>(_mapper.ConfigurationProvider)
+            .Skip(request.Dto.PageIndex * request.Dto.PageSize)
+            .Take(request.Dto.PageSize)
             .ToListAsync(cancellationToken);
         return members;
     }

@@ -1,8 +1,5 @@
 ﻿using Kollity.Application.Abstractions.Files;
-<<<<<<< HEAD
-=======
 using Kollity.Application.Abstractions.Services;
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Application.Dtos;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
@@ -14,16 +11,6 @@ namespace Kollity.Application.Queries.Assignment.GetFile;
 public class GetAssignmentFileQueryHandler : IQueryHandler<GetAssignmentFileQuery, FileStreamDto>
 {
     private readonly ApplicationDbContext _context;
-<<<<<<< HEAD
-    private readonly IFileAccessor _fileAccessor;
-    private readonly IWebHostEnvironment _webHostEnvironment;
-
-    public GetAssignmentFileQueryHandler(ApplicationDbContext context, IFileAccessor fileAccessor,
-        IWebHostEnvironment webHostEnvironment)
-    {
-        _context = context;
-        _fileAccessor = fileAccessor;
-=======
     private readonly IFileServices _fileServices;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -32,7 +19,6 @@ public class GetAssignmentFileQueryHandler : IQueryHandler<GetAssignmentFileQuer
     {
         _context = context;
         _fileServices = fileServices;
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         _webHostEnvironment = webHostEnvironment;
     }
 
@@ -52,11 +38,7 @@ public class GetAssignmentFileQueryHandler : IQueryHandler<GetAssignmentFileQuer
         if (fileDto is null)
             return AssignmentErrors.FileNotFound(id);
 
-<<<<<<< HEAD
-        var file = await _fileAccessor.GetStream(Path.Combine(_webHostEnvironment.WebRootPath, fileDto.FilePath));
-=======
         var file = await _fileServices.GetStream(Path.Combine(_webHostEnvironment.WebRootPath, fileDto.FilePath));
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         return new FileStreamDto
         {
             Name = fileDto.Name,

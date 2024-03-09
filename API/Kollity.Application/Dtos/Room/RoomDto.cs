@@ -10,4 +10,5 @@ public class RoomDto
     public CourseForRoomDto Course { get; set; }
     public DoctorForRoomDto Doctor { get; set; }
     public UserRoomState? UserState { get; set; }
+    public bool IsSupervisor { get; set; }
 }

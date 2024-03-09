@@ -2,6 +2,8 @@ using Kollity.API.Extensions;
 using Kollity.API.Helpers;
 using Kollity.API.Hubs;
 using Kollity.Application;
+using Kollity.EmailServices;
+using Kollity.EmailServices.Emails;
 using Kollity.Infrastructure;
 using Kollity.Persistence;
 
@@ -16,26 +18,19 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 
 
-<<<<<<< HEAD
-var connectionString = builder.Configuration["ConnectionStrings:Default"];
-builder.Services
-    // .AddFallbackPolicy()
-    .AddApplicationConfiguration(builder.Configuration)
-    .AddPersistenceConfigurations(connectionString)
-    .AddInfrastructureServices()
-=======
 var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 connectionString = string.IsNullOrWhiteSpace(connectionString)
     ? builder.Configuration["ConnectionStrings:LocalHost"]
     : connectionString;
 
 Console.WriteLine($"Connection String is => {connectionString}");
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(""));
 builder.Services
     // .AddFallbackPolicy()
     .AddApplicationConfiguration()
     .AddPersistenceConfigurations(connectionString)
-    .AddInfrastructureServices(builder.Configuration)
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
+    .AddInfrastructureServices()
+    .AddEmailServices(builder.Configuration)
     .AddCorsExtension()
     .AddJwtAuthentication(builder.Configuration)
     .AddClassesConfigurations(builder.Configuration)
@@ -50,7 +45,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
-    await app.UpdateDatabase();
 }
 
 app.UseHttpsRedirection();
@@ -66,13 +60,8 @@ app.UseExceptionHandler();
 
 app.MapControllers();
 app.MapHubs();
-<<<<<<< HEAD
-app.MapFallbackToFile("index.html");
-
-=======
 app.MapHealthChecks("healthy");
 app.MapFallbackToFile("index.html");
 
 await app.UpdateDatabase();
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 app.Run();

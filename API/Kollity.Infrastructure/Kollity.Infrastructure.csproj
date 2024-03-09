@@ -11,12 +11,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MailKit" Version="4.3.0"/>
-<<<<<<< HEAD
-=======
         <PackageReference Include="Quartz" Version="3.8.1" />
         <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.1" />
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     </ItemGroup>
 
 </Project>

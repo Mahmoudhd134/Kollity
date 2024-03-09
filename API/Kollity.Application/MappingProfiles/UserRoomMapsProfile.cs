@@ -15,6 +15,8 @@ public class UserRoomMapsProfile : Profile
             .ForMember(d => d.UserName, opt =>
                 opt.MapFrom(s => s.User.UserName))
             .ForMember(d => d.ProfileImage, opt =>
-                opt.MapFrom(s => s.User.ProfileImage));
+                opt.MapFrom(s => s.User.ProfileImage))
+            .ForMember(d => d.FullName, opt =>
+                opt.MapFrom(s => s.User.FullNameInArabic));
     }
 }

@@ -7,6 +7,7 @@ using Kollity.Application.Commands.Room.DeleteSupervisor;
 using Kollity.Application.Commands.Room.DenyJoin;
 using Kollity.Application.Commands.Room.Edit;
 using Kollity.Application.Commands.Room.Join;
+using Kollity.Application.Dtos;
 using Kollity.Application.Dtos.Room;
 using Kollity.Application.Queries.Room.GetById;
 using Kollity.Application.Queries.Room.GetMembers;
@@ -59,9 +60,9 @@ public class RoomController : BaseController
 
     [HttpGet("{id:guid}/members")]
     [SwaggerResponse(200, type: typeof(List<RoomMemberDto>))]
-    public Task<IResult> GetMembers(Guid id)
+    public Task<IResult> GetMembers(Guid id, [FromQuery] RoomMembersFilterDto dto)
     {
-        return Send(new GetRoomMembersQuery(id));
+        return Send(new GetRoomMembersQuery(id, dto));
     }
 
     [HttpPut]

@@ -13,5 +13,9 @@ public class ExamMapsProfile : Profile
                 o.MapFrom(s => s.StartDate.ToUniversalTime()))
             .ForMember(d => d.EndDate, o =>
                 o.MapFrom(s => s.EndDate.ToUniversalTime()));
+
+        CreateMap<AddExamQuestionDto, ExamQuestion>();
+        CreateMap<EditExamQuestionDto, ExamQuestion>();
+        CreateMap<AddExamQuestionOptionDto, ExamQuestionOption>();
     }
 }

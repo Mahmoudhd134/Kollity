@@ -7,16 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Kollity.Contracts\Kollity.Contracts.csproj" />
         <ProjectReference Include="..\Kollity.Persistence\Kollity.Persistence.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
         <PackageReference Include="MediatR" Version="12.2.0"/>
-<<<<<<< HEAD
-=======
         <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
     </ItemGroup>
 
 </Project>

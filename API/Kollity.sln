@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Infrastructure", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Killity.PlayAroundConsoleApp", "Killity.PlayAroundConsoleApp\Killity.PlayAroundConsoleApp.csproj", "{003B2262-3519-4F2D-8174-5EF3F3DA754F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Contracts", "Kollity.Contracts\Kollity.Contracts.csproj", "{D8A3F3FE-C59E-4FEC-BAF7-1DFC9E49C5D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.EmailServices", "Kollity.EmailServices\Kollity.EmailServices.csproj", "{DF619D06-8005-46CC-BA5D-7C4975C50E52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,13 @@ Global
 		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8A3F3FE-C59E-4FEC-BAF7-1DFC9E49C5D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8A3F3FE-C59E-4FEC-BAF7-1DFC9E49C5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8A3F3FE-C59E-4FEC-BAF7-1DFC9E49C5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8A3F3FE-C59E-4FEC-BAF7-1DFC9E49C5D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF619D06-8005-46CC-BA5D-7C4975C50E52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF619D06-8005-46CC-BA5D-7C4975C50E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF619D06-8005-46CC-BA5D-7C4975C50E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF619D06-8005-46CC-BA5D-7C4975C50E52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

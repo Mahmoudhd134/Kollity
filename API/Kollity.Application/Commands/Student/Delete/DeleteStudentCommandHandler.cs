@@ -1,8 +1,5 @@
 ﻿using Kollity.Application.Abstractions.Files;
-<<<<<<< HEAD
-=======
 using Kollity.Application.Abstractions.Services;
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
 using Kollity.Application.Extensions;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
@@ -14,16 +11,6 @@ namespace Kollity.Application.Commands.Student.Delete;
 public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
 {
     private readonly UserManager<Domain.StudentModels.Student> _studentManager;
-<<<<<<< HEAD
-    private readonly IFileAccessor _fileAccessor;
-    private readonly ApplicationDbContext _context;
-
-    public DeleteStudentCommandHandler(UserManager<Domain.StudentModels.Student> studentManager,
-        IFileAccessor fileAccessor, ApplicationDbContext context)
-    {
-        _studentManager = studentManager;
-        _fileAccessor = fileAccessor;
-=======
     private readonly IFileServices _fileServices;
     private readonly ApplicationDbContext _context;
 
@@ -32,7 +19,6 @@ public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
     {
         _studentManager = studentManager;
         _fileServices = fileServices;
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         _context = context;
     }
 
@@ -56,11 +42,7 @@ public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
         if (result.Succeeded == false) 
             return result.Errors.ToAppError().ToList();
 
-<<<<<<< HEAD
-        await _fileAccessor.Delete(files);
-=======
         await _fileServices.Delete(files);
->>>>>>> 7034548f3e71eede6acd9fb1d886973eeab3616e
         return Result.Success();
     }
 }
