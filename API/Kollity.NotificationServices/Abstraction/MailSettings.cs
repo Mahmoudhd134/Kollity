@@ -1,4 +1,4 @@
-﻿namespace Kollity.EmailServices.Emails;
+﻿namespace Kollity.NotificationServices.Abstraction;
 
 public class MailSettings
 {

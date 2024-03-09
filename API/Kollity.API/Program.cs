@@ -2,9 +2,9 @@ using Kollity.API.Extensions;
 using Kollity.API.Helpers;
 using Kollity.API.Hubs;
 using Kollity.Application;
-using Kollity.EmailServices;
-using Kollity.EmailServices.Emails;
+using Kollity.NotificationServices;
 using Kollity.Infrastructure;
+using Kollity.NotificationServices.Abstraction;
 using Kollity.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +30,7 @@ builder.Services
     .AddApplicationConfiguration()
     .AddPersistenceConfigurations(connectionString)
     .AddInfrastructureServices()
-    .AddEmailServices(builder.Configuration)
+    .AddNotificationServices(builder.Configuration)
     .AddCorsExtension()
     .AddJwtAuthentication(builder.Configuration)
     .AddClassesConfigurations(builder.Configuration)

@@ -1,7 +1,7 @@
 ﻿using Kollity.Contracts.Events.Identity;
-using Kollity.EmailServices.Emails;
+using Kollity.NotificationServices.Abstraction;
 
-namespace Kollity.EmailServices.EventHandlers.Identity;
+namespace Kollity.NotificationServices.EventHandlers.Identity;
 
 public class ForgetPasswordEventHandler : IEventHandler<ForgetPasswordEvent>
 {

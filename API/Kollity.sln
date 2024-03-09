@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Killity.PlayAroundConsoleAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Contracts", "Kollity.Contracts\Kollity.Contracts.csproj", "{D8A3F3FE-C59E-4FEC-BAF7-1DFC9E49C5D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.EmailServices", "Kollity.EmailServices\Kollity.EmailServices.csproj", "{DF619D06-8005-46CC-BA5D-7C4975C50E52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.NotificationServices", "Kollity.NotificationServices\Kollity.NotificationServices.csproj", "{DF619D06-8005-46CC-BA5D-7C4975C50E52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

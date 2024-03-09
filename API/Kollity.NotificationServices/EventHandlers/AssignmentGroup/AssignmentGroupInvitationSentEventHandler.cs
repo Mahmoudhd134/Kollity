@@ -1,8 +1,7 @@
-﻿using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.AssignmentGroup;
-using Kollity.EmailServices.Emails;
+﻿using Kollity.Contracts.Events.AssignmentGroup;
+using Kollity.NotificationServices.Abstraction;
 
-namespace Kollity.EmailServices.EventHandlers.AssignmentGroup;
+namespace Kollity.NotificationServices.EventHandlers.AssignmentGroup;
 
 public class
     AssignmentGroupInvitationSentEventHandler : IEventHandler<AssignmentGroupInvitationSentEvent>

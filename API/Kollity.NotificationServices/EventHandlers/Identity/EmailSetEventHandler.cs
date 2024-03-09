@@ -1,8 +1,7 @@
 ﻿using Kollity.Contracts.Events.Identity;
-using Kollity.EmailServices.Emails;
-using Exception = System.Exception;
+using Kollity.NotificationServices.Abstraction;
 
-namespace Kollity.EmailServices.EventHandlers.Identity;
+namespace Kollity.NotificationServices.EventHandlers.Identity;
 
 public class EmailSetEventHandler : IEventHandler<EmailSetEvent>
 {

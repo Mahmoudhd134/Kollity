@@ -1,8 +1,7 @@
-﻿using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.Assignment;
-using Kollity.EmailServices.Emails;
+﻿using Kollity.Contracts.Events.Assignment;
+using Kollity.NotificationServices.Abstraction;
 
-namespace Kollity.EmailServices.EventHandlers.Assignment;
+namespace Kollity.NotificationServices.EventHandlers.Assignment;
 
 public class AssignmentCreatedEventHandler : IEventHandler<AssignmentCreatedEvent>
 {

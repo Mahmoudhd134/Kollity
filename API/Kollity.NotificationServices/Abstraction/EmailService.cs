@@ -4,7 +4,7 @@ using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace Kollity.EmailServices.Emails;
+namespace Kollity.NotificationServices.Abstraction;
 
 public class EmailService : IEmailService
 {
@@ -188,6 +188,36 @@ public class EmailService : IEmailService
                             <p style="text-align: center;">
                             the course is {courseName}
                             <br/>
+                            the room name is {roomName}
+                            <br/>
+                            </body>
+                            </html>
+                            """
+            })
+            .ToList();
+
+        return (await TrySendAsync(emails)).ToList();
+    }
+
+    public async Task<List<bool>> TrySendRoomContentAddEmailAsync(string roomName, string contentName, DateTime addedAt,
+        List<UserEmailDto> users)
+    {
+        var emails = users
+            .Select(x => new EmailData()
+            {
+                ToName = x.FullName,
+                ToEmail = x.Email,
+                Subject = "New Material Is Here",
+                HtmlBody = $"""
+                            <html>
+                            <body>
+                            <h1 style="text-align: center;">
+                            Hi '{x.FullName}'
+                            </h1>
+                            <h3 style="text-align: center;">
+                            You have a new material '{contentName}' and it added at  {addedAt.ToLocalTime():yyyy-M-d dddd} {addedAt.ToLocalTime():h:mm:ss tt zz}
+                            </h3>
+                            <p style="text-align: center;">
                             the room name is {roomName}
                             <br/>
                             </body>

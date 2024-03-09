@@ -29,7 +29,7 @@ public static class InfrastructureConfigurations
                 .AddTrigger(trigger => trigger
                     .ForJob(jobKey)
                     .WithSimpleSchedule(schedule => schedule
-                        .WithIntervalInMinutes(1)
+                        .WithIntervalInSeconds(10)
                         .RepeatForever()));
         });
 

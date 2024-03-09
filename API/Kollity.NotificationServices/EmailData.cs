@@ -1,4 +1,4 @@
-﻿namespace Kollity.EmailServices;
+﻿namespace Kollity.NotificationServices;
 
 public class EmailData
 {

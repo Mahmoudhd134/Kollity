@@ -1,6 +1,6 @@
 ﻿using Kollity.Contracts.Dto;
 
-namespace Kollity.EmailServices.Emails;
+namespace Kollity.NotificationServices.Abstraction;
 
 public interface IEmailService
 {
@@ -23,4 +23,7 @@ public interface IEmailService
 
     Task<List<bool>> TrySendExamAddedEmailAsync(string examName, DateTime examOpenDate, string roomName,
         string courseName, List<UserEmailDto> studentsInRoom);
+
+    Task<List<bool>> TrySendRoomContentAddEmailAsync(string roomName, string contentName, DateTime addedAt,
+        List<UserEmailDto> users);
 }

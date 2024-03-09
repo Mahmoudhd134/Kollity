@@ -1,7 +1,7 @@
 ﻿using Kollity.Contracts.Events.Exam;
-using Kollity.EmailServices.Emails;
+using Kollity.NotificationServices.Abstraction;
 
-namespace Kollity.EmailServices.EventHandlers.Exam;
+namespace Kollity.NotificationServices.EventHandlers.Exam;
 
 public class ExamAddedEventHandler : IEventHandler<ExamAddedEvent>
 {
