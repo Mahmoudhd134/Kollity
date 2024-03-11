@@ -1,4 +1,4 @@
-﻿using Kollity.Contracts;
+﻿using Kollity.Application.Extensions;
 using Kollity.Contracts.Events;
 using Kollity.Persistence.Data;
 using MediatR;
@@ -45,12 +45,7 @@ public class ProcessOutboxMessagesJob : IJob
             }
             catch (Exception exception)
             {
-                string GetMessage(Exception ex) =>
-                    ex.Message + (ex.InnerException != null
-                        ? "\nInner Exception => " + GetMessage(ex.InnerException)
-                        : "");
-
-                outboxMessage.Error = GetMessage(exception);
+                outboxMessage.Error = exception.GetErrorMessage();
             }
 
             outboxMessage.ProcessedOn = DateTime.UtcNow;

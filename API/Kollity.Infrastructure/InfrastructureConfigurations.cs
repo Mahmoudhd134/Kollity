@@ -13,7 +13,7 @@ public static class InfrastructureConfigurations
         services.AddScoped<IProfileImageServices, PhysicalProfileImageServices>();
         services.AddScoped<IFileServices, PhysicalFileServices>();
 
-        services.AddQuartzConfig();
+        // services.AddQuartzConfig();
 
         return services;
     }

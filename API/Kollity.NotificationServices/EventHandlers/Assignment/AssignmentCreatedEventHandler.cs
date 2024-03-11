@@ -15,7 +15,8 @@ public class AssignmentCreatedEventHandler : IEventHandler<AssignmentCreatedEven
     public Task Handle(AssignmentCreatedEvent notification, CancellationToken cancellationToken)
     {
         var assignment = notification.EventDto;
-        return _emailService.TrySendNewAssignmentEmailAsync(assignment.Users, assignment.RoomName, assignment.CourseName,
+        return _emailService.TrySendNewAssignmentEmailAsync(assignment.Users, assignment.RoomName,
+            assignment.CourseName,
             assignment.AssignmentName, assignment.OpenUntil);
     }
 }

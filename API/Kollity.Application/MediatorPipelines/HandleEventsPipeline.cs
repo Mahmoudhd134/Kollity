@@ -10,11 +10,14 @@ public class HandleEventsPipeline<TRequest, TResponse> : IPipelineBehavior<TRequ
 {
     private readonly EventCollection _eventCollection;
     private readonly ApplicationDbContext _context;
+    private readonly IEventPublisher _eventPublisher;
 
-    public HandleEventsPipeline(EventCollection eventCollection, ApplicationDbContext context)
+    public HandleEventsPipeline(EventCollection eventCollection, ApplicationDbContext context,
+        IEventPublisher eventPublisher)
     {
         _eventCollection = eventCollection;
         _context = context;
+        _eventPublisher = eventPublisher;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
@@ -27,16 +30,25 @@ public class HandleEventsPipeline<TRequest, TResponse> : IPipelineBehavior<TRequ
 
         var events = _eventCollection.Events();
         _eventCollection.Clear();
-        _context.OutboxMessages.AddRange(events.Select(x => new OutboxMessage
-        {
-            Type = x.GetType().Name,
-            Content = JsonConvert.SerializeObject(x, new JsonSerializerSettings()
+        var outboxMessages = events.Select(x => new OutboxMessage
             {
-                TypeNameHandling = TypeNameHandling.All
-            }),
-            OccuredOn = DateTime.UtcNow
-        }));
+                Type = x.GetType().Name,
+                Content = JsonConvert.SerializeObject(x, new JsonSerializerSettings()
+                {
+                    TypeNameHandling = TypeNameHandling.All
+                }),
+                OccuredOn = DateTime.UtcNow
+            })
+            .ToList();
+        _context.OutboxMessages.AddRange(outboxMessages);
         await _context.SaveChangesAsync(cancellationToken);
+
+
+        for (var i = 0; i < events.Count; i++)
+        {
+            _ = _eventPublisher.PublishAsync(events[i], outboxMessages[i].Id, cancellationToken);
+        }
+
         return response;
     }
 }
