@@ -19,20 +19,21 @@ public class ExamAnswerConfig : IEntityTypeConfiguration<ExamAnswer>
 
         builder
             .HasOne(x => x.Exam)
-            .WithMany()
+            .WithMany(x => x.Answers)
             .HasForeignKey(x => x.ExamId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(x => x.ExamQuestion)
             .WithMany(x => x.ExamAnswers)
-            .HasForeignKey(x => x.ExamQuestionId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(x => x.ExamQuestionId);
 
         builder
             .HasOne(x => x.ExamQuestionOption)
             .WithMany(x => x.ExamAnswers)
-            .HasForeignKey(x => x.ExamQuestionOptionId);
+            .HasForeignKey(x => x.ExamQuestionOptionId)
+            .OnDelete(DeleteBehavior.NoAction)
+            .IsRequired(false);
 
         builder.HasIndex(x => new { x.StudentId, x.ExamQuestionId }).IsUnique();
 

@@ -39,14 +39,6 @@ public class AddExamQuestionOptionCommandHandler : ICommandHandler<AddExamQuesti
         if (DateTime.UtcNow >= exam.StartDate)
             return ExamErrors.CanNotEditExamAfterItStarts;
 
-        var hasRightOption = await _context.ExamQuestionOptions
-            .AnyAsync(x => x.ExamQuestionId == questionId && x.IsRightOption, cancellationToken);
-        if (request.Dto.IsRightOption && hasRightOption)
-            return ExamErrors.HasRightOption;
-
-        if ((request.Dto.IsRightOption || hasRightOption) == false)
-            return ExamErrors.HasNoRightOption;
-
         var option = _mapper.Map<ExamQuestionOption>(request.Dto);
         option.ExamQuestionId = questionId;
         _context.ExamQuestionOptions.Add(option);

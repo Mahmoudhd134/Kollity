@@ -22,7 +22,7 @@ public class EditExamCommandHandler : ICommandHandler<EditExamCommand>
 
         if (request.Dto.StartDate >= request.Dto.EndDate)
             return ExamErrors.StartDateCanNotBeAfterEndDate;
-        
+
         var exam = await _context.Exams
             .Where(x => x.Id == examId)
             .FirstOrDefaultAsync(cancellationToken);
@@ -30,8 +30,9 @@ public class EditExamCommandHandler : ICommandHandler<EditExamCommand>
         if (exam is null)
             return ExamErrors.IdNotFound(examId);
 
-        if (DateTime.UtcNow >= exam.StartDate)
-            return ExamErrors.CanNotEditExamAfterItStarts;
+        var utcNow = DateTime.UtcNow;
+        if (utcNow > exam.StartDate && utcNow < exam.EndDate)
+            return ExamErrors.ExamDoseNotFinishYet;
 
         var room = await _context.Rooms
             .Where(x => x.Id == exam.RoomId)

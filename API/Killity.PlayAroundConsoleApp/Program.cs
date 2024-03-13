@@ -1,4 +1,5 @@
-﻿using Kollity.Domain.AssignmentModels;
+﻿using Kollity.Application.Extensions;
+using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Domain.CourseModels;
 using Kollity.Domain.DoctorModels;
@@ -16,18 +17,18 @@ var connectionString = "server=.;database=MyCollege;trusted_connection=true;encr
 var connectionString2 =
     "server=sql.bsite.net\\MSSQL2016;database=mahmoudhd1345_;user id=mahmoudhd1345_;password=Freeasphosting;encrypt=false;";
 IServiceProvider provider = new ServiceCollection()
-    .AddPersistenceConfigurations(connectionString2)
+    .AddPersistenceConfigurations(connectionString)
     // .AddInfrastructureServices()
     .BuildServiceProvider();
 
 var context = provider.GetRequiredService<ApplicationDbContext>();
-context.Database.Migrate();
-var studentManager = provider.GetRequiredService<UserManager<Student>>();
-var doctorManager = provider.GetRequiredService<UserManager<Doctor>>();
-
-var studentRole = context.Roles.First(x => x.Name == "Student");
-var assistantRole = context.Roles.First(x => x.Name == "Assistant");
-var doctorRole = context.Roles.First(x => x.Name == "Doctor");
+// context.Database.Migrate();
+// var studentManager = provider.GetRequiredService<UserManager<Student>>();
+// var doctorManager = provider.GetRequiredService<UserManager<Doctor>>();
+//
+// var studentRole = context.Roles.First(x => x.Name == "Student");
+// var assistantRole = context.Roles.First(x => x.Name == "Assistant");
+// var doctorRole = context.Roles.First(x => x.Name == "Doctor");
 
 // var s = new Student()
 // {
@@ -41,10 +42,34 @@ var doctorRole = context.Roles.First(x => x.Name == "Doctor");
 // s.PasswordHash = passwordHash;
 // context.Add(s);
 // context.SaveChanges();
-var ss = await studentManager.FindByNameAsync("mah");
-var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
-await studentManager.UpdateSecurityStampAsync(ss);
-Console.WriteLine();
+// var ss = await studentManager.FindByNameAsync("mah");
+// var x = await studentManager.CheckPasswordAsync(ss, "Mahmoud2320030@");
+// await studentManager.UpdateSecurityStampAsync(ss);
+// Console.WriteLine();
+
+var allStudents = await context.Students
+    .Select(x => x.Id)
+    .ToListAsync();
+foreach (var sid in allStudents)
+{
+    UserRoom ur = null;
+    try
+    {
+        ur = new UserRoom()
+        {
+            UserId = sid,
+            RoomId = Guid.Parse("ee7ae979-3ded-4b0b-056b-08dc2f249fcd"),
+            JoinRequestAccepted = true
+        };
+        context.UserRooms.Add(ur);
+        context.SaveChanges();
+    }
+    catch
+    {
+        context.UserRooms.Remove(ur);
+    }
+}
+
 
 // Enumerable.Range(1, 100)
 //     .Select(x => new Student

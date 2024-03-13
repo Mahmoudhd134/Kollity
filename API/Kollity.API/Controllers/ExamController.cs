@@ -1,15 +1,19 @@
 ﻿using Kollity.Application.Commands.Exam.Add;
 using Kollity.Application.Commands.Exam.Delete;
 using Kollity.Application.Commands.Exam.Edit;
+using Kollity.Application.Commands.Exam.GetNextQuestion;
 using Kollity.Application.Commands.Exam.Question.Add;
 using Kollity.Application.Commands.Exam.Question.Delete;
 using Kollity.Application.Commands.Exam.Question.Edit;
 using Kollity.Application.Commands.Exam.Question.Option.Add;
 using Kollity.Application.Commands.Exam.Question.Option.Delete;
 using Kollity.Application.Commands.Exam.Question.Option.MakeRightOption;
+using Kollity.Application.Commands.Exam.Submit;
 using Kollity.Application.Dtos.Exam;
 using Kollity.Application.Queries.Exam.GetById;
+using Kollity.Application.Queries.Exam.GetDegrees;
 using Kollity.Application.Queries.Exam.GetList;
+using Kollity.Application.Queries.Exam.GetReview;
 using Kollity.Domain.Identity.Role;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +38,33 @@ public class ExamController : BaseController
         return Send(new GetExamListQuery(roomId));
     }
 
+    [HttpGet("{examId:guid}/review"), SwaggerResponse(200, type: typeof(ExamForUserReviewDto))]
+    public Task<IResult> GetReview(Guid examId)
+    {
+        return Send(new GetExamReviewQuery(examId));
+    }
+
+    [HttpGet("{examId:guid}/users-degrees"),
+     Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
+     SwaggerResponse(200, type: typeof(ExamDegreesDto))]
+    public Task<IResult> GetDegrees(Guid examId, [FromQuery] ExamDegreesFilters filters)
+    {
+        return Send(new GetExamDegreesQuery(examId, filters));
+    }
+
+    [HttpPost("{examId:guid}/get-next-question"),
+     SwaggerResponse(200, type: typeof(ExamQuestionForAnswerDto))]
+    public Task<IResult> GetNextQuestion(Guid examId)
+    {
+        return Send(new GetExamNextQuestionCommand(examId));
+    }
+
+    [HttpPost("question/{questionId:guid}/submit-option/{optionId:guid}")]
+    public Task<IResult> GetNextQuestion(Guid questionId, Guid optionId)
+    {
+        return Send(new SubmitExamAnswerCommand(questionId, optionId));
+    }
+
     [HttpPost,
      Authorize(Roles = $"{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(Guid))]
@@ -42,15 +73,15 @@ public class ExamController : BaseController
         return Send(new AddExamCommand(roomId, dto));
     }
 
-    [HttpPost("{examId:guid}/add-question"),
+    [HttpPost("{examId:guid}/question"),
      Authorize(Roles = $"{Role.Doctor},{Role.Assistant}"),
-     SwaggerResponse(200, type: typeof(Guid))]
+     SwaggerResponse(200, type: typeof(ExamQuestionDto))]
     public Task<IResult> AddQuestion(Guid examId, AddExamQuestionDto dto)
     {
         return Send(new AddExamQuestionCommand(examId, dto));
     }
 
-    [HttpPost("question/{questionId:guid}/add-option"),
+    [HttpPost("question/{questionId:guid}/option"),
      Authorize(Roles = $"{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(Guid))]
     public Task<IResult> AddQuestionOption(Guid questionId, AddExamQuestionOptionDto dto)
@@ -64,7 +95,7 @@ public class ExamController : BaseController
         return Send(new EditExamCommand(dto));
     }
 
-    [HttpPut("edit-question"), Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
+    [HttpPut("question"), Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
     public Task<IResult> EditQuestion(EditExamQuestionDto dto)
     {
         return Send(new EditExamQuestionCommand(dto));
@@ -84,7 +115,7 @@ public class ExamController : BaseController
         return Send(new DeleteExamCommand(examId));
     }
 
-    [HttpDelete("delete-question/{questionId:guid}"), Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
+    [HttpDelete("question/{questionId:guid}"), Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
     public Task<IResult> DeleteQuestion(Guid questionId)
     {
         return Send(new DeleteExamQuestionCommand(questionId));

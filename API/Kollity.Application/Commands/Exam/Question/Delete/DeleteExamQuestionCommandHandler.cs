@@ -32,11 +32,7 @@ public class DeleteExamQuestionCommandHandler : ICommandHandler<DeleteExamQuesti
             return RoomErrors.RoomHasNoDoctor;
         if (exam.DoctorId != userId)
             return ExamErrors.UnAuthorizeAction;
-
-        await _context.ExamAnswers
-            .Where(x => x.ExamQuestionId == questionId)
-            .ExecuteDeleteAsync(cancellationToken);
-
+        
         await _context.ExamQuestions
             .Where(x => x.Id == questionId)
             .ExecuteDeleteAsync(cancellationToken);

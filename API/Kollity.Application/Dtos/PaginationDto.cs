@@ -1,7 +1,9 @@
-﻿namespace Kollity.Application.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kollity.Application.Dtos;
 
 public class PaginationDto
 {
-    public int PageIndex { get; set; }
-    public int PageSize { get; set; }
+    [Required] public int PageIndex { get; set; }
+    [Required] public int PageSize { get; set; }
 }

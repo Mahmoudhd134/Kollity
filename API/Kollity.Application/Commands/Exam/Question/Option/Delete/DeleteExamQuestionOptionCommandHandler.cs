@@ -42,6 +42,10 @@ public class DeleteExamQuestionOptionCommandHandler : ICommandHandler<DeleteExam
         if (isRightOption)
             return ExamErrors.DeleteRightOption;
 
+        await _context.ExamAnswers
+            .Where(x => x.ExamQuestionOptionId == optionId)
+            .ExecuteDeleteAsync(cancellationToken);
+        
         await _context.ExamQuestionOptions
             .Where(x => x.Id == optionId)
             .ExecuteDeleteAsync(cancellationToken);

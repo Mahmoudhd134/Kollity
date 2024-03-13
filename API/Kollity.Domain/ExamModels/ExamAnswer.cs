@@ -11,9 +11,9 @@ public class ExamAnswer
     public Exam Exam { get; set; }
     public Guid ExamQuestionId { get; set; }
     public ExamQuestion ExamQuestion { get; set; }
-    public Guid ExamQuestionOptionId { get; set; }
+    public Guid? ExamQuestionOptionId { get; set; }
     public ExamQuestionOption ExamQuestionOption { get; set; }
 
     public DateTime RequestTime { get; set; }
-    public DateTime SubmitTime { get; set; }
+    public DateTime? SubmitTime { get; set; }
 }

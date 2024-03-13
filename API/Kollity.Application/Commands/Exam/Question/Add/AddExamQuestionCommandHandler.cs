@@ -1,9 +1,10 @@
-﻿using Kollity.Domain.ExamModels;
+﻿using Kollity.Application.Dtos.Exam;
+using Kollity.Domain.ExamModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Exam.Question.Add;
 
-public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionCommand, Guid>
+public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionCommand, ExamQuestionDto>
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
@@ -16,7 +17,8 @@ public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionComm
         _mapper = mapper;
     }
 
-    public async Task<Result<Guid>> Handle(AddExamQuestionCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ExamQuestionDto>> Handle(AddExamQuestionCommand request,
+        CancellationToken cancellationToken)
     {
         Guid userId = _userServices.GetCurrentUserId(),
             examId = request.ExamId;
@@ -26,13 +28,14 @@ public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionComm
 
         if (request.Dto.OpenForSeconds < 45)
             return ExamErrors.QuestionMustAtLeast45Second;
-        
+
         var exam = await _context.Exams
             .Where(x => x.Id == examId)
             .Select(x => new
             {
                 x.Room.DoctorId,
                 x.StartDate,
+                x.EndDate
             })
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -42,16 +45,22 @@ public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionComm
             return RoomErrors.RoomHasNoDoctor;
         if (exam.DoctorId != userId)
             return ExamErrors.UnAuthorizeAction;
-        if (DateTime.UtcNow >= exam.StartDate)
+        if (DateTime.UtcNow >= exam.StartDate && DateTime.UtcNow < exam.EndDate)
             return ExamErrors.CanNotEditExamAfterItStarts;
-        
+
         var question = _mapper.Map<ExamQuestion>(request.Dto);
         question.ExamId = examId;
+        question.ExamQuestionOptions.Add(new ExamQuestionOption()
+        {
+            Option =
+                "Temporally option, make another option, mark it as the right one, then remove this option.\nThis is for ensuring that at leaset one option will be present.",
+            IsRightOption = true,
+        });
         _context.ExamQuestions.Add(question);
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
-        
-        return question.Id;
+
+        return _mapper.Map<ExamQuestionDto>(question);
     }
 }

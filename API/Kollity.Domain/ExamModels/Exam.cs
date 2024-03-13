@@ -16,4 +16,5 @@ public class Exam
     public Room Room { get; set; }
 
     public List<ExamQuestion> ExamQuestions { get; set; } = [];
+    public List<ExamAnswer> Answers { get; set; } = [];
 }

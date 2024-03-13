@@ -17,5 +17,14 @@ public class ExamMapsProfile : Profile
         CreateMap<AddExamQuestionDto, ExamQuestion>();
         CreateMap<EditExamQuestionDto, ExamQuestion>();
         CreateMap<AddExamQuestionOptionDto, ExamQuestionOption>();
+
+        CreateMap<ExamQuestion, ExamQuestionDto>()
+            .ForMember(d => d.Options, opt =>
+                opt.MapFrom(s => s.ExamQuestionOptions.Select(x => new ExamQuestionOptionDto()
+                {
+                    Id = x.Id,
+                    Option = x.Option,
+                    IsRightOption = x.IsRightOption
+                })));
     }
 }

@@ -8,6 +8,6 @@ public class ExamQuestion
     public string Question { get; set; }
     public int OpenForSeconds { get; set; }
     public byte Degree { get; set; }
-    public List<ExamQuestionOption> ExamQuestionOptions { get; set; }
+    public List<ExamQuestionOption> ExamQuestionOptions { get; set; } = [];
     public List<ExamAnswer> ExamAnswers { get; set; } = [];
 }
