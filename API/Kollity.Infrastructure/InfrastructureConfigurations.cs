@@ -20,6 +20,7 @@ public static class InfrastructureConfigurations
         services.AddSingleton<IBus>(bus);
 
         services.AddHostedService<ProcessEventsFromBus>();
+        services.AddHostedService<ProcessUnProcessedEvents>();
 
         return services;
     }

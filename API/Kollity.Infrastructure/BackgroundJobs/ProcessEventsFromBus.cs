@@ -28,6 +28,7 @@ public class ProcessEventsFromBus : BackgroundService
 
         await foreach (var eventWithId in _bus.ConsumeAllAsync(stoppingToken))
         {
+            Console.WriteLine("in buss in await foreach");
             try
             {
                 await publisher.Publish(eventWithId.Event, stoppingToken);
