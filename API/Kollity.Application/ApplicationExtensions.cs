@@ -1,5 +1,4 @@
-﻿using Kollity.Application.Abstractions;
-using Kollity.Application.Implementation;
+﻿using Kollity.Application.Abstractions.Events;
 using Kollity.Application.MediatorPipelines;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +16,6 @@ public static class ApplicationExtensions
         });
 
         services.AddScoped<EventCollection>();
-        services.AddTransient<IEventPublisher, EventPublisher>();
 
         services.AddAutoMapper(typeof(ApplicationExtensions).Assembly);
 

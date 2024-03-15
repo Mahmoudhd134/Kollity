@@ -1,4 +1,5 @@
 ﻿using Kollity.Application.Abstractions;
+using Kollity.Application.Abstractions.Events;
 using Kollity.Contracts.Dto;
 using Kollity.Contracts.Events.Assignment;
 using Microsoft.EntityFrameworkCore;

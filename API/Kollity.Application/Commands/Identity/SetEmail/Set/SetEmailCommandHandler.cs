@@ -1,4 +1,5 @@
 ﻿using Kollity.Application.Abstractions;
+using Kollity.Application.Abstractions.Events;
 using Kollity.Application.Extensions;
 using Kollity.Contracts.Events.Identity;
 using Kollity.Domain.Identity.User;

@@ -1,7 +1,6 @@
-﻿using Kollity.Contracts;
-using Kollity.Contracts.Events;
+﻿using Kollity.Contracts.Events;
 
-namespace Kollity.Application.Abstractions;
+namespace Kollity.Application.Abstractions.Events;
 
 public class EventCollection
 {

@@ -1,8 +1,9 @@
-﻿using Kollity.Application.Abstractions.Services;
+﻿using System.Threading.Channels;
+using Kollity.Application.Abstractions.Events;
+using Kollity.Application.Abstractions.Services;
 using Kollity.Infrastructure.BackgroundJobs;
 using Kollity.Infrastructure.Files;
 using Microsoft.Extensions.DependencyInjection;
-using Quartz;
 
 namespace Kollity.Infrastructure;
 
@@ -13,27 +14,12 @@ public static class InfrastructureConfigurations
         services.AddScoped<IProfileImageServices, PhysicalProfileImageServices>();
         services.AddScoped<IFileServices, PhysicalFileServices>();
 
-        // services.AddQuartzConfig();
 
-        return services;
-    }
+        var channel = Channel.CreateUnbounded<EventWithId>();
+        var bus = new Bus(channel);
+        services.AddSingleton<IBus>(bus);
 
-    public static IServiceCollection AddQuartzConfig(this IServiceCollection services)
-    {
-        services.AddQuartz(config =>
-        {
-            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
-            config
-                .AddJob<ProcessOutboxMessagesJob>(jobKey)
-                .AddTrigger(trigger => trigger
-                    .ForJob(jobKey)
-                    .WithSimpleSchedule(schedule => schedule
-                        .WithIntervalInSeconds(10)
-                        .RepeatForever()));
-        });
-
-        services.AddQuartzHostedService();
+        services.AddHostedService<ProcessEventsFromBus>();
 
         return services;
     }

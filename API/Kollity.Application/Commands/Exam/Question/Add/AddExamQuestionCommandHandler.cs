@@ -45,7 +45,7 @@ public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionComm
             return RoomErrors.RoomHasNoDoctor;
         if (exam.DoctorId != userId)
             return ExamErrors.UnAuthorizeAction;
-        if (DateTime.UtcNow >= exam.StartDate && DateTime.UtcNow < exam.EndDate)
+        if (DateTime.UtcNow >= exam.StartDate)
             return ExamErrors.CanNotEditExamAfterItStarts;
 
         var question = _mapper.Map<ExamQuestion>(request.Dto);

@@ -1,4 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
+using Kollity.Application.Abstractions.Events;
+using Kollity.Contracts.Events;
 using Kollity.Domain.Messages;
 using MediatR;
 using Newtonsoft.Json;
@@ -10,14 +12,14 @@ public class HandleEventsPipeline<TRequest, TResponse> : IPipelineBehavior<TRequ
 {
     private readonly EventCollection _eventCollection;
     private readonly ApplicationDbContext _context;
-    private readonly IEventPublisher _eventPublisher;
+    private readonly IBus _bus;
 
     public HandleEventsPipeline(EventCollection eventCollection, ApplicationDbContext context,
-        IEventPublisher eventPublisher)
+        IBus bus)
     {
         _eventCollection = eventCollection;
         _context = context;
-        _eventPublisher = eventPublisher;
+        _bus = bus;
     }
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
@@ -46,7 +48,7 @@ public class HandleEventsPipeline<TRequest, TResponse> : IPipelineBehavior<TRequ
 
         for (var i = 0; i < events.Count; i++)
         {
-            _ = _eventPublisher.PublishAsync(events[i], outboxMessages[i].Id, cancellationToken);
+            await _bus.PublishAsync(new EventWithId(events[i], outboxMessages[i].Id), cancellationToken);
         }
 
         return response;
