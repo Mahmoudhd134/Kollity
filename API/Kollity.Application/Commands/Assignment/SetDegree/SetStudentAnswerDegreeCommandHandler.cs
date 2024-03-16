@@ -1,7 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.Assignment;
+using Kollity.Application.IntegrationEvents.Assignment;
+using Kollity.Application.IntegrationEvents.Dto;
 using Kollity.Domain.AssignmentModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,21 +67,8 @@ public class SetStudentAnswerDegreeCommandHandler : ICommandHandler<SetStudentAn
                     c.SetProperty(x => x.Degree, request.Dto.StudentDegree), cancellationToken);
             if (result != 0)
             {
-                student = await _context.Students
-                    .Where(x => x.Id == studentId && x.EnabledEmailNotifications)
-                    .Select(x => new UserEmailDto()
-                    {
-                        FullName = x.FullNameInArabic,
-                        Email = x.Email
-                    })
-                    .FirstOrDefaultAsync(cancellationToken);
-                _eventCollection.Raise(new StudentAssignmentDegreeSetEvent(
-                    answer.AssignmentId,
-                    assignment.RoomId,
-                    assignment.Name,
-                    student,
-                    request.Dto.StudentDegree,
-                    DateTime.UtcNow));
+                answer.Degree = request.Dto.StudentDegree;
+                _eventCollection.Raise(new StudentIndividualAssignmentDegreeSetEvent(answer));
                 return Result.Success();
             }
         }
@@ -92,31 +79,20 @@ public class SetStudentAnswerDegreeCommandHandler : ICommandHandler<SetStudentAn
         if (isStudentInGroup == false)
             return AssignmentErrors.StudentIsNotInTheGroup;
 
-        result = await _context.AssignmentAnswerDegrees
+        var degree = await _context.AssignmentAnswerDegrees
             .Where(x =>
                 x.GroupId == answer.AssignmentGroupId &&
                 x.StudentId == studentId &&
                 x.AnswerId == answerId)
-            .ExecuteUpdateAsync(c =>
-                c.SetProperty(x => x.Degree, request.Dto.StudentDegree), cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
-        if (result != 0)
+        if (degree is not null)
         {
-            student = await _context.Students
-                .Where(x => x.Id == studentId && x.EnabledEmailNotifications)
-                .Select(x => new UserEmailDto()
-                {
-                    FullName = x.FullNameInArabic,
-                    Email = x.Email
-                })
-                .FirstOrDefaultAsync(cancellationToken);
-            _eventCollection.Raise(new StudentAssignmentDegreeSetEvent(
-                answer.AssignmentId,
-                assignment.RoomId,
-                assignment.Name,
-                student,
-                request.Dto.StudentDegree,
-                DateTime.UtcNow));
+            degree.Degree = request.Dto.StudentDegree;
+            result = await _context.SaveChangesAsync(cancellationToken);
+            if (result == 0)
+                return Error.UnKnown;
+            _eventCollection.Raise(new StudentGroupAssignmentDegreeSetEvent(degree));
             return Result.Success();
         }
 
@@ -135,21 +111,7 @@ public class SetStudentAnswerDegreeCommandHandler : ICommandHandler<SetStudentAn
         if (result == 0)
             return Error.UnKnown;
 
-        student = await _context.Students
-            .Where(x => x.Id == studentId && x.EmailConfirmed && x.EnabledEmailNotifications)
-            .Select(x => new UserEmailDto()
-            {
-                FullName = x.FullNameInArabic,
-                Email = x.Email
-            })
-            .FirstOrDefaultAsync(cancellationToken);
-        _eventCollection.Raise(new StudentAssignmentDegreeSetEvent(
-            answer.AssignmentId,
-            assignment.RoomId,
-            assignment.Name,
-            student,
-            request.Dto.StudentDegree,
-            DateTime.UtcNow));
+        _eventCollection.Raise(new StudentGroupAssignmentDegreeSetEvent(answerDegree));
         return Result.Success();
     }
 }

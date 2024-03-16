@@ -1,4 +1,5 @@
 ﻿using Kollity.Application.Abstractions.Events;
+using Kollity.Application.Abstractions.Messages;
 using Kollity.Application.Extensions;
 using Kollity.Persistence.Data;
 using MediatR;

@@ -1,5 +1,5 @@
 ﻿using Kollity.Application.Abstractions.Events;
-using Kollity.Contracts.Events;
+using Kollity.Application.Abstractions.Messages;
 using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

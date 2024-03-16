@@ -1,7 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.AssignmentGroup;
+using Kollity.Application.IntegrationEvents.AssignmentGroup;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -100,33 +99,7 @@ public class SendAssignmentGroupJoinInvitationCommandHandler : ICommandHandler<S
         if (result == 0)
             return Error.UnKnown;
 
-
-        var userAndGroup = await _context.AssignmentGroups
-            .Where(x => x.Id == groupId)
-            .Select(x => new
-            {
-                GroupId = x.Id,
-                GroupCode = x.Code,
-                User = x.AssignmentGroupsStudents
-                    .Where(xx => xx.StudentId == studentId)
-                    .Where(xx => xx.Student.EmailConfirmed && xx.Student.EnabledEmailNotifications)
-                    .Select(xx => new UserEmailDto()
-                    {
-                        Email = xx.Student.Email,
-                        FullName = xx.Student.FullNameInArabic
-                    })
-                    .FirstOrDefault()
-            })
-            .FirstOrDefaultAsync(cancellationToken);
-        _eventCollection.Raise(new AssignmentGroupInvitationSentEvent(new AssignmentGroupInvitationEventDto
-        {
-            CourseName = room.Course.Name,
-            RoomName = room.Room.Name,
-            GroupCode = userAndGroup.GroupCode,
-            UserEmail = userAndGroup.User,
-            GroupId = userAndGroup.GroupId,
-            RoomId = room.Room.Id
-        }));
+        _eventCollection.Raise(new AssignmentGroupInvitationSentEvent(invitation));
         return Result.Success();
     }
 }

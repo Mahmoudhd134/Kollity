@@ -2,9 +2,8 @@ using Kollity.API.Extensions;
 using Kollity.API.Helpers;
 using Kollity.API.Hubs;
 using Kollity.Application;
-using Kollity.NotificationServices;
 using Kollity.Infrastructure;
-using Kollity.NotificationServices.Abstraction;
+using Kollity.Infrastructure.Abstraction;
 using Kollity.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,8 +28,7 @@ builder.Services
     // .AddFallbackPolicy()
     .AddApplicationConfiguration()
     .AddPersistenceConfigurations(connectionString)
-    .AddInfrastructureServices()
-    .AddNotificationServices(builder.Configuration)
+    .AddInfrastructureServices(builder.Configuration)
     .AddCorsExtension()
     .AddJwtAuthentication(builder.Configuration)
     .AddClassesConfigurations(builder.Configuration)

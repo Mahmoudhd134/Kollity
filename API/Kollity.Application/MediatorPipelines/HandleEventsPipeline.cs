@@ -1,6 +1,5 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Contracts.Events;
 using Kollity.Domain.Messages;
 using MediatR;
 using Newtonsoft.Json;

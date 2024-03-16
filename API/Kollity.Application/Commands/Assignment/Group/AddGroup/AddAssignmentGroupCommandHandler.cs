@@ -1,11 +1,8 @@
-﻿using Kollity.Application.Abstractions;
-using Kollity.Application.Abstractions.Events;
-using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.AssignmentGroup;
+﻿using Kollity.Application.Abstractions.Events;
+using Kollity.Application.Dtos.Assignment.Group;
+using Kollity.Application.IntegrationEvents.AssignmentGroup;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Microsoft.EntityFrameworkCore;
-using AssignmentGroupDto = Kollity.Application.Dtos.Assignment.Group.AssignmentGroupDto;
-using AssignmentGroupMemberDto = Kollity.Application.Dtos.Assignment.Group.AssignmentGroupMemberDto;
 
 namespace Kollity.Application.Commands.Assignment.Group.AddGroup;
 
@@ -103,49 +100,30 @@ public class AddAssignmentGroupCommandHandler : ICommandHandler<AddAssignmentGro
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
+
+
         var members = await _context.Students
             .Where(x => ids.Contains(x.Id))
-            .Select(x => new
-            {
-                x.Email,
-                x.EnabledEmailNotifications,
-                x.EmailConfirmed,
-                Dto = new AssignmentGroupMemberDto
+            .Select(x =>
+                new AssignmentGroupMemberDto
                 {
                     Id = x.Id,
                     UserName = x.UserName,
                     Code = x.Code,
                     ProfileImage = x.ProfileImage,
                     FullName = x.FullNameInArabic
-                }
-            })
+                })
             .ToListAsync(cancellationToken);
-        members.ForEach(x => x.Dto.IsJoined = x.Dto.Id == userId);
+        members.ForEach(x => x.IsJoined = x.Id == userId);
 
         var dto = new AssignmentGroupDto
         {
             Id = group.Id,
             Code = group.Code,
-            Members = members.Select(x => x.Dto).ToList()
+            RoomId = roomId,
+            Members = members
         };
-
-        _eventCollection.Raise(new AssignmentGroupCreatedEvent(new AssignmentGroupForEventDto()
-            {
-                GroupId = dto.Id,
-                Code = dto.Code,
-                Members = members
-                    .Where(x => x.EmailConfirmed && x.EnabledEmailNotifications)
-                    .Select(x => new AssignmentGroupMemberForEventDto()
-                    {
-                        FullName = x.Dto.FullName,
-                        IsJoined = x.Dto.IsJoined,
-                        Email = x.Email
-                    }).ToList()
-            },
-            roomId,
-            room.Name,
-            room.CourseName));
-
+        _eventCollection.Raise(new AssignmentGroupCreatedEvent(dto));
         return dto;
     }
 }

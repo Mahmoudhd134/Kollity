@@ -1,7 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.Assignment;
+using Kollity.Application.IntegrationEvents.Assignment;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Add;
@@ -68,24 +67,7 @@ public class AddAssignmentCommandHandler : ICommandHandler<AddAssignmentCommand>
         if (result == 0)
             return Error.UnKnown;
 
-        _eventCollection.Raise(new AssignmentCreatedEvent(new AssignmentCreatedEventDto
-        {
-            AssignmentName = assignment.Name,
-            OpenUntil = assignment.OpenUntilDate,
-            CourseName = room.CourseName,
-            RoomName = room.RoomName,
-            Users = await _context.UserRooms
-                .Where(x => x.RoomId == roomId)
-                .Where(x => x.User.EmailConfirmed && x.User.EnabledEmailNotifications)
-                .Select(x => new UserEmailDto()
-                {
-                    FullName = x.User.FullNameInArabic,
-                    Email = x.User.Email
-                })
-                .ToListAsync(cancellationToken),
-            RoomId = roomId,
-            AssignmentId = assignment.Id
-        }));
+        _eventCollection.Raise(new AssignmentCreatedEvent(assignment));
 
         return Result.Success();
     }

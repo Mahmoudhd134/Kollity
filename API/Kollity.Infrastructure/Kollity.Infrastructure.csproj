@@ -10,4 +10,8 @@
         <ProjectReference Include="..\Kollity.Application\Kollity.Application.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="MailKit" Version="4.4.0" />
+    </ItemGroup>
+
 </Project>

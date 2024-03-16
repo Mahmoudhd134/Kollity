@@ -1,8 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
 using Kollity.Application.Abstractions.Services;
-using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.Exam;
+using Kollity.Application.IntegrationEvents.Exam;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Exam.Add;
@@ -60,23 +59,7 @@ public class AddExamCommandHandler : ICommandHandler<AddExamCommand, Guid>
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
-
-        var students = await _context.UserRooms
-            .Where(x => x.RoomId == roomId)
-            .Where(x => x.User.EmailConfirmed && x.User.EnabledEmailNotifications)
-            .Select(x => new UserEmailDto()
-            {
-                Email = x.User.Email,
-                FullName = x.User.FullNameInArabic
-            })
-            .ToListAsync(cancellationToken);
-        _eventCollection.Raise(new ExamAddedEvent(
-            exam.Name,
-            exam.StartDate,
-            roomId,
-            room.RoomName,
-            room.CourseName,
-            students));
+        _eventCollection.Raise(new ExamAddedEvent(exam));
         return exam.Id;
     }
 }

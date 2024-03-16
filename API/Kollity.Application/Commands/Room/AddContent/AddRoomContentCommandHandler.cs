@@ -2,8 +2,7 @@
 using Kollity.Application.Abstractions.Events;
 using Kollity.Application.Abstractions.Files;
 using Kollity.Application.Abstractions.Services;
-using Kollity.Contracts.Dto;
-using Kollity.Contracts.Events.Content;
+using Kollity.Application.IntegrationEvents.RoomContent;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.RoomModels;
@@ -57,24 +56,7 @@ public class AddRoomContentCommandHandler : ICommandHandler<AddRoomContentComman
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
-
-        _eventCollection.Raise(new RoomContentAddedEvent(
-            roomId,
-            roomName,
-            addedAt,
-            content.Id,
-            content.Name,
-            await _context.UserRooms
-                .Where(x => x.RoomId == roomId)
-                .Select(x => x.User)
-                .Where(x => x.EmailConfirmed && x.EnabledEmailNotifications)
-                .Select(x => new UserEmailDto
-                {
-                    FullName = x.FullNameInArabic,
-                    Email = x.Email
-                })
-                .ToListAsync(cancellationToken)
-        ));
+        _eventCollection.Raise(new RoomContentAddedEvent(content));
         return Result.Success();
     }
 }
