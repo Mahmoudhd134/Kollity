@@ -1,7 +1,7 @@
 ﻿using Kollity.Application.IntegrationEvents.Dto;
-using Kollity.Infrastructure.Events;
+using Kollity.Infrastructure.Abstraction.Events;
 
-namespace Kollity.Infrastructure.Abstraction;
+namespace Kollity.Infrastructure.Abstraction.Email;
 
 public interface IEmailService
 {

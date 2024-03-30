@@ -7,29 +7,15 @@ namespace Kollity.Infrastructure.Messages;
 
 public class Bus : IBus
 {
-    private readonly Channel<EventWithId> _channel;
+    private readonly InMemoryChannel _inMemoryChannel;
 
-    public Bus(Channel<EventWithId> channel)
+    public Bus(InMemoryChannel inMemoryChannel)
     {
-        _channel = channel;
+        _inMemoryChannel = inMemoryChannel;
     }
 
     public async Task PublishAsync(EventWithId eventWithId, CancellationToken cancellationToken)
     {
-        await _channel.Writer.WriteAsync(eventWithId, cancellationToken);
-    }
-
-    public async IAsyncEnumerable<EventWithId> ConsumeAllAsync(
-        [EnumeratorCancellation] CancellationToken cancellationToken)
-    {
-        await foreach (var eventWithId in _channel.Reader.ReadAllAsync(cancellationToken))
-        {
-            yield return eventWithId;
-        }
-    }
-
-    public void Dispose()
-    {
-        _channel.Writer.Complete();
+        await _inMemoryChannel.Writer.WriteAsync(eventWithId, cancellationToken);
     }
 }

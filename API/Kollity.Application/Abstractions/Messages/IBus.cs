@@ -2,8 +2,7 @@
 
 namespace Kollity.Application.Abstractions.Messages;
 
-public interface IBus : IDisposable
+public interface IBus
 {
     Task PublishAsync(EventWithId eventWithId, CancellationToken cancellationToken);
-    IAsyncEnumerable<EventWithId> ConsumeAllAsync(CancellationToken cancellationToken);
 }

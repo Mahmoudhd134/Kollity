@@ -1,10 +1,11 @@
 ﻿using Kollity.Application.IntegrationEvents.Assignment;
 using Kollity.Application.IntegrationEvents.Dto;
-using Kollity.Infrastructure.Abstraction;
+using Kollity.Infrastructure.Abstraction.Email;
+using Kollity.Infrastructure.Abstraction.Events;
 using Kollity.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Infrastructure.Events.EventHandlers.Assignment;
+namespace Kollity.Infrastructure.EventHandlers.Assignment;
 
 public class AssignmentCreatedEventHandler : IEventHandler<AssignmentCreatedEvent>
 {

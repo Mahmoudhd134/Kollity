@@ -2,6 +2,7 @@
 using Kollity.Application.Abstractions.Messages;
 using Kollity.Application.Extensions;
 using Kollity.Domain.Messages;
+using Kollity.Infrastructure.Messages;
 using Kollity.Persistence.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,15 @@ public class ProcessEventsFromBus : BackgroundService
     private readonly IBus _bus;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<ProcessEventsFromBus> _logger;
+    private readonly InMemoryChannel _inMemoryChannel;
 
     public ProcessEventsFromBus(IBus bus, IServiceScopeFactory serviceScopeFactory,
-        ILogger<ProcessEventsFromBus> logger)
+        ILogger<ProcessEventsFromBus> logger, InMemoryChannel inMemoryChannel)
     {
         _bus = bus;
         _serviceScopeFactory = serviceScopeFactory;
         _logger = logger;
+        _inMemoryChannel = inMemoryChannel;
     }
 
 
@@ -36,7 +39,7 @@ public class ProcessEventsFromBus : BackgroundService
         var timeThreshold = TimeSpan.FromSeconds(30);
         const int countThreshold = 10;
 
-        await foreach (var eventWithId in _bus.ConsumeAllAsync(stoppingToken))
+        await foreach (var eventWithId in _inMemoryChannel.Reader.ReadAllAsync(stoppingToken))
         {
             try
             {

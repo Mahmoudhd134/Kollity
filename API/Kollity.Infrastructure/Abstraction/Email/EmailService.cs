@@ -1,11 +1,11 @@
 ﻿using Kollity.Application.IntegrationEvents.Dto;
-using Kollity.Infrastructure.Events;
+using Kollity.Infrastructure.Abstraction.Events;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace Kollity.Infrastructure.Abstraction;
+namespace Kollity.Infrastructure.Abstraction.Email;
 
 public class EmailService : IEmailService
 {

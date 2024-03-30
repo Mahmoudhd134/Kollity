@@ -1,4 +1,4 @@
-﻿namespace Kollity.Infrastructure.Events;
+﻿namespace Kollity.Infrastructure.Abstraction.Events;
 
 public class EmailData
 {

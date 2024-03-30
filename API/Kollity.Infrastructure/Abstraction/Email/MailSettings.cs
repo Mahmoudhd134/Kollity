@@ -1,4 +1,4 @@
-﻿namespace Kollity.Infrastructure.Abstraction;
+﻿namespace Kollity.Infrastructure.Abstraction.Email;
 
 public class MailSettings
 {

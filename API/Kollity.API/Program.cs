@@ -4,6 +4,7 @@ using Kollity.API.Hubs;
 using Kollity.Application;
 using Kollity.Infrastructure;
 using Kollity.Infrastructure.Abstraction;
+using Kollity.Infrastructure.Abstraction.Email;
 using Kollity.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
