@@ -1,6 +1,7 @@
 ﻿using Kollity.Domain.RoomModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json;
 
 namespace Kollity.Persistence.EntityConfigurations.RoomConfigurations;
 
@@ -11,7 +12,26 @@ public class RoomMessageConfig : IEntityTypeConfiguration<RoomMessage>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Text).HasMaxLength(4067);
-        builder.Property(x => x.File).HasMaxLength(511);
+
+        builder.Property(x => x.File)
+            .HasConversion<string>(
+                f => JsonConvert.SerializeObject(f),
+                s => JsonConvert.DeserializeObject<MessageFile>(s)
+            )
+            .IsRequired(false)
+            .HasMaxLength(1023);
+
+        /*
+         * the question length is at most 500 chars
+         * the options count is at most 10 and each one is 300 chars at most
+         */
+        builder.Property(x => x.Poll)
+            .HasConversion<string>(
+                p => JsonConvert.SerializeObject(p),
+                s => JsonConvert.DeserializeObject<MessagePoll>(s)
+            )
+            .IsRequired(false)
+            .HasMaxLength(3550);
 
         builder
             .HasOne(x => x.Sender)
