@@ -1,10 +1,10 @@
-﻿using Kollity.API.Hubs.Room;
+﻿using Kollity.API.Hubs.Hubs.Room;
 
 namespace Kollity.API.Hubs;
 
 public static class HubConfigurations
 {
-    public static readonly string BaseHubPath = "hub";
+    public const string BaseHubPath = "hub";
 
     public static void MapHubs(this WebApplication app)
     {

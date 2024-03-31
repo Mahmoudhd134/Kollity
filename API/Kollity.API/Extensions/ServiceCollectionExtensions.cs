@@ -2,8 +2,11 @@
 using Kollity.API.Abstractions;
 using Kollity.API.Helpers;
 using Kollity.API.Hubs;
+using Kollity.API.Hubs.Abstraction;
+using Kollity.API.Hubs.Implementations;
 using Kollity.API.Implementation;
 using Kollity.Application.Abstractions;
+using Kollity.Application.Abstractions.RealTime;
 using Kollity.Application.Abstractions.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +22,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IAuthServices, JwtAuthServices>();
         services.AddScoped<IUserServices, HttpUserServices>();
+
+        services.AddScoped<IRoomConnectionServices, SignalRRoomConnectionServices>();
+        services.AddScoped<IRoomConnectionsServices, SignalRRoomConnectionServices>();
 
         return services;
     }
