@@ -28,11 +28,16 @@
       ],
       "components/*": [
         "src/components/*"
+      ],
+      "models/*": [
+        "src/app/models/*"
+      ],
+      "hooks/*": [
+        "src/app/hooks/*"
       ]
     }
   },
   "include": [
-    "src"
   ],
   "references": [
     {

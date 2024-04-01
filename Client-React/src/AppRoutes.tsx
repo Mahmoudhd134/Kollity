@@ -5,6 +5,7 @@ import {useEffect} from "react";
 import useRefreshToken from "./app/hooks/userRefreshToken.ts";
 import {baseApi} from "./app/api/baseApi.ts";
 import {logout, setCredentials} from "./app/feutures/auth/authSlice.ts";
+import Login from "./Pages/Login";
 
 function AppRoutes() {
     const stayLogin = JSON.parse(localStorage.getItem('stayLogin') ?? 'false')
@@ -31,7 +32,9 @@ function AppRoutes() {
     return <Routes>
         <Route path={'/'} element={<RootLayout/>}>
             <Route index element={<h3>Home</h3>}/>
-            <Route path={'login'} element={<h3>Login page</h3>}/>
+            <Route path={'login'} element={<Login/>}/>
+            
+            <Route path={'*'} element={<h3>NO PAGE</h3>}/>
         </Route>
     </Routes>
 
