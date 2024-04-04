@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Kollity.Application.MediatorPipelines;
 
 public class HandleEventsPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-    where TRequest : ICommandWithEvents
+    where TRequest : IBaseCommandWithEvents
 {
     private readonly EventCollection _eventCollection;
     private readonly ApplicationDbContext _context;
