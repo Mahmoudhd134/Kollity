@@ -1,6 +1,7 @@
 ﻿using Kollity.API.Extensions;
 using Kollity.API.Hubs.Abstraction;
 using Kollity.Application.Commands.Room.Messages.Add;
+using Kollity.Application.Commands.Room.Messages.Delete;
 using Kollity.Application.Commands.Room.Messages.Disconnect;
 using Kollity.Application.Dtos.Room.Message;
 using Kollity.Domain.ErrorHandlers.Abstractions;
@@ -49,19 +50,31 @@ public class RoomHub : BaseHub<IRoomHubClient>
 
     public async Task SendMessage(Guid trackId, string text, IFormFile file, Guid roomId)
     {
-        var r = await Sender.Send(new AddRoomMessageCommand(roomId, new AddRoomMessageDto
+        var result = await Sender.Send(new AddRoomMessageCommand(roomId, new AddRoomMessageDto
         {
             Text = text,
             File = file
         }));
 
-        if (r is not Result<RoomChatMessageDto> result)
-            return;
-
         if (result.IsSuccess == false)
+        {
+            await Clients.Caller.MessageHasNotBeenSentSuccessfully(trackId, result.Errors);
             return;
+        }
 
-        Clients.Caller.MessageSentSuccessfully(trackId, result.Data);
-        Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
+        await Clients.Caller.MessageSentSuccessfully(trackId, result.Data);
+        await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
+    }
+
+    public async Task DeleteMessage(Guid messageId, Guid roomId)
+    {
+        var result = await Sender.Send(new DeleteRoomChatMessageCommand(messageId));
+        if (result.IsSuccess == false)
+        {
+            await Clients.Caller.MessageHasNotBeenDeletedSuccessfully(messageId, result.Errors);
+            return;
+        }
+
+        await Clients.Group(roomId.ToString()).MessageDeleted(messageId);
     }
 }

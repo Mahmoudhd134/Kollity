@@ -7,7 +7,7 @@ public interface ICommand : IRequest<Result>, IBaseCommand;
 
 public interface ICommand<TResult> : IRequest<Result<TResult>>, IBaseCommand;
 
-public interface ICommandWithEvents : IBaseCommandWithEvents;
+public interface ICommandWithEvents : ICommand, IBaseCommandWithEvents;
 
 public interface ICommandWithEvents<TResult> : ICommand<TResult>, IBaseCommandWithEvents;
 

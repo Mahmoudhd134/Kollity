@@ -49,7 +49,7 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
             Date = DateTime.UtcNow,
             IsRead = _roomConnectionsServices.GetUsersConnectedToRoom(roomId).Count > 1
         };
-        
+
         if (request.Dto.File != null)
         {
             var path = await _fileServices.UploadFile(request.Dto.File, Category.RoomChatFile);
@@ -83,9 +83,10 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
         {
             Id = message.Id,
             Text = message.Text,
-            IsRead = message.IsRead,
+            IsRead = false,
             SentAt = message.Date,
-            Sender = sender
+            Sender = sender,
+            FileName = message.File?.FileName
         };
 
         return messageDto;

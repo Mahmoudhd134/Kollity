@@ -1,4 +1,6 @@
-﻿using Kollity.Application.Commands.Room.AcceptAllJoins;
+﻿using Kollity.API.Extensions;
+using Kollity.API.Hubs.Hubs.Room;
+using Kollity.Application.Commands.Room.AcceptAllJoins;
 using Kollity.Application.Commands.Room.AcceptJoin;
 using Kollity.Application.Commands.Room.Add;
 using Kollity.Application.Commands.Room.AddSupervisor;
@@ -7,19 +9,30 @@ using Kollity.Application.Commands.Room.DeleteSupervisor;
 using Kollity.Application.Commands.Room.DenyJoin;
 using Kollity.Application.Commands.Room.Edit;
 using Kollity.Application.Commands.Room.Join;
+using Kollity.Application.Commands.Room.Messages.GetUnRead;
 using Kollity.Application.Dtos;
 using Kollity.Application.Dtos.Room;
+using Kollity.Application.Dtos.Room.Message;
 using Kollity.Application.Queries.Room.GetById;
 using Kollity.Application.Queries.Room.GetMembers;
+using Kollity.Application.Queries.Room.Messages.GetListBeforeDate;
 using Kollity.Domain.Identity.Role;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Kollity.API.Controllers;
 
 public class RoomController : BaseController
 {
+    private readonly IHubContext<RoomHub, IRoomHubClient> _roomHubContext;
+
+    public RoomController(IHubContext<RoomHub, IRoomHubClient> roomHubContext)
+    {
+        _roomHubContext = roomHubContext;
+    }
+
     [HttpPost]
     [Authorize(Roles = $"{Role.Doctor},{Role.Assistant}")]
     public Task<IResult> Add(AddRoomDto addRoomDto)
@@ -63,6 +76,30 @@ public class RoomController : BaseController
     public Task<IResult> GetMembers(Guid id, [FromQuery] RoomMembersFilterDto dto)
     {
         return Send(new GetRoomMembersQuery(id, dto));
+    }
+
+    [HttpGet("{id:guid}/un-read-messages"), SwaggerResponse(200, type: typeof(List<RoomChatMessageDto>))]
+    public async Task<IResult> GetUnReadMessages(Guid id)
+    {
+        var result = await Sender.Send(new GetUnReadMessagesCommand(id));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        await _roomHubContext.Clients.Group(id.ToString()).MessagesHaveBeenRead(
+            result.Data
+                .Where(x => x.IsRead == false)
+                .Select(x => x.Id)
+                .ToList()
+        );
+
+        result.Data.ForEach(x => x.IsRead = false);
+        return result.ToIResult();
+    }
+
+    [HttpGet("{id:guid}/get-before-date/{date:datetime}"), SwaggerResponse(200, type: typeof(List<RoomChatMessageDto>))]
+    public Task<IResult> GetBeforeDate(Guid id, DateTime date)
+    {
+        return Send(new GetRoomChatMessagesBeforeDateQuery(id, date));
     }
 
     [HttpPut]

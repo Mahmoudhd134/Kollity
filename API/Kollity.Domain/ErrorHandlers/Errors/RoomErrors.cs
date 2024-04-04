@@ -69,4 +69,9 @@ public static class RoomErrors
         return Error.Validation("Room.UserIdNotJoined",
             $"There are no user with id '{userId} in this room.");
     }
+
+    public static Error MessageNotFound(Guid messageId)
+    {
+        return Error.NotFound("Room.MessageNotFound", $"there is no message you sent with id {messageId}");
+    }
 }
