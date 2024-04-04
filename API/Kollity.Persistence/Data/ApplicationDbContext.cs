@@ -27,6 +27,7 @@ public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
     public DbSet<Room> Rooms { get; set; }
 
     public DbSet<RoomMessage> RoomMessages { get; set; }
+    public DbSet<MessagePollAnswer> RoomMessagePollAnswers { get; set; }
 
     public DbSet<RoomContent> RoomContents { get; set; }
     public DbSet<UserRoom> UserRooms { get; set; }

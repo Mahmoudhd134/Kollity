@@ -40,6 +40,9 @@ public static class RoomErrors
     public static readonly Error UnAuthorizeAddExam = Error.Validation("Room.UnAuthorizeAddExam",
         "You can not add an exam to a room you not its doctor");
 
+    public static readonly Error UnAuthorizeAddMessage = Error.Validation("Room.UnAuthorizeAddMessage",
+        "You can not add a message to a room you are no joined");
+
     public static Error NotFound(Guid roomId)
     {
         return Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");

@@ -1,9 +1,8 @@
-﻿using Kollity.Application.Abstractions;
-using Kollity.Application.Abstractions.Services;
+﻿using Kollity.Application.Abstractions.Services;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Kollity.API.Hubs;
+namespace Kollity.API.Hubs.Abstraction;
 
 public class BaseHub<T> : Hub<T> where T : class
 {

@@ -37,6 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Hubs\Hubs\" />
       <Folder Include="wwwroot\files\AssignmentAnswer\" />
     </ItemGroup>
 
