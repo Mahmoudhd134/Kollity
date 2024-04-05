@@ -1,6 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Application.IntegrationEvents.AssignmentGroup;
+using Kollity.Application.Events.AssignmentGroup;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Microsoft.EntityFrameworkCore;
 

@@ -2,4 +2,4 @@
 
 namespace Kollity.Application.Commands.Assignment.Add;
 
-public record AddAssignmentCommand(Guid RoomId, AddAssignmentDto AddAssignmentDto) : ICommandWithEvents;
+public record AddAssignmentCommand(Guid RoomId, AddAssignmentDto AddAssignmentDto) : ICommand;

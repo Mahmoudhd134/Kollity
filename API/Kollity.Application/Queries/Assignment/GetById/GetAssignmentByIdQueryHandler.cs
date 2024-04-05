@@ -2,6 +2,7 @@
 using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Services;
 using Kollity.Application.Dtos.Assignment;
+using Kollity.Contracts.Assignment;
 using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;

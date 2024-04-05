@@ -1,10 +1,11 @@
 ﻿using Kollity.Application.Abstractions.Events;
 using Kollity.Application.Abstractions.Messages;
 using Kollity.Application.Abstractions.Services;
-using Kollity.Infrastructure.Abstraction.Email;
-using Kollity.Infrastructure.BackgroundJobs;
 using Kollity.Infrastructure.Files;
+using Kollity.Infrastructure.Implementation;
+using Kollity.Infrastructure.Implementation.Email;
 using Kollity.Infrastructure.Messages;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,8 +20,7 @@ public static class InfrastructureConfigurations
         services.AddScoped<IFileServices, PhysicalFileServices>();
 
 
-        services.AddSingleton<InMemoryChannel>();
-        services.AddSingleton<IBus, Bus>();
+        services.AddTransient<IEventBus, EventBus>();
 
         services.AddScoped<IEmailService, EmailService>();
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
@@ -29,8 +29,12 @@ public static class InfrastructureConfigurations
             opt.RegisterServicesFromAssemblyContaining(typeof(InfrastructureConfigurations));
         });
 
-        services.AddHostedService<ProcessEventsFromBus>();
-        services.AddHostedService<ProcessUnProcessedEvents>();
+        services.AddMassTransit(busConfig =>
+        {
+            busConfig.SetKebabCaseEndpointNameFormatter();
+
+            busConfig.UsingInMemory();
+        });
 
         return services;
     }

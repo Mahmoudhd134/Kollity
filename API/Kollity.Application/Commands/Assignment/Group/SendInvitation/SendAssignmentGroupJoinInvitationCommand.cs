@@ -3,4 +3,4 @@
 namespace Kollity.Application.Commands.Assignment.Group.SendInvitation;
 
 public record SendAssignmentGroupJoinInvitationCommand(AssignmentGroupInvitationMapDto InvitationDto)
-    : ICommandWithEvents;
+    : ICommand;

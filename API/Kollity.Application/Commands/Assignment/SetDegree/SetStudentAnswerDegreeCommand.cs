@@ -2,4 +2,4 @@
 
 namespace Kollity.Application.Commands.Assignment.SetDegree;
 
-public record SetStudentAnswerDegreeCommand(SetAnswerDegreeDto Dto) : ICommandWithEvents;
+public record SetStudentAnswerDegreeCommand(SetAnswerDegreeDto Dto) : ICommand;

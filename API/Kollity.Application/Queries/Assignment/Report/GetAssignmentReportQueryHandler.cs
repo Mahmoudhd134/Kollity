@@ -1,4 +1,5 @@
 ﻿using Kollity.Application.Dtos.Assignment;
+using Kollity.Contracts.Assignment;
 using Kollity.Domain.AssignmentModels;
 using Microsoft.EntityFrameworkCore;
 

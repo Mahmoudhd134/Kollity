@@ -3,8 +3,7 @@ using Kollity.API.Helpers;
 using Kollity.API.Hubs;
 using Kollity.Application;
 using Kollity.Infrastructure;
-using Kollity.Infrastructure.Abstraction;
-using Kollity.Infrastructure.Abstraction.Email;
+using Kollity.Infrastructure.Implementation.Email;
 using Kollity.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +22,6 @@ connectionString = string.IsNullOrWhiteSpace(connectionString)
     ? builder.Configuration["ConnectionStrings:LocalHost"]
     : connectionString;
 
-Console.WriteLine($"Connection String is => {connectionString}");
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(""));
 builder.Services
     // .AddFallbackPolicy()

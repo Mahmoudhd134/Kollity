@@ -2,4 +2,4 @@
 
 namespace Kollity.Application.Commands.Room.AddContent;
 
-public record AddRoomContentCommand(Guid RoomId, AddRoomContentDto AddRoomContentDto) : ICommandWithEvents;
+public record AddRoomContentCommand(Guid RoomId, AddRoomContentDto AddRoomContentDto) : ICommand;

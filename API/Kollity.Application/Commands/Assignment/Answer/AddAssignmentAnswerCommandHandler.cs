@@ -1,6 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Files;
 using Kollity.Application.Abstractions.Services;
+using Kollity.Contracts.Assignment;
 using Kollity.Domain.AssignmentModels;
 using Microsoft.EntityFrameworkCore;
 

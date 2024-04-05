@@ -1,7 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Application.IntegrationEvents.Assignment;
-using Kollity.Application.IntegrationEvents.Dto;
+using Kollity.Application.Events.Assignment;
+using Kollity.Application.Events.Dto;
 using Kollity.Domain.AssignmentModels;
 using Microsoft.EntityFrameworkCore;
 

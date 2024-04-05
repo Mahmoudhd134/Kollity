@@ -1,7 +1,7 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
 using Kollity.Application.Abstractions.Services;
-using Kollity.Application.IntegrationEvents.Exam;
+using Kollity.Application.Events.Exam;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Exam.Add;

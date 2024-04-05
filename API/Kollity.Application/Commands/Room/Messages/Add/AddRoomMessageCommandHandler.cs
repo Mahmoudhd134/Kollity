@@ -2,7 +2,7 @@
 using Kollity.Application.Abstractions.Files;
 using Kollity.Application.Abstractions.RealTime;
 using Kollity.Application.Dtos.Room.Message;
-using Kollity.Application.IntegrationEvents.Room.Messages;
+using Kollity.Application.Events.Room.Messages;
 using Kollity.Domain.RoomModels;
 using Microsoft.EntityFrameworkCore;
 

@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Kollity.Persistence\Kollity.Persistence.csproj"/>
+        <ProjectReference Include="..\Kollity.Contracts\Kollity.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>

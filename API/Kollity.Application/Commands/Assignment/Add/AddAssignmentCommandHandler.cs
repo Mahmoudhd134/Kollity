@@ -1,6 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Application.IntegrationEvents.Assignment;
+using Kollity.Application.Events.Assignment;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Application.Commands.Assignment.Add;

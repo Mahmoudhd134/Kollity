@@ -2,7 +2,7 @@
 using Kollity.Application.Abstractions.Events;
 using Kollity.Application.Abstractions.Files;
 using Kollity.Application.Abstractions.Services;
-using Kollity.Application.IntegrationEvents.RoomContent;
+using Kollity.Application.Events.RoomContent;
 using Kollity.Domain.ErrorHandlers.Abstractions;
 using Kollity.Domain.ErrorHandlers.Errors;
 using Kollity.Domain.RoomModels;

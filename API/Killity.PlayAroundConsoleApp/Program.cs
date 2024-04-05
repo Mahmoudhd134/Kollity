@@ -1,4 +1,5 @@
 ﻿using Kollity.Application.Extensions;
+using Kollity.Contracts.Assignment;
 using Kollity.Domain.AssignmentModels;
 using Kollity.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Domain.CourseModels;

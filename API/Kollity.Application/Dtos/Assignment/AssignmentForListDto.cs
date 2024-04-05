@@ -1,4 +1,5 @@
-﻿using Kollity.Domain.AssignmentModels;
+﻿using Kollity.Contracts.Assignment;
+using Kollity.Domain.AssignmentModels;
 
 namespace Kollity.Application.Dtos.Assignment;
 

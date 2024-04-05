@@ -1,6 +1,6 @@
 ﻿using Kollity.Application.Abstractions;
 using Kollity.Application.Abstractions.Events;
-using Kollity.Application.IntegrationEvents.Identity;
+using Kollity.Application.Events.Identity;
 using Kollity.Domain.Identity.User;
 using Microsoft.AspNetCore.Identity;
 
