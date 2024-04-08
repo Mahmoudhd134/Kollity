@@ -1,8 +1,10 @@
 using Kollity.Services.API.Extensions;
 using Kollity.Services.API.Hubs;
-using Kollity.Services.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddConfigurations();
 
@@ -31,5 +33,4 @@ app.MapHubs();
 app.MapHealthChecks("healthy");
 app.MapFallbackToFile("index.html");
 
-await app.UpdateDatabase();
 app.Run();

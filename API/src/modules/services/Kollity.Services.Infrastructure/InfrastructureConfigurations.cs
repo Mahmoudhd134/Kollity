@@ -13,9 +13,9 @@ namespace Kollity.Services.Infrastructure;
 
 public static class InfrastructureConfigurations
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
+        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         services.AddScoped<IProfileImageServices, PhysicalProfileImageServices>();
         services.AddScoped<IFileServices, PhysicalFileServices>();
 

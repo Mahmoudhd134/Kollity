@@ -8,6 +8,9 @@ using Kollity.Services.API.Hubs;
 using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.API.Hubs.Implementations;
 using Kollity.Services.API.Implementation;
+using Kollity.Services.Application;
+using Kollity.Services.Infrastructure;
+using Kollity.Services.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,37 @@ namespace Kollity.Services.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServicesInjection(this IServiceCollection services)
+    public static IServiceCollection AddConfigurations(this IServiceCollection services)
+    {
+        services
+            .AddApplicationConfiguration()
+            .AddPersistenceConfigurations()
+            .AddInfrastructureServices()
+            .AddApiConfigurations();
+        return services;
+    }
+
+    public static IServiceCollection AddApiConfigurations(this IServiceCollection services)
+    {
+        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
+        services.AddCustomSwaggerGen();
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+        services.AddHealthChecks();
+        services
+            .AddCorsExtension()
+            .AddJwtAuthentication(configuration)
+            .AddClassesConfigurations(configuration)
+            .AddServicesInjection()
+            .AddModelBindingErrorsMap()
+            .AddSignalR();
+
+        return services;
+    }
+
+    private static IServiceCollection AddServicesInjection(this IServiceCollection services)
     {
         services.AddScoped<IAuthServices, JwtAuthServices>();
         services.AddScoped<IUserServices, HttpUserServices>();
@@ -29,7 +62,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddClassesConfigurations(this IServiceCollection services,
+    private static IServiceCollection AddClassesConfigurations(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.Configure<JwtConfiguration>(configuration.GetSection("Jwt"));
@@ -37,7 +70,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
+    private static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -68,7 +101,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddFallbackPolicy(this IServiceCollection services)
+    private static IServiceCollection AddFallbackPolicy(this IServiceCollection services)
     {
         services.AddAuthorization(options =>
             {
@@ -81,7 +114,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddCorsExtension(this IServiceCollection services)
+    private static IServiceCollection AddCorsExtension(this IServiceCollection services)
     {
         services.AddCors(opt => opt.AddPolicy("allowLocalInDevelopment", builder =>
         {
@@ -98,7 +131,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddCustomSwaggerGen(this IServiceCollection services)
+    private static IServiceCollection AddCustomSwaggerGen(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>
         {
@@ -133,7 +166,7 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddModelBindingErrorsMap(this IServiceCollection services)
+    private static IServiceCollection AddModelBindingErrorsMap(this IServiceCollection services)
     {
         services.AddControllers(opt =>
         {

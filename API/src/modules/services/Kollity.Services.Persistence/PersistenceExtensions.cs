@@ -5,15 +5,17 @@ using Kollity.Services.Domain.StudentModels;
 using Kollity.Services.Persistence.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kollity.Services.Persistence;
 
 public static class PersistenceExtensions
 {
-    public static IServiceCollection AddPersistenceConfigurations(this IServiceCollection services,
-        string connectionString)
+    public static IServiceCollection AddPersistenceConfigurations(this IServiceCollection services)
     {
+        var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        var connectionString = configuration["ConnectionStrings:LocalHost"];
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
 
         services.AddDefaultIdentity<BaseUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
