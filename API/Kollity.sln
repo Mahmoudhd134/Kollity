@@ -1,18 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.API", "Kollity.API\Kollity.API.csproj", "{8AF0D558-4A7A-4D54-B128-92EBBFF6010D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Services.API", "src/modules/services/Kollity.Services.API\Kollity.Services.API.csproj", "{8AF0D558-4A7A-4D54-B128-92EBBFF6010D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Domain", "Kollity.Domain\Kollity.Domain.csproj", "{D6D87777-487A-4FCA-A291-C061D9A210A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Services.Domain", "src/modules/services/Kollity.Services.Domain\Kollity.Services.Domain.csproj", "{D6D87777-487A-4FCA-A291-C061D9A210A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Application", "Kollity.Application\Kollity.Application.csproj", "{4C83485F-7942-4BE1-801C-C2910D782559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Services.Application", "src/modules/services/Kollity.Services.Application\Kollity.Services.Application.csproj", "{4C83485F-7942-4BE1-801C-C2910D782559}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Persistence", "Kollity.Persistence\Kollity.Persistence.csproj", "{F3923603-7A62-4253-8045-9F18425FFD4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Services.Persistence", "src/modules/services/Kollity.Services.Persistence\Kollity.Services.Persistence.csproj", "{F3923603-7A62-4253-8045-9F18425FFD4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Infrastructure", "Kollity.Infrastructure\Kollity.Infrastructure.csproj", "{2F30A7D5-9E9F-45AA-BCBA-B82BC6663437}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Services.Infrastructure", "src/modules/services/Kollity.Services.Infrastructure\Kollity.Services.Infrastructure.csproj", "{2F30A7D5-9E9F-45AA-BCBA-B82BC6663437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Killity.PlayAroundConsoleApp", "Killity.PlayAroundConsoleApp\Killity.PlayAroundConsoleApp.csproj", "{003B2262-3519-4F2D-8174-5EF3F3DA754F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Services.Contracts", "src/modules/services/Kollity.Services.Contracts\Kollity.Services.Contracts.csproj", "{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Contracts", "Kollity.Contracts\Kollity.Contracts.csproj", "{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{43D36339-4E45-4B24-B03F-9380024C6F43}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{5473F103-BF25-4CF7-9710-A51DB490A833}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "auth", "auth", "{0E47CD2B-5654-42D8-A5F3-08608D4A945A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{439A0E2B-4DE8-4E56-81DF-1902703A1272}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "notification", "notification", "{F32374F2-9088-4CAD-8A91-86AAB3FDB4C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reporting", "reporting", "{BDA449EC-291B-4E6C-9EA8-3F4A5EC026A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,13 +50,22 @@ Global
 		{2F30A7D5-9E9F-45AA-BCBA-B82BC6663437}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F30A7D5-9E9F-45AA-BCBA-B82BC6663437}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F30A7D5-9E9F-45AA-BCBA-B82BC6663437}.Release|Any CPU.Build.0 = Release|Any CPU
-		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{003B2262-3519-4F2D-8174-5EF3F3DA754F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5473F103-BF25-4CF7-9710-A51DB490A833} = {43D36339-4E45-4B24-B03F-9380024C6F43}
+		{0E47CD2B-5654-42D8-A5F3-08608D4A945A} = {5473F103-BF25-4CF7-9710-A51DB490A833}
+		{439A0E2B-4DE8-4E56-81DF-1902703A1272} = {5473F103-BF25-4CF7-9710-A51DB490A833}
+		{F32374F2-9088-4CAD-8A91-86AAB3FDB4C2} = {5473F103-BF25-4CF7-9710-A51DB490A833}
+		{BDA449EC-291B-4E6C-9EA8-3F4A5EC026A8} = {5473F103-BF25-4CF7-9710-A51DB490A833}
+		{68CCF59C-A940-4ECA-A9C0-69F6788F0A9B} = {439A0E2B-4DE8-4E56-81DF-1902703A1272}
+		{2F30A7D5-9E9F-45AA-BCBA-B82BC6663437} = {439A0E2B-4DE8-4E56-81DF-1902703A1272}
+		{F3923603-7A62-4253-8045-9F18425FFD4B} = {439A0E2B-4DE8-4E56-81DF-1902703A1272}
+		{4C83485F-7942-4BE1-801C-C2910D782559} = {439A0E2B-4DE8-4E56-81DF-1902703A1272}
+		{D6D87777-487A-4FCA-A291-C061D9A210A2} = {439A0E2B-4DE8-4E56-81DF-1902703A1272}
+		{8AF0D558-4A7A-4D54-B128-92EBBFF6010D} = {439A0E2B-4DE8-4E56-81DF-1902703A1272}
 	EndGlobalSection
 EndGlobal
