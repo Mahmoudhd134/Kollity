@@ -4,12 +4,12 @@ using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using KollityUserApiEntryPoint = Kollity.User.API.Extensions.ServiceCollectionExtensions;
+using KollityServicesApiEntryPoint = Kollity.Services.API.Extensions.ServiceCollectionExtensions;
 
 
 namespace Kollity.API;
@@ -72,6 +72,13 @@ public static class Extensions
                     },
                     new string[] { }
                 }
+            });
+            c.AddSignalRSwaggerGen(o =>
+            {
+                o.ScanAssemblies([
+                    typeof(KollityServicesApiEntryPoint).Assembly,
+                    typeof(KollityUserApiEntryPoint).Assembly
+                ]);
             });
         });
         return services;

@@ -26,9 +26,9 @@ builder.Services.AddServicesServicesInjection();
 
 
 // base service
-builder.Services.AddControllers();
-    // .AddApplicationPart(typeof(KollityUserApiEntryPoint).Assembly)
-    // .AddApplicationPart(typeof(KollityServicesApiEntryPoint).Assembly);
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(KollityUserApiEntryPoint).Assembly)
+    .AddApplicationPart(typeof(KollityServicesApiEntryPoint).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
