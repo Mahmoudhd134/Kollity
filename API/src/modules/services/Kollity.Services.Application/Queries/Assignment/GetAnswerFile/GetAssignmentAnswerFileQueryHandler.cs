@@ -1,7 +1,5 @@
-﻿using Kollity.Services.Application.Abstractions.Files;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
-using Kollity.Services.Application.Dtos;
+﻿using Kollity.Services.Application.Dtos;
+using Kollity.Services.Domain.Errors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 

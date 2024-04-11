@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
-using Kollity.Services.Application.Abstractions.RealTime;
 using Kollity.Services.API.Hubs.Abstraction;
+using Kollity.Services.Application.Abstractions.RealTime;
 
 namespace Kollity.Services.API.Hubs.Implementations;
 
@@ -25,7 +25,7 @@ public class SignalRRoomConnectionServices : IRoomConnectionsServices, IRoomConn
     public Guid GetConnectionRoomId(string connectionId)
     {
         var found = _roomConnections.TryGetValue(connectionId, out var userRoom);
-        if(found == false)
+        if (found == false)
             return Guid.Empty;
         return userRoom.RoomId;
     }

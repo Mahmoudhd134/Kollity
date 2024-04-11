@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Files;
-using Kollity.Services.Application.Abstractions.Services;
+﻿using Kollity.Services.Application.Abstractions.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 

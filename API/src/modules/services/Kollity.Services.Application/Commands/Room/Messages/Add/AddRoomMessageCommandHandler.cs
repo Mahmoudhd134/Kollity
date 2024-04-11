@@ -1,11 +1,10 @@
 ﻿using Kollity.Services.Domain.RoomModels;
 using Kollity.Services.Application.Abstractions.Events;
 using Kollity.Services.Application.Abstractions.Files;
-using Kollity.Services.Application.Abstractions.Messages;
 using Kollity.Services.Application.Abstractions.RealTime;
-using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Application.Dtos.Room.Message;
 using Kollity.Services.Application.Events.Room.Messages;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Room.Messages.Add;

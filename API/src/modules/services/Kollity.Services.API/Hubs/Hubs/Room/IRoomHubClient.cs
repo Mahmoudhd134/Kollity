@@ -1,5 +1,4 @@
 ﻿using Kollity.Services.Application.Dtos.Room.Message;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
 
 namespace Kollity.Services.API.Hubs.Hubs.Room;
 

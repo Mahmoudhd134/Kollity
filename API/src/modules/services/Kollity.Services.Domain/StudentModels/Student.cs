@@ -1,6 +1,6 @@
 ﻿using Kollity.Services.Domain.AssignmentModels;
 using Kollity.Services.Domain.AssignmentModels.AssignmentGroupModels;
-using Kollity.Services.Domain.Identity.User;
+using Kollity.Services.Domain.Identity;
 
 namespace Kollity.Services.Domain.StudentModels;
 

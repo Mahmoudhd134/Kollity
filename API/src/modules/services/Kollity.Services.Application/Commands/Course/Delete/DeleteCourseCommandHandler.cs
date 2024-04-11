@@ -1,8 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Files;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.Delete;
 

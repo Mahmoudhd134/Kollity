@@ -1,7 +1,6 @@
-﻿using Kollity.Services.Contracts.Assignment;
-using Kollity.Services.Domain.AssignmentModels;
-using Kollity.Services.Application.Abstractions.Messages;
+﻿using Kollity.Services.Domain.AssignmentModels;
 using Kollity.Services.Application.Dtos.Assignment;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Queries.Assignment.Report;

@@ -17,5 +17,13 @@
       <jdbc-url>server=.;database=MyCollege;trusted_connection=true;encrypt=false;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="Microsoft SQL Server LocalDB (JetBrains) [2]" uuid="f680e4e1-2cf5-41b1-92c2-ba1ec4abcfbd">
+      <driver-ref>sqlserver.localdb.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>server=.;database=Kollity-user-db;trusted_connection=true;encrypt=false;</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

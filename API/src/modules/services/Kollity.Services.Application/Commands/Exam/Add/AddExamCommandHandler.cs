@@ -1,8 +1,6 @@
-﻿using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Application.Abstractions.Events;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
+﻿using Kollity.Services.Application.Abstractions.Events;
 using Kollity.Services.Application.Events.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Exam.Add;

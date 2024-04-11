@@ -10,7 +10,8 @@ using Kollity.Services.Application.Queries.Assignment.Group.GetAll;
 using Kollity.Services.Application.Queries.Assignment.Group.GetById;
 using Kollity.Services.Application.Queries.Assignment.Group.GetInvitations;
 using Kollity.Services.Application.Queries.Assignment.Group.GetUserGroup;
-using Kollity.Services.Domain.Identity.Role;
+using Kollity.Services.Domain.Identity;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

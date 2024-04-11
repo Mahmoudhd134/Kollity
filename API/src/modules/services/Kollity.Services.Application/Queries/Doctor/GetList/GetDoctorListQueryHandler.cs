@@ -1,8 +1,6 @@
 ﻿using AutoMapper.QueryableExtensions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Application.Abstractions.Messages;
 using Kollity.Services.Application.Dtos.Doctor;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Queries.Doctor.GetList;
@@ -28,16 +26,9 @@ public class GetDoctorListQueryHandler : IQueryHandler<GetDoctorListQuery, List<
         if (string.IsNullOrWhiteSpace(filters.UserNamePrefix) == false)
             doctors = doctors.Where(x => x.NormalizedUserName.StartsWith(filters.UserNamePrefix.ToUpper()));
 
-        if (string.IsNullOrWhiteSpace(filters.Role) == false)
+        if (filters.Type != null)
         {
-            var role = request.Filters.Role.ToUpper();
-            var roleId = await _context.Roles
-                .Where(x => x.NormalizedName == role)
-                .Select(x => x.Id)
-                .FirstOrDefaultAsync(cancellationToken);
-            if (roleId == Guid.Empty)
-                return RoleErrors.RoleNotFound(request.Filters.Role);
-            doctors = doctors.Where(x => x.Roles.Any(xx => xx.RoleId == roleId));
+            doctors = doctors.Where(x => x.UserType == filters.Type);
         }
 
         return await doctors

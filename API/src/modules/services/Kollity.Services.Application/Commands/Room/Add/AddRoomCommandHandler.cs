@@ -1,11 +1,5 @@
-﻿using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Domain.Identity.User;
-using Kollity.Services.Domain.RoomModels;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
-using Microsoft.AspNetCore.Identity;
+﻿using Kollity.Services.Domain.RoomModels;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Room.Add;
@@ -14,14 +8,11 @@ public class AddRoomCommandHandler : ICommandHandler<AddRoomCommand>
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
-    private readonly UserManager<BaseUser> _userManager;
 
-    public AddRoomCommandHandler(ApplicationDbContext context, IUserServices userServices,
-        UserManager<BaseUser> userManager)
+    public AddRoomCommandHandler(ApplicationDbContext context, IUserServices userServices)
     {
         _context = context;
         _userServices = userServices;
-        _userManager = userManager;
     }
 
     public async Task<Result> Handle(AddRoomCommand request, CancellationToken cancellationToken)

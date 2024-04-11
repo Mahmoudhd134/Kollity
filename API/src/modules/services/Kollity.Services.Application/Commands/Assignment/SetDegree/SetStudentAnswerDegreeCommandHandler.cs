@@ -1,10 +1,8 @@
-﻿using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Domain.AssignmentModels;
+﻿using Kollity.Services.Domain.AssignmentModels;
 using Kollity.Services.Application.Abstractions.Events;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Application.Events.Assignment;
 using Kollity.Services.Application.Events.Dto;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Assignment.SetDegree;

@@ -1,4 +1,5 @@
 ﻿using Kollity.Services.API.Extensions;
+using Kollity.Services.API.Hubs.Hubs.Room;
 using Kollity.Services.Application.Commands.Room.AcceptAllJoins;
 using Kollity.Services.Application.Commands.Room.AcceptJoin;
 using Kollity.Services.Application.Commands.Room.Add;
@@ -9,14 +10,12 @@ using Kollity.Services.Application.Commands.Room.DenyJoin;
 using Kollity.Services.Application.Commands.Room.Edit;
 using Kollity.Services.Application.Commands.Room.Join;
 using Kollity.Services.Application.Commands.Room.Messages.GetUnRead;
-using Kollity.Services.Application.Dtos;
 using Kollity.Services.Application.Dtos.Room;
 using Kollity.Services.Application.Dtos.Room.Message;
 using Kollity.Services.Application.Queries.Room.GetById;
 using Kollity.Services.Application.Queries.Room.GetMembers;
 using Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
-using Kollity.Services.Domain.Identity.Role;
-using Kollity.Services.API.Hubs.Hubs.Room;
+using Kollity.Services.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -78,7 +77,8 @@ public class RoomController : BaseController
         return Send(new GetRoomMembersQuery(id, dto));
     }
 
-    [HttpGet("{id:guid}/un-read-messages"), SwaggerResponse(200, type: typeof(List<RoomChatMessageDto>))]
+    [HttpGet("{id:guid}/un-read-messages")]
+    [SwaggerResponse(200, type: typeof(List<RoomChatMessageDto>))]
     public async Task<IResult> GetUnReadMessages(Guid id)
     {
         var result = await Sender.Send(new GetUnReadMessagesCommand(id));
@@ -96,7 +96,8 @@ public class RoomController : BaseController
         return result.ToIResult();
     }
 
-    [HttpGet("{id:guid}/get-before-date/{date:datetime}"), SwaggerResponse(200, type: typeof(List<RoomChatMessageDto>))]
+    [HttpGet("{id:guid}/get-before-date/{date:datetime}")]
+    [SwaggerResponse(200, type: typeof(List<RoomChatMessageDto>))]
     public Task<IResult> GetBeforeDate(Guid id, DateTime date)
     {
         return Send(new GetRoomChatMessagesBeforeDateQuery(id, date));

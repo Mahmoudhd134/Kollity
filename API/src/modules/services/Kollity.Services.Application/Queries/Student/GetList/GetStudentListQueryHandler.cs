@@ -1,6 +1,4 @@
 ﻿using AutoMapper.QueryableExtensions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Application.Abstractions.Messages;
 using Kollity.Services.Application.Dtos.Student;
 using Microsoft.EntityFrameworkCore;
 

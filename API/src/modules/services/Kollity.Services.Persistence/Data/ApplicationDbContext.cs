@@ -3,27 +3,24 @@ using Kollity.Services.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Services.Domain.CourseModels;
 using Kollity.Services.Domain.DoctorModels;
 using Kollity.Services.Domain.ExamModels;
-using Kollity.Services.Domain.Identity.Role;
-using Kollity.Services.Domain.Identity.User;
-using Kollity.Services.Domain.Identity.UserRefreshToken;
+using Kollity.Services.Domain.Identity;
 using Kollity.Services.Domain.Messages;
 using Kollity.Services.Domain.RoomModels;
 using Kollity.Services.Domain.StudentModels;
 using Kollity.Services.Persistence.Extensions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Persistence.Data;
 
-public class ApplicationDbContext : IdentityDbContext<BaseUser, BaseRole, Guid>
+public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions options) : base(options)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
 
+    public DbSet<BaseUser> Users { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
-    public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
     public DbSet<Room> Rooms { get; set; }
 
     public DbSet<RoomMessage> RoomMessages { get; set; }

@@ -7,12 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Kollity.Services.Application\Kollity.Services.Application.csproj" />
+        <ProjectReference Include="..\..\user\Kollity.User.Contracts\Kollity.User.Contracts.csproj" />
+        <ProjectReference Include="..\Kollity.Services.Application\Kollity.Services.Application.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MailKit" Version="4.4.0" />
-      <PackageReference Include="MassTransit" Version="8.2.0" />
+        <PackageReference Include="MailKit" Version="4.4.0"/>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0"/>
     </ItemGroup>
 
 </Project>

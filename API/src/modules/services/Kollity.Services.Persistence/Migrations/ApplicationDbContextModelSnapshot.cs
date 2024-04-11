@@ -507,94 +507,16 @@ namespace Kollity.Services.Persistence.Migrations
                     b.ToTable("ExamQuestionOption", (string)null);
                 });
 
-            modelBuilder.Entity("Kollity.Services.Domain.Identity.Role.BaseRole", b =>
+            modelBuilder.Entity("Kollity.Services.Domain.Identity.BaseUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("concurrency_stamp");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("normalized_name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_role");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasDatabaseName("ix_role_name")
-                        .HasFilter("[name] IS NOT NULL");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[normalized_name] IS NOT NULL");
-
-                    b.ToTable("Role", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f"),
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("126abefb-6d50-4d58-9419-c8e1f39a01d8"),
-                            Name = "Doctor",
-                            NormalizedName = "DOCTOR"
-                        },
-                        new
-                        {
-                            Id = new Guid("bf9c94d0-ca32-4b64-aa5a-3c03b44db740"),
-                            Name = "Student",
-                            NormalizedName = "STUDENT"
-                        },
-                        new
-                        {
-                            Id = new Guid("6ddc2275-7ae1-40ca-9f6f-c5b5c637c5d8"),
-                            Name = "Assistant",
-                            NormalizedName = "ASSISTANT"
-                        });
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.Identity.User.BaseUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int")
-                        .HasColumnName("access_failed_count");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("concurrency_stamp");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("email");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit")
-                        .HasColumnName("email_confirmed");
 
                     b.Property<bool>("EnabledEmailNotifications")
                         .HasColumnType("bit")
@@ -605,49 +527,18 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasColumnType("nvarchar(127)")
                         .HasColumnName("full_name_in_arabic");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit")
-                        .HasColumnName("lockout_enabled");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset")
-                        .HasColumnName("lockout_end");
-
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("normalized_email");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
-                        .HasColumnName("normalized_user_name");
-
-                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("password_hash");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(127)
-                        .HasColumnType("nvarchar(127)")
-                        .HasColumnName("phone_number");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit")
-                        .HasColumnName("phone_number_confirmed");
+                        .HasColumnName("normalized_user_name");
 
                     b.Property<string>("ProfileImage")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("profile_image");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("security_stamp");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit")
-                        .HasColumnName("two_factor_enabled");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -656,9 +547,12 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasColumnName("type");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("user_name");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int")
+                        .HasColumnName("user_type");
 
                     b.HasKey("Id")
                         .HasName("pk_user");
@@ -670,13 +564,8 @@ namespace Kollity.Services.Persistence.Migrations
 
                     b.HasIndex("NormalizedEmail")
                         .IsUnique()
-                        .HasDatabaseName("EmailIndex")
+                        .HasDatabaseName("ix_user_normalized_email")
                         .HasFilter("[normalized_email] IS NOT NULL");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[normalized_user_name] IS NOT NULL");
 
                     b.HasIndex("UserName")
                         .IsUnique()
@@ -688,42 +577,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.HasDiscriminator<string>("Type").HasValue("BaseUser");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.Identity.UserRefreshToken.UserRefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<string>("RefreshToken")
-                        .HasMaxLength(127)
-                        .HasColumnType("nvarchar(127)")
-                        .HasColumnName("refresh_token");
-
-                    b.Property<string>("UserAgent")
-                        .HasMaxLength(511)
-                        .HasColumnType("nvarchar(511)")
-                        .HasColumnName("user_agent");
-
-                    b.Property<Guid>("UserId")
-                        .HasMaxLength(450)
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_user_refresh_token");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_user_refresh_token_user_id");
-
-                    b.HasIndex("UserId", "UserAgent")
-                        .IsUnique()
-                        .HasDatabaseName("ix_user_refresh_token_user_id_user_agent")
-                        .HasFilter("[user_agent] IS NOT NULL");
-
-                    b.ToTable("UserRefreshToken", (string)null);
                 });
 
             modelBuilder.Entity("Kollity.Services.Domain.Messages.OutboxMessage", b =>
@@ -997,150 +850,9 @@ namespace Kollity.Services.Persistence.Migrations
                     b.ToTable("StudentCourse", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("claim_type");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("claim_value");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_role_claim");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_role_claim_role_id");
-
-                    b.ToTable("RoleClaim", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("claim_type");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("claim_value");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_user_claim");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_user_claim_user_id");
-
-                    b.ToTable("UserClaim", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("provider_key");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("provider_display_name");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("LoginProvider", "ProviderKey")
-                        .HasName("pk_user_login");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_user_login_user_id");
-
-                    b.ToTable("UserLogin", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("UserId", "RoleId")
-                        .HasName("pk_user_role");
-
-                    b.HasIndex("RoleId")
-                        .HasDatabaseName("ix_user_role_role_id");
-
-                    b.ToTable("UserRole", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
-                            RoleId = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f")
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("user_id");
-
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("login_provider");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("value");
-
-                    b.HasKey("UserId", "LoginProvider", "Name")
-                        .HasName("pk_user_token");
-
-                    b.ToTable("UserToken", (string)null);
-                });
-
             modelBuilder.Entity("Kollity.Services.Domain.DoctorModels.Doctor", b =>
                 {
-                    b.HasBaseType("Kollity.Services.Domain.Identity.User.BaseUser");
+                    b.HasBaseType("Kollity.Services.Domain.Identity.BaseUser");
 
                     b.HasDiscriminator().HasValue("Doctor");
 
@@ -1148,26 +860,19 @@ namespace Kollity.Services.Persistence.Migrations
                         new
                         {
                             Id = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a443bf96-da75-4046-8452-7d64553b4533",
                             Email = "nassermahmoud571@gmail.com",
-                            EmailConfirmed = false,
                             EnabledEmailNotifications = false,
                             FullNameInArabic = "Mahmoud Ahmed Nasser Mahmoud",
-                            LockoutEnabled = true,
                             NormalizedEmail = "NASSERMAHMOUD571@GMAIL.COM",
                             NormalizedUserName = "MAHMOUDHD134",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPRFyxksWTOaY3gzYwnqUGS8FT0q1kCjlaUo1KP/Uu3R1seoxDWoi1tlyw8Uc69YNA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "6TPMB3KY7R4NAIGXTMKLOWGRE2HQOOBY",
-                            TwoFactorEnabled = false,
-                            UserName = "Mahmoudhd134"
+                            UserName = "Mahmoudhd134",
+                            UserType = 0
                         });
                 });
 
             modelBuilder.Entity("Kollity.Services.Domain.StudentModels.Student", b =>
                 {
-                    b.HasBaseType("Kollity.Services.Domain.Identity.User.BaseUser");
+                    b.HasBaseType("Kollity.Services.Domain.Identity.BaseUser");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -1189,7 +894,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("fk_assigment_asp_net_users_doctor_id");
+                        .HasConstraintName("fk_assigment_users_doctor_id");
 
                     b.HasOne("Kollity.Services.Domain.RoomModels.Room", "Room")
                         .WithMany("Assignments")
@@ -1221,7 +926,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .WithMany("AssignmentsAnswers")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .HasConstraintName("fk_assignment_answer_asp_net_users_student_id");
+                        .HasConstraintName("fk_assignment_answer_users_student_id");
 
                     b.Navigation("Assignment");
 
@@ -1258,7 +963,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
-                        .HasConstraintName("fk_assignment_answer_degree_asp_net_users_student_id");
+                        .HasConstraintName("fk_assignment_answer_degree_users_student_id");
 
                     b.Navigation("Answer");
 
@@ -1307,7 +1012,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_assignment_group_student_asp_net_users_student_id");
+                        .HasConstraintName("fk_assignment_group_student_users_student_id");
 
                     b.Navigation("AssignmentGroup");
 
@@ -1320,7 +1025,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .WithMany("Courses")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("fk_course_asp_net_users_doctor_id");
+                        .HasConstraintName("fk_course_users_doctor_id");
 
                     b.Navigation("Doctor");
                 });
@@ -1332,7 +1037,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasForeignKey("AssistantId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
-                        .HasConstraintName("fk_course_assistant_asp_net_users_assistant_id");
+                        .HasConstraintName("fk_course_assistant_users_assistant_id");
 
                     b.HasOne("Kollity.Services.Domain.CourseModels.Course", "Course")
                         .WithMany("CoursesAssistants")
@@ -1384,7 +1089,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("fk_exam_answer_asp_net_users_student_id");
+                        .HasConstraintName("fk_exam_answer_users_student_id");
 
                     b.Navigation("Exam");
 
@@ -1419,18 +1124,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.Navigation("ExamQuestion");
                 });
 
-            modelBuilder.Entity("Kollity.Services.Domain.Identity.UserRefreshToken.UserRefreshToken", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", "User")
-                        .WithMany("UserRefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_refresh_token_user_user_id");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Kollity.Services.Domain.RoomModels.MessagePollAnswer", b =>
                 {
                     b.HasOne("Kollity.Services.Domain.RoomModels.RoomMessage", "Poll")
@@ -1440,7 +1133,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_message_poll_answer_room_messages_poll_id");
 
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", "User")
+                    b.HasOne("Kollity.Services.Domain.Identity.BaseUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1481,7 +1174,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_room_content_room_room_id");
 
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", "Uploader")
+                    b.HasOne("Kollity.Services.Domain.Identity.BaseUser", "Uploader")
                         .WithMany()
                         .HasForeignKey("UploaderId")
                         .OnDelete(DeleteBehavior.SetNull)
@@ -1501,7 +1194,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_room_message_room_room_id");
 
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", "Sender")
+                    b.HasOne("Kollity.Services.Domain.Identity.BaseUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.SetNull)
@@ -1521,7 +1214,7 @@ namespace Kollity.Services.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_user_room_room_room_id");
 
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", "User")
+                    b.HasOne("Kollity.Services.Domain.Identity.BaseUser", "User")
                         .WithMany("UsersRooms")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1552,63 +1245,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.Identity.Role.BaseRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_role_claim_asp_net_roles_role_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_claim_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_login_asp_net_users_user_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.Identity.Role.BaseRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_role_role_role_id");
-
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_role_user_user_id");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.Identity.User.BaseUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_token_asp_net_users_user_id");
                 });
 
             modelBuilder.Entity("Kollity.Services.Domain.AssignmentModels.Assignment", b =>
@@ -1658,12 +1294,8 @@ namespace Kollity.Services.Persistence.Migrations
                     b.Navigation("ExamAnswers");
                 });
 
-            modelBuilder.Entity("Kollity.Services.Domain.Identity.User.BaseUser", b =>
+            modelBuilder.Entity("Kollity.Services.Domain.Identity.BaseUser", b =>
                 {
-                    b.Navigation("Roles");
-
-                    b.Navigation("UserRefreshTokens");
-
                     b.Navigation("UsersRooms");
                 });
 

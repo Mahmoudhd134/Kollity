@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.API.Helpers;
+﻿using Kollity.Services.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kollity.Services.API.Extensions;

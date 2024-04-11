@@ -1,6 +1,4 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Application.Abstractions.Messages;
+﻿using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.Add;

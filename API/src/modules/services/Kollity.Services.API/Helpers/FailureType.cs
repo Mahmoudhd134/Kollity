@@ -1,6 +1,4 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-
-namespace Kollity.Services.API.Helpers;
+﻿namespace Kollity.Services.API.Helpers;
 
 public class FailureType
 {

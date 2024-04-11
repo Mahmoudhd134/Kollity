@@ -1,10 +1,9 @@
 ﻿using System.Globalization;
 using System.Security.Claims;
 using Kollity.Services.API.Extensions;
+using Kollity.Services.API.Helpers;
 using Kollity.Services.Application.Abstractions.Messages;
 using Kollity.Services.Application.Dtos;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.API.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ public class BaseController : ControllerBase
 
     protected async Task<IResult> Send<T>(ICommand<T> command)
     {
-        return ((Result<T>)(await Sender.Send(command))).ToIResult();
+        return (await Sender.Send(command)).ToIResult();
     }
 
     protected async Task CopyFileToResponse(FileStreamDto fileStreamDto)

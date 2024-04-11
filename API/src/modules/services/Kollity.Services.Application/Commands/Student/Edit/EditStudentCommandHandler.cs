@@ -1,11 +1,9 @@
-﻿using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Student;
 using Kollity.Services.Application.Queries.Identity.IsUserNameUsed;
+using Kollity.Services.Domain.Errors;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Student.Edit;
 
@@ -14,20 +12,20 @@ public class EditStudentCommandHandler : ICommandHandler<EditStudentCommand>
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly ISender _sender;
-    private readonly UserManager<Domain.StudentModels.Student> _studentManager;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
     public EditStudentCommandHandler(ApplicationDbContext context,
         ISender sender,
         IMapper mapper,
         IUserServices userServices,
-        UserManager<Domain.StudentModels.Student> studentManager)
+        EventCollection eventCollection)
     {
         _context = context;
         _sender = sender;
         _mapper = mapper;
         _userServices = userServices;
-        _studentManager = studentManager;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(EditStudentCommand request, CancellationToken cancellationToken)
@@ -41,16 +39,19 @@ public class EditStudentCommandHandler : ICommandHandler<EditStudentCommand>
         if (isUserNameUsed.Data)
             return UserErrors.UserNameAlreadyUsed(request.EditStudentDto.UserName);
 
-        var student = await _studentManager.FindByIdAsync(currentUserId.ToString());
+        var student = await _context.Students.FirstOrDefaultAsync(x => x.Id == currentUserId, cancellationToken);
         if (student is null)
             return StudentErrors.IdNotFound(currentUserId);
 
 
         _mapper.Map(request.EditStudentDto, student);
-        var result = await _studentManager.UpdateAsync(student);
+        student.NormalizedUserName = student.UserName?.ToUpper();
+        student.NormalizedEmail = student.NormalizedEmail?.ToUpper();
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
 
-        return result.Succeeded
-            ? Result.Success()
-            : result.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList();
+        _eventCollection.Raise(new StudentEditedEvent(student));
+        return Result.Success();
     }
 }

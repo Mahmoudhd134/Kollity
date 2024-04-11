@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
+﻿using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Identity.EditSettings;
@@ -21,12 +20,12 @@ public class EditMyUserSettingsCommandHandler : ICommandHandler<EditMyUserSettin
         var id = _userServices.GetCurrentUserId();
         var settings = request.Dto;
 
-        var confirmed = await _context.Users
-            .Where(x => x.Id == id)
-            .Select(x => x.EmailConfirmed)
-            .FirstOrDefaultAsync(cancellationToken);
-        if (confirmed == false)
-            return UserErrors.EmailIsNotConfirmed;
+        // var confirmed = await _context.Users
+        //     .Where(x => x.Id == id)
+        //     .Select(x => x.EmailConfirmed)
+        //     .FirstOrDefaultAsync(cancellationToken);
+        // if (confirmed == false)
+        //     return UserErrors.EmailIsNotConfirmed;
 
         var result = await _context.Users
             .Where(x => x.Id == id)

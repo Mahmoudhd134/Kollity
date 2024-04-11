@@ -1,6 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Events;
-
-namespace Kollity.Services.Application.Abstractions.Messages;
+﻿namespace Kollity.Services.Application.Abstractions.Messages;
 
 public interface IEventBus
 {

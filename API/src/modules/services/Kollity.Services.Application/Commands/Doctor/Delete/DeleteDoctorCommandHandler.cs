@@ -1,8 +1,6 @@
-﻿using Kollity.Services.Application.Extensions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Application.Abstractions.Messages;
-using Microsoft.AspNetCore.Identity;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Doctor;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Doctor.Delete;
@@ -10,19 +8,19 @@ namespace Kollity.Services.Application.Commands.Doctor.Delete;
 public class DeleteDoctorCommandHandler : ICommandHandler<DeleteDoctorCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<Domain.DoctorModels.Doctor> _doctorManager;
+    private readonly EventCollection _eventCollection;
 
-    public DeleteDoctorCommandHandler(UserManager<Domain.DoctorModels.Doctor> doctorManager,
-        ApplicationDbContext context)
+    public DeleteDoctorCommandHandler(ApplicationDbContext context, EventCollection eventCollection)
     {
-        _doctorManager = doctorManager;
         _context = context;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteDoctorCommand request, CancellationToken cancellationToken)
     {
-        var doctor = await _doctorManager.FindByIdAsync(request.Id.ToString());
-
+        var doctor = await _context.Doctors
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (doctor is null)
             return DoctorErrors.IdNotFound(request.Id);
 
@@ -30,8 +28,14 @@ public class DeleteDoctorCommandHandler : ICommandHandler<DeleteDoctorCommand>
             .Where(x => x.AssistantId == request.Id)
             .ExecuteDeleteAsync(cancellationToken);
 
-        var result = await _doctorManager.DeleteAsync(doctor);
+        var result = await _context.Doctors
+            .Where(x => x.Id == request.Id)
+            .ExecuteDeleteAsync(cancellationToken);
 
-        return result.Succeeded ? Result.Success() : result.Errors.ToAppError().ToList();
+        if (result == 0)
+            return Error.UnKnown;
+
+        _eventCollection.Raise(new DoctorDeletedEvent(doctor));
+        return Result.Success();
     }
 }

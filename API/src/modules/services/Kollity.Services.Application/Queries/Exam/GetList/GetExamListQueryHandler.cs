@@ -1,5 +1,4 @@
 ﻿using AutoMapper.QueryableExtensions;
-using Kollity.Services.Application.Abstractions.Messages;
 using Kollity.Services.Application.Dtos.Exam;
 using Microsoft.EntityFrameworkCore;
 

@@ -6,7 +6,7 @@ namespace Kollity.Services.Application;
 
 public static class ApplicationExtensions
 {
-    public static IServiceCollection AddApplicationConfiguration(this IServiceCollection services)
+    public static IServiceCollection AddServicesApplicationConfiguration(this IServiceCollection services)
     {
         services.AddMediatR(opt =>
         {

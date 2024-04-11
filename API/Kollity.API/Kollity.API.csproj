@@ -2,11 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
         <PackageReference Include="SignalRSwaggerGen" Version="4.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
@@ -14,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\src\modules\services\Kollity.Services.API\Kollity.Services.API.csproj" />
+      <ProjectReference Include="..\src\modules\user\Kollity.User.API\Kollity.User.API.csproj" />
     </ItemGroup>
 
 </Project>

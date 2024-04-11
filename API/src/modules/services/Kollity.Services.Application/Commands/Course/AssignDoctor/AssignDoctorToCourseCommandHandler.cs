@@ -1,8 +1,5 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Domain.Identity.Role;
-using Kollity.Services.Application.Abstractions.Messages;
-using Microsoft.AspNetCore.Identity;
+﻿using Kollity.Services.Domain.Errors;
+using Kollity.Services.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.AssignDoctor;
@@ -10,13 +7,12 @@ namespace Kollity.Services.Application.Commands.Course.AssignDoctor;
 public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorToCourseCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<Domain.DoctorModels.Doctor> _doctorManager;
+    private readonly IUserServices _userServices;
 
-    public AssignDoctorToCourseCommandHandler(ApplicationDbContext context,
-        UserManager<Domain.DoctorModels.Doctor> doctorManager)
+    public AssignDoctorToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices)
     {
         _context = context;
-        _doctorManager = doctorManager;
+        _userServices = userServices;
     }
 
     public async Task<Result> Handle(AssignDoctorToCourseCommand request, CancellationToken cancellationToken)
@@ -24,7 +20,7 @@ public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorTo
         var doctorId = request.CourseDoctorIdsMap.DoctorId;
         var courseId = request.CourseDoctorIdsMap.CourseId;
 
-        var doctor = await _doctorManager.FindByIdAsync(doctorId.ToString());
+        var doctor = await _context.Doctors.FirstOrDefaultAsync(x => x.Id == doctorId, cancellationToken);
         if (doctor is null)
             return DoctorErrors.IdNotFound(doctorId);
 
@@ -35,7 +31,7 @@ public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorTo
         if (course.DoctorId != null)
             return CourseErrors.HasAnAssignedDoctor;
 
-        var isInDoctorRole = await _doctorManager.IsInRoleAsync(doctor, Role.Doctor);
+        var isInDoctorRole = _userServices.IsInRole(Role.Doctor);
         if (isInDoctorRole == false)
             return CourseErrors.NonDoctorAssignation;
 

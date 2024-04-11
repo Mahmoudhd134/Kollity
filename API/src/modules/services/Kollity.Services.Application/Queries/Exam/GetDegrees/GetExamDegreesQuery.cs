@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Dtos.Exam;
+﻿using Kollity.Services.Application.Dtos.Exam;
 
 namespace Kollity.Services.Application.Queries.Exam.GetDegrees;
 

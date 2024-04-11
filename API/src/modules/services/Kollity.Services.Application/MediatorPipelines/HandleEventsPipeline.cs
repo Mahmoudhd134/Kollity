@@ -1,9 +1,5 @@
-﻿using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Domain.Messages;
-using Kollity.Services.Application.Abstractions.Events;
-using Kollity.Services.Application.Abstractions.Messages;
+﻿using Kollity.Services.Application.Abstractions.Events;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Kollity.Services.Application.MediatorPipelines;
 

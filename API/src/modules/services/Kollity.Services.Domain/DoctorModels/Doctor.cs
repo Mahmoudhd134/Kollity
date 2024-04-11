@@ -1,5 +1,5 @@
 ﻿using Kollity.Services.Domain.CourseModels;
-using Kollity.Services.Domain.Identity.User;
+using Kollity.Services.Domain.Identity;
 
 namespace Kollity.Services.Domain.DoctorModels;
 

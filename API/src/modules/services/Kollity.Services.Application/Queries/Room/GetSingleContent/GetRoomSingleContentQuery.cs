@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Dtos;
+﻿using Kollity.Services.Application.Dtos;
 
 namespace Kollity.Services.Application.Queries.Room.GetSingleContent;
 

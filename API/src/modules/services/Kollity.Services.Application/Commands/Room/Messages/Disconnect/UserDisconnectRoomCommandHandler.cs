@@ -1,6 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Room.Messages.Disconnect;
 

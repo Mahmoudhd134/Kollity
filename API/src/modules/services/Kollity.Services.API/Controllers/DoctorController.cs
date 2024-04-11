@@ -7,7 +7,8 @@ using Kollity.Services.Application.Queries.Doctor.Courses;
 using Kollity.Services.Application.Queries.Doctor.GetById;
 using Kollity.Services.Application.Queries.Doctor.GetList;
 using Kollity.Services.Application.Queries.Doctor.Profile;
-using Kollity.Services.Domain.Identity.Role;
+using Kollity.Services.Domain.Identity;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

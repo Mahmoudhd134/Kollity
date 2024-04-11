@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Kollity.Services.Application.Abstractions;
 using Kollity.Services.Application.Abstractions.Services;
 
 namespace Kollity.Services.API.Implementation;

@@ -1,30 +1,29 @@
-﻿using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Application.Extensions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Doctor;
 using Kollity.Services.Application.Queries.Identity.IsUserNameUsed;
+using Kollity.Services.Domain.Errors;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Doctor.Edit;
 
 public class EditDoctorCommandHandler : ICommandHandler<EditDoctorCommand>
 {
-    private readonly UserManager<Domain.DoctorModels.Doctor> _doctorManager;
+    private readonly EventCollection _eventCollection;
     private readonly IMapper _mapper;
     private readonly ISender _sender;
     private readonly IUserServices _userServices;
+    private readonly ApplicationDbContext _context;
 
-    public EditDoctorCommandHandler(UserManager<Domain.DoctorModels.Doctor> doctorManager, IMapper mapper,
+    public EditDoctorCommandHandler(EventCollection eventCollection, IMapper mapper,
         ISender sender,
-        IUserServices userServices)
+        IUserServices userServices, ApplicationDbContext context)
     {
-        _doctorManager = doctorManager;
+        _eventCollection = eventCollection;
         _mapper = mapper;
         _sender = sender;
         _userServices = userServices;
+        _context = context;
     }
 
     public async Task<Result> Handle(EditDoctorCommand request, CancellationToken cancellationToken)
@@ -38,14 +37,19 @@ public class EditDoctorCommandHandler : ICommandHandler<EditDoctorCommand>
         if (isUserNameUsed.Data)
             return UserErrors.UserNameAlreadyUsed(request.EditDoctorDto.UserName);
 
-        var doctor = await _doctorManager.FindByIdAsync(currentUserId.ToString());
+        var doctor = await _context.Doctors.FirstOrDefaultAsync(x => x.Id == currentUserId, cancellationToken);
         if (doctor is null)
             return DoctorErrors.IdNotFound(currentUserId);
 
 
         _mapper.Map(request.EditDoctorDto, doctor);
-        var result = await _doctorManager.UpdateAsync(doctor);
+        doctor.NormalizedUserName = doctor.UserName?.ToUpper();
+        doctor.NormalizedEmail = doctor.Email?.ToUpper();
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
 
-        return result.Succeeded ? Result.Success() : result.Errors.ToAppError().ToList();
+        _eventCollection.Raise(new DoctorEditedEvent(doctor));
+        return Result.Success();
     }
 }

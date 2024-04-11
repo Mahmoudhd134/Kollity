@@ -1,9 +1,8 @@
 ﻿using Kollity.Services.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Services.Application.Abstractions.Events;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Application.Dtos.Assignment.Group;
 using Kollity.Services.Application.Events.AssignmentGroup;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Assignment.Group.AddGroup;

@@ -1,25 +1,25 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Domain.Identity.Role;
-using Kollity.Services.Application.Abstractions.Messages;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Doctor;
 using Kollity.Services.Application.Queries.Identity.IsUserNameUsed;
+using Kollity.Services.Domain.Errors;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace Kollity.Services.Application.Commands.Doctor.Add;
 
 public class AddDoctorCommandHandler : ICommandHandler<AddDoctorCommand>
 {
-    private readonly UserManager<Domain.DoctorModels.Doctor> _doctorManager;
+    private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
     private readonly ISender _sender;
+    private readonly EventCollection _eventCollection;
 
-    public AddDoctorCommandHandler(UserManager<Domain.DoctorModels.Doctor> doctorManager, IMapper mapper,
-        ISender sender)
+    public AddDoctorCommandHandler(ApplicationDbContext context, IMapper mapper, ISender sender,
+        EventCollection eventCollection)
     {
-        _doctorManager = doctorManager;
+        _context = context;
         _mapper = mapper;
         _sender = sender;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AddDoctorCommand request, CancellationToken cancellationToken)
@@ -30,19 +30,13 @@ public class AddDoctorCommandHandler : ICommandHandler<AddDoctorCommand>
             return DoctorErrors.UserNameAlreadyExists(request.AddDoctorDto.UserName);
 
         var doctor = _mapper.Map<Domain.DoctorModels.Doctor>(request.AddDoctorDto);
-        var result = await _doctorManager.CreateAsync(doctor, request.AddDoctorDto.Password);
+        doctor.NormalizedUserName = doctor.UserName?.ToUpper();
+        _context.Doctors.Add(doctor);
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
 
-        var errors = result.Errors
-            .Select(e => Error.Validation(e.Code, e.Description))
-            .ToList();
-
-        if (errors.Count > 0)
-            return errors;
-
-        if (request.AddDoctorDto.Role == Role.Doctor)
-            await _doctorManager.AddToRoleAsync(doctor, Role.Doctor);
-        else if (request.AddDoctorDto.Role == Role.Assistant)
-            await _doctorManager.AddToRoleAsync(doctor, Role.Assistant);
+        _eventCollection.Raise(new DoctorAddedEvent(doctor, request.AddDoctorDto.Password, request.AddDoctorDto.Role));
 
         return Result.Success();
     }

@@ -1,4 +1,4 @@
-﻿using Kollity.Services.Domain.Identity.User;
+﻿using Kollity.Services.Domain.Identity;
 
 namespace Kollity.Services.Domain.RoomModels;
 

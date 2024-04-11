@@ -18,7 +18,8 @@ using Kollity.Services.Application.Queries.Assignment.GetGroupDegree;
 using Kollity.Services.Application.Queries.Assignment.GetIndividualAnswers;
 using Kollity.Services.Application.Queries.Assignment.GetList;
 using Kollity.Services.Application.Queries.Assignment.Report;
-using Kollity.Services.Domain.Identity.Role;
+using Kollity.Services.Domain.Identity;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -28,19 +29,22 @@ namespace Kollity.Services.API.Controllers;
 [Route("api/room/{roomId:guid}/assignment")]
 public class AssignmentController : BaseController
 {
-    [HttpGet, SwaggerResponse(200, type: typeof(List<AssignmentForListDto>))]
+    [HttpGet]
+    [SwaggerResponse(200, type: typeof(List<AssignmentForListDto>))]
     public Task<IResult> Get(Guid roomId)
     {
         return Send(new GetAssignmentListQuery(roomId));
     }
 
-    [HttpGet("{assignmentId:guid}"), SwaggerResponse(200, type: typeof(AssignmentDto))]
+    [HttpGet("{assignmentId:guid}")]
+    [SwaggerResponse(200, type: typeof(AssignmentDto))]
     public Task<IResult> GetOne(Guid assignmentId)
     {
         return Send(new GetAssignmentByIdQuery(assignmentId));
     }
 
-    [HttpGet("get-file/{fileId:guid}"), AllowAnonymous]
+    [HttpGet("get-file/{fileId:guid}")]
+    [AllowAnonymous]
     public async Task<ActionResult> GetFile(Guid fileId)
     {
         var response = await Sender.Send(new GetAssignmentFileQuery(fileId));
@@ -50,39 +54,40 @@ public class AssignmentController : BaseController
         return new EmptyResult();
     }
 
-    [HttpGet("{assignmentId:guid}/group-answers/{groupId:guid}"),
-     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     SwaggerResponse(200, type: typeof(AssignmentGroupDegreeDto))]
+    [HttpGet("{assignmentId:guid}/group-answers/{groupId:guid}")]
+    [Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}")]
+    [SwaggerResponse(200, type: typeof(AssignmentGroupDegreeDto))]
     public Task<IResult> GetGroupMembersDegrees(Guid assignmentId, Guid groupId)
     {
         return Send(new GetAssignmentGroupMembersAnswerDegreeQuery(assignmentId, groupId));
     }
 
-    [HttpGet("{assignmentId:guid}/group-answers"),
-     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     SwaggerResponse(200, type: typeof(GroupingAssignmentAnswersDto))]
+    [HttpGet("{assignmentId:guid}/group-answers")]
+    [Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}")]
+    [SwaggerResponse(200, type: typeof(GroupingAssignmentAnswersDto))]
     public Task<IResult> GetGroupAnswers(Guid assignmentId, [FromQuery] GroupAssignmentAnswersFilters filters)
     {
         return Send(new GetGroupingAssignmentAnswersQuery(assignmentId, filters));
     }
 
-    [HttpGet("{assignmentId:guid}/individual-answers"),
-     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     SwaggerResponse(200, type: typeof(IndividualAssignmentAnswersDto))]
+    [HttpGet("{assignmentId:guid}/individual-answers")]
+    [Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}")]
+    [SwaggerResponse(200, type: typeof(IndividualAssignmentAnswersDto))]
     public Task<IResult> GetIndividualAnswers(Guid assignmentId, [FromQuery] IndividualAssignmentAnswersFilters filters)
     {
         return Send(new GetAssignmentIndividualAnswersQuery(assignmentId, filters));
     }
 
-    [HttpGet("{assignmentId:guid}/report"),
-     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     SwaggerResponse(200, type: typeof(AssignmentReportDto))]
+    [HttpGet("{assignmentId:guid}/report")]
+    [Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}")]
+    [SwaggerResponse(200, type: typeof(AssignmentReportDto))]
     public Task<IResult> GetReport(Guid assignmentId, [FromQuery] PaginationDto paginationDto)
     {
         return Send(new GetAssignmentReportQuery(assignmentId, paginationDto));
     }
 
-    [HttpGet("answer-file/{answerId:guid}"), AllowAnonymous]
+    [HttpGet("answer-file/{answerId:guid}")]
+    [AllowAnonymous]
     public async Task<ActionResult> GetAnswerFile(Guid answerId)
     {
         var response = await Sender.Send(new GetAssignmentAnswerFileQuery(answerId));

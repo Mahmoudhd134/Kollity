@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using MediatR;
+﻿using MediatR;
 
 namespace Kollity.Services.Application.Abstractions.Messages;
 

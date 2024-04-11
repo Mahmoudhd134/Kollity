@@ -1,5 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Dtos.Room.Message;
+﻿using Kollity.Services.Application.Dtos.Room.Message;
 
 namespace Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
 

@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Application.Commands.Identity.ChangeImagePhoto;
+﻿using Kollity.Services.API.Extensions;
+using Kollity.Services.API.Helpers;
+using Kollity.Services.Application.Commands.Identity.ChangeImagePhoto;
 using Kollity.Services.Application.Commands.Identity.ChangePassword;
 using Kollity.Services.Application.Commands.Identity.EditSettings;
 using Kollity.Services.Application.Commands.Identity.ResetPassword.Reset;
@@ -7,9 +9,6 @@ using Kollity.Services.Application.Commands.Identity.SetEmail.Confirm;
 using Kollity.Services.Application.Commands.Identity.SetEmail.Set;
 using Kollity.Services.Application.Dtos.Identity;
 using Kollity.Services.Application.Queries.Identity.GetMySettings;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.API.Extensions;
-using Kollity.Services.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -20,7 +19,8 @@ namespace Kollity.Services.API.Controllers;
 
 public class IdentityController : BaseController
 {
-    [HttpGet("settings"), SwaggerResponse(200, type: typeof(UserSettingsDto))]
+    [HttpGet("settings")]
+    [SwaggerResponse(200, type: typeof(UserSettingsDto))]
     public Task<IResult> GetSettings()
     {
         return Send(new GetMyUserSettingsQuery());
@@ -120,7 +120,7 @@ public class IdentityController : BaseController
     public async Task<IResult> Change([FromForm] ImageDto dto)
     {
         var stream = dto.Image.OpenReadStream();
-        var result = await Send(new ChangeUserProfileImageCommand(new ChangeImagePhotoDto()
+        var result = await Send(new ChangeUserProfileImageCommand(new ChangeImagePhotoDto
         {
             ImageStream = stream,
             Extensions = "." + dto.Image.FileName.Split(".").Last()

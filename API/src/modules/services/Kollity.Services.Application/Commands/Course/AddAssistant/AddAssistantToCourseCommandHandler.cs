@@ -1,9 +1,6 @@
 ﻿using Kollity.Services.Domain.CourseModels;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Domain.Identity.Role;
-using Kollity.Services.Application.Abstractions.Messages;
-using Microsoft.AspNetCore.Identity;
+using Kollity.Services.Domain.Errors;
+using Kollity.Services.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.AddAssistant;
@@ -11,13 +8,12 @@ namespace Kollity.Services.Application.Commands.Course.AddAssistant;
 public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantToCourseCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<Domain.DoctorModels.Doctor> _doctorManager;
+    private readonly IUserServices _userServices;
 
-    public AddAssistantToCourseCommandHandler(ApplicationDbContext context,
-        UserManager<Domain.DoctorModels.Doctor> doctorManager)
+    public AddAssistantToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices)
     {
         _context = context;
-        _doctorManager = doctorManager;
+        _userServices = userServices;
     }
 
     public async Task<Result> Handle(AddAssistantToCourseCommand request, CancellationToken cancellationToken)
@@ -25,7 +21,7 @@ public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantTo
         var assistantId = request.CourseDoctorIdsMap.DoctorId;
         var courseId = request.CourseDoctorIdsMap.CourseId;
 
-        var doctor = await _doctorManager.FindByIdAsync(assistantId.ToString());
+        var doctor = await _context.Doctors.FirstOrDefaultAsync(x => x.Id == assistantId, cancellationToken);
         if (doctor is null)
             return DoctorErrors.IdNotFound(assistantId);
 
@@ -40,7 +36,7 @@ public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantTo
         if (isAssigned)
             return CourseErrors.AssistantAlreadyAssigned;
 
-        var isInAssistantRole = await _doctorManager.IsInRoleAsync(doctor, Role.Assistant);
+        var isInAssistantRole = _userServices.IsInRole(Role.Assistant);
         if (isInAssistantRole == false)
             return CourseErrors.NonAssistantAssignation;
 

@@ -1,6 +1,4 @@
-﻿using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Application.Abstractions.Messages;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Queries.Identity.IsUserNameUsed;
 

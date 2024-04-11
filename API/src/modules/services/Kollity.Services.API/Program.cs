@@ -1,10 +1,11 @@
+global using Kollity.Common.ErrorHandling;
 using Kollity.Services.API.Extensions;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddConfigurations();
+builder.Services.AddServicesApiConfigurations();
 
 var app = builder.Build();
 
@@ -27,9 +28,9 @@ app.UseAuthorization();
 app.UseExceptionHandler();
 
 app.MapControllers();
-app.MapHubs();
+app.MapServicesHubs();
 app.MapHealthChecks("healthy");
 app.MapFallbackToFile("index.html");
 
-await app.UpdateDatabase();
+// await app.UpdateDatabase();
 app.Run();

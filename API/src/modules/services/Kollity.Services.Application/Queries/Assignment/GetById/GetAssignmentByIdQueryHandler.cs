@@ -1,13 +1,9 @@
 ﻿using AutoMapper.QueryableExtensions;
-using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Contracts.Assignment;
 using Kollity.Services.Domain.AssignmentModels;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Domain.Identity.Role;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
+
 using Kollity.Services.Application.Dtos.Assignment;
+using Kollity.Services.Domain.Errors;
+using Kollity.Services.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Queries.Assignment.GetById;

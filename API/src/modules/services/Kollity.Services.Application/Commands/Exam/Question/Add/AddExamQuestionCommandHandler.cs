@@ -1,7 +1,6 @@
 ﻿using Kollity.Services.Domain.ExamModels;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Application.Dtos.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Exam.Question.Add;

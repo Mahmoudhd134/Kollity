@@ -10,7 +10,8 @@ using Kollity.Services.Application.Commands.Course.Edit;
 using Kollity.Services.Application.Dtos.Course;
 using Kollity.Services.Application.Queries.Course.GetById;
 using Kollity.Services.Application.Queries.Course.GetList;
-using Kollity.Services.Domain.Identity.Role;
+using Kollity.Services.Domain.Identity;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

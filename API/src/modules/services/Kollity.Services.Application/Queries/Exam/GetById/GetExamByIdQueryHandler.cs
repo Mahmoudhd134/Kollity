@@ -1,5 +1,5 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Dtos.Exam;
+﻿using Kollity.Services.Application.Dtos.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Queries.Exam.GetById;

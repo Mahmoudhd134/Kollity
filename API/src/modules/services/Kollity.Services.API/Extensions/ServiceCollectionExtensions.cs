@@ -1,14 +1,12 @@
 ﻿using System.Text;
-using Kollity.Services.Application.Abstractions;
-using Kollity.Services.Application.Abstractions.RealTime;
-using Kollity.Services.Application.Abstractions.Services;
-using Kollity.Services.API.Abstractions;
 using Kollity.Services.API.Helpers;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.API.Hubs.Implementations;
 using Kollity.Services.API.Implementation;
 using Kollity.Services.Application;
+using Kollity.Services.Application.Abstractions.RealTime;
+using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Infrastructure;
 using Kollity.Services.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,19 +19,12 @@ namespace Kollity.Services.API.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddConfigurations(this IServiceCollection services)
-    {
-        services
-            .AddApplicationConfiguration()
-            .AddPersistenceConfigurations()
-            .AddInfrastructureServices()
-            .AddApiConfigurations();
-        return services;
-    }
-
-    public static IServiceCollection AddApiConfigurations(this IServiceCollection services)
+    public static IServiceCollection AddServicesApiConfigurations(this IServiceCollection services)
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+        services.AddServicesApplicationConfiguration();
+        services.AddServicesPersistenceConfiguration();
+        services.AddServicesInfrastructureConfiguration();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddCustomSwaggerGen();
@@ -44,17 +35,17 @@ public static class ServiceCollectionExtensions
             .AddCorsExtension()
             .AddJwtAuthentication(configuration)
             .AddClassesConfigurations(configuration)
-            .AddServicesInjection()
+            .AddServicesServicesInjection()
             .AddModelBindingErrorsMap()
             .AddSignalR();
 
         return services;
     }
 
-    private static IServiceCollection AddServicesInjection(this IServiceCollection services)
+    public static IServiceCollection AddServicesServicesInjection(this IServiceCollection services)
     {
-        services.AddScoped<IAuthServices, JwtAuthServices>();
         services.AddScoped<IUserServices, HttpUserServices>();
+        services.AddHttpContextAccessor();
 
         services.AddScoped<IRoomConnectionServices, SignalRRoomConnectionServices>();
         services.AddScoped<IRoomConnectionsServices, SignalRRoomConnectionServices>();
@@ -80,8 +71,10 @@ public static class ServiceCollectionExtensions
                 {
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
-                    ValidateAudience = false,
-                    ValidateIssuer = false,
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidIssuer = "AuthServer",
+                    ValidAudience = "AuthServer",
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!)),
                     ClockSkew = TimeSpan.Zero
                 };

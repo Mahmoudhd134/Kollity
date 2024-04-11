@@ -1,33 +1,28 @@
-﻿using Kollity.Services.Application.Abstractions.Files;
-using Kollity.Services.Application.Extensions;
-using Kollity.Services.Domain.ErrorHandlers.Abstractions;
-using Kollity.Services.Domain.ErrorHandlers.Errors;
-using Kollity.Services.Application.Abstractions.Messages;
-using Kollity.Services.Application.Abstractions.Services;
-using Microsoft.AspNetCore.Identity;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Student;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Student.Delete;
 
 public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
 {
-    private readonly UserManager<Domain.StudentModels.Student> _studentManager;
     private readonly IFileServices _fileServices;
     private readonly ApplicationDbContext _context;
+    private readonly EventCollection _eventCollection;
 
-    public DeleteStudentCommandHandler(UserManager<Domain.StudentModels.Student> studentManager,
-        IFileServices fileServices, ApplicationDbContext context)
+    public DeleteStudentCommandHandler(IFileServices fileServices, ApplicationDbContext context,
+        EventCollection eventCollection)
     {
-        _studentManager = studentManager;
         _fileServices = fileServices;
         _context = context;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
     {
-        var student = await _studentManager.FindByIdAsync(request.Id.ToString());
-
-        if (student is null)
+        var studentFound = await _context.Students.AnyAsync(x => x.Id == request.Id, cancellationToken);
+        if (studentFound == false)
             return StudentErrors.IdNotFound(request.Id);
 
         var files = await _context.AssignmentAnswers
@@ -36,12 +31,17 @@ public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
             .ToListAsync(cancellationToken);
 
         await _context.AssignmentAnswerDegrees
-            .Where(x => x.StudentId == student.Id)
+            .Where(x => x.StudentId == request.Id)
             .ExecuteDeleteAsync(cancellationToken);
+
+        var result = await _context.Students
+            .Where(x => x.Id == request.Id)
+            .ExecuteDeleteAsync(cancellationToken);
+
+        if (result == 0)
+            return Error.UnKnown;
         
-        var result = await _studentManager.DeleteAsync(student);
-        if (result.Succeeded == false) 
-            return result.Errors.ToAppError().ToList();
+        _eventCollection.Raise(new StudentDeletedEvent(request.Id));
 
         await _fileServices.Delete(files);
         return Result.Success();
