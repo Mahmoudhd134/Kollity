@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.User.API.Mediator.Identity.ChangeImagePhoto;
 
-public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserProfileImageCommand>
+public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserProfileImageCommand, string>
 {
     private readonly UserDbContext _context;
     private readonly IProfileImageServices _profileImageServices;
@@ -23,7 +23,7 @@ public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserPr
         _userServices = userServices;
     }
 
-    public async Task<Result> Handle(ChangeUserProfileImageCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(ChangeUserProfileImageCommand request, CancellationToken cancellationToken)
     {
         var id = _userServices.GetCurrentUserId();
         var newImage = request.ImageDto.ImageStream;
@@ -49,6 +49,6 @@ public class ChangeUserProfileImageCommandHandler : ICommandHandler<ChangeUserPr
             .Where(x => x.Id == id)
             .ExecuteUpdateAsync(calls => calls
                 .SetProperty(x => x.ProfileImage, path), cancellationToken);
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        return result > 0 ? path : Error.UnKnown;
     }
 }

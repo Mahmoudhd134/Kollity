@@ -2,4 +2,4 @@
 
 namespace Kollity.User.API.Mediator.Identity.SetEmail.Confirm;
 
-public record ConfirmEmailCommand(string Token) : ICommand;
+public record ConfirmEmailCommand(string Token) : ICommand<string>;

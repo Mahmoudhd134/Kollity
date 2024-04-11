@@ -1,8 +1,9 @@
-﻿using MassTransit;
+﻿using Kollity.User.API.Abstraction.Events;
+using MassTransit;
 
 namespace Kollity.User.API.Services;
 
-public class EventBus
+public class EventBus : IEventBus
 {
     private readonly IPublishEndpoint _publishEndpoint;
 

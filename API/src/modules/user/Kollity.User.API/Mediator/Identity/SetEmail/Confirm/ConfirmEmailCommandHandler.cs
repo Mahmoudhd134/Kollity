@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Kollity.User.API.Mediator.Identity.SetEmail.Confirm;
 
-public class ConfirmEmailCommandHandler : ICommandHandler<ConfirmEmailCommand>
+public class ConfirmEmailCommandHandler : ICommandHandler<ConfirmEmailCommand, string>
 {
     private readonly IUserServices _userServices;
     private readonly UserManager<BaseUser> _userManager;
@@ -18,7 +18,7 @@ public class ConfirmEmailCommandHandler : ICommandHandler<ConfirmEmailCommand>
         _userServices = userServices;
     }
 
-    public async Task<Result> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+    public async Task<Result<string>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
         var id = _userServices.GetCurrentUserId();
         var user = await _userManager.FindByIdAsync(id.ToString());
@@ -28,7 +28,7 @@ public class ConfirmEmailCommandHandler : ICommandHandler<ConfirmEmailCommand>
         var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
         return result.Succeeded
-            ? Result.Success()
+            ? user.Email
             : result.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList();
     }
 }

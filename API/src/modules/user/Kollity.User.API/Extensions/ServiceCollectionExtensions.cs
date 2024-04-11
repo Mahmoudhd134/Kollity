@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Kollity.User.API.Abstraction;
+using Kollity.User.API.Abstraction.Events;
 using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Data;
 using Kollity.User.API.Helpers;
@@ -49,6 +50,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProfileImageServices, PhysicalProfileImageServices>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IUserServices, HttpUserServices>();
+        services.AddScoped<IEventBus, EventBus>();
 
         services.AddMediatR(config => { config.RegisterServicesFromAssembly(typeof(Program).Assembly); });
 

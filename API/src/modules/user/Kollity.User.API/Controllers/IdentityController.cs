@@ -1,16 +1,19 @@
-﻿using Kollity.User.API.Dtos.Identity;
+﻿using Kollity.User.API.Abstraction.Events;
+using Kollity.User.API.Dtos.Identity;
+using Kollity.User.API.Extensions;
 using Kollity.User.API.Mediator.Identity.ChangeImagePhoto;
 using Kollity.User.API.Mediator.Identity.ChangePassword;
 using Kollity.User.API.Mediator.Identity.ResetPassword.Reset;
 using Kollity.User.API.Mediator.Identity.ResetPassword.SendToken;
 using Kollity.User.API.Mediator.Identity.SetEmail.Confirm;
 using Kollity.User.API.Mediator.Identity.SetEmail.Set;
+using Kollity.User.Contracts.IntegrationEvents;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kollity.User.API.Controllers;
 
-public class IdentityController : BaseController
+public class IdentityController(IEventBus eventBus) : BaseController
 {
     [HttpPatch("change-password")]
     public Task<IResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
@@ -39,9 +42,19 @@ public class IdentityController : BaseController
     }
 
     [HttpPatch("confirm-email")]
-    public Task<IResult> ConfirmEmail(string token)
+    public async Task<IResult> ConfirmEmail(string token)
     {
-        return Send(new ConfirmEmailCommand(token));
+        var result = await Sender.Send(new ConfirmEmailCommand(token));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        await eventBus.PublishAsync(new UserEmailEditedIntegrationEvent
+        {
+            Id = Guid.Parse(Id),
+            Email = result.Data
+        });
+
+        return result.ToIResult();
     }
 
     [HttpPatch("change-profile-image")]
@@ -50,13 +63,22 @@ public class IdentityController : BaseController
     public async Task<IResult> Change([FromForm] ImageDto dto)
     {
         var stream = dto.Image.OpenReadStream();
-        var result = await Send(new ChangeUserProfileImageCommand(new ChangeImagePhotoDto
+        var result = await Sender.Send(new ChangeUserProfileImageCommand(new ChangeImagePhotoDto
         {
             ImageStream = stream,
             Extensions = "." + dto.Image.FileName.Split(".").Last()
         }));
         stream.Close();
-        return result;
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        await eventBus.PublishAsync(new UserProfileImageEditedIntegrationEvent
+        {
+            Id = Guid.Parse(Id),
+            ProfileImage = result.Data
+        });
+
+        return result.ToIResult();
     }
 }
 

@@ -7,12 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\user\Kollity.User.Contracts\Kollity.User.Contracts.csproj" />
         <ProjectReference Include="..\Kollity.Services.Persistence\Kollity.Services.Persistence.csproj" />
         <ProjectReference Include="..\Kollity.Services.Contracts\Kollity.Services.Contracts.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageReference Include="MassTransit" Version="8.2.0" />
         <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
         <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
@@ -35,7 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="EventHandlers\Integration\" />
       <Folder Include="EventHandlers\Internal\" />
     </ItemGroup>
 
