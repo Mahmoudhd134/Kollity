@@ -14,10 +14,10 @@ namespace Kollity.Services.API.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/[controller]")]
-[SwaggerResponse(400, type: typeof(FailureType))]
-[SwaggerResponse(404, type: typeof(FailureType))]
-[SwaggerResponse(409, type: typeof(FailureType))]
-[SwaggerResponse(500, type: typeof(FailureType))]
+[SwaggerResponse(400, type: typeof(ServicesFailureType))]
+[SwaggerResponse(404, type: typeof(ServicesFailureType))]
+[SwaggerResponse(409, type: typeof(ServicesFailureType))]
+[SwaggerResponse(500, type: typeof(ServicesFailureType))]
 public class BaseController : ControllerBase
 {
     protected const long MaxFileSize = 1L * 1024L * 1024L * 1024L;

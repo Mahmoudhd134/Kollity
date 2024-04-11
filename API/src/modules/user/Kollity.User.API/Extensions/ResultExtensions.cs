@@ -33,9 +33,9 @@ public static class ResultExtensions
         );
     }
 
-    public static FailureType ToFailureType(this Result result)
+    public static UserFailureType ToFailureType(this Result result)
     {
-        return new FailureType
+        return new UserFailureType
         {
             Status = GetStatusCode(result.Errors.First().Type),
             Title = GetTitle(result.Errors.First().Type),

@@ -19,6 +19,7 @@ public static class StudentEditedHandler
         {
             return _eventBus.PublishAsync(new StudentEditedIntegrationEvent
             {
+                Id = notification.Student.Id,
                 UserName = notification.Student.UserName,
                 Email = notification.Student.Email,
                 FullName = notification.Student.FullNameInArabic,

@@ -1,4 +1,5 @@
 ﻿using Kollity.Services.API.Extensions;
+using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Application.Commands.Assignment.Add;
 using Kollity.Services.Application.Commands.Assignment.AddFile;
 using Kollity.Services.Application.Commands.Assignment.Answer;
@@ -10,6 +11,8 @@ using Kollity.Services.Application.Commands.Assignment.SetDegree;
 using Kollity.Services.Application.Dtos;
 using Kollity.Services.Application.Dtos.Assignment;
 using Kollity.Services.Application.Dtos.Assignment.Group;
+using Kollity.Services.Application.Events.Doctor;
+using Kollity.Services.Application.Events.Student;
 using Kollity.Services.Application.Queries.Assignment.GetAnswerFile;
 using Kollity.Services.Application.Queries.Assignment.GetById;
 using Kollity.Services.Application.Queries.Assignment.GetFile;
@@ -19,9 +22,11 @@ using Kollity.Services.Application.Queries.Assignment.GetIndividualAnswers;
 using Kollity.Services.Application.Queries.Assignment.GetList;
 using Kollity.Services.Application.Queries.Assignment.Report;
 using Kollity.Services.Domain.Identity;
-
+using Kollity.Services.Persistence.Data;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Kollity.Services.API.Controllers;

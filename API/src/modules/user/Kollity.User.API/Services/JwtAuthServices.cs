@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using Kollity.Common.ErrorHandling;
 using Kollity.User.API.Abstraction;
+using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Data;
 using Kollity.User.API.Dtos.Auth;
 using Kollity.User.API.Helpers;

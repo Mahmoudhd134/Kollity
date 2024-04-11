@@ -14,10 +14,11 @@ public class UserIntegrationServices : IUserIntegrationServices
         _userManager = userManager;
     }
 
-    public async Task<Result> AddUser(string username, string email, string password, UserRole userRole)
+    public async Task<Result> AddUser(Guid id, string username, string email, string password, UserRole userRole)
     {
         var user = new BaseUser()
         {
+            Id = id,
             UserName = username,
             Email = email,
         };
@@ -27,7 +28,7 @@ public class UserIntegrationServices : IUserIntegrationServices
 
         await _userManager.AddToRoleAsync(user, userRole == UserRole.Student ? Role.Student
             : userRole == UserRole.Doctor ? Role.Doctor : Role.Assistant);
-        
+
         return Result.Success();
     }
 }

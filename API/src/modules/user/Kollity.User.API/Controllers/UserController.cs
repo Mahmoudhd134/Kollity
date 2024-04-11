@@ -1,5 +1,6 @@
 ﻿using Kollity.Common.ErrorHandling;
 using Kollity.User.API.Abstraction;
+using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Dtos.Auth;
 using Kollity.User.API.Extensions;
 using Kollity.User.API.Helpers;

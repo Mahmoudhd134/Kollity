@@ -19,7 +19,7 @@ public static class DoctorDeletedHandler
         {
             return _eventBus.PublishAsync(new DoctorDeletedIntegrationEvent
             {
-                UserName = notification.Doctor.UserName
+                Id = notification.Doctor.Id
             }, cancellationToken);
         }
     }

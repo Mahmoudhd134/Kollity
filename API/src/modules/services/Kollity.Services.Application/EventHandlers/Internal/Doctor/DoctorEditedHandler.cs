@@ -19,6 +19,7 @@ public static class DoctorEditedHandler
         {
             return _eventBus.PublishAsync(new DoctorEditedIntegrationEvent
             {
+                Id = notification.Doctor.Id,
                 FullName = notification.Doctor.FullNameInArabic,
                 UserName = notification.Doctor.UserName,
                 Email = notification.Doctor.Email

@@ -101,6 +101,24 @@ namespace Kollity.User.API.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "a443bf96-da75-4046-8452-7d64553b4533",
+                            Email = "nassermahmoud571@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = true,
+                            NormalizedEmail = "NASSERMAHMOUD571@GMAIL.COM",
+                            NormalizedUserName = "MAHMOUDHD134",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPRFyxksWTOaY3gzYwnqUGS8FT0q1kCjlaUo1KP/Uu3R1seoxDWoi1tlyw8Uc69YNA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "6TPMB3KY7R4NAIGXTMKLOWGRE2HQOOBY",
+                            TwoFactorEnabled = false,
+                            UserName = "Mahmoudhd134"
+                        });
                 });
 
             modelBuilder.Entity("Kollity.User.API.Models.UserRefreshToken", b =>
@@ -274,6 +292,13 @@ namespace Kollity.User.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("UserRole", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
+                            RoleId = new Guid("be2a5cab-0ae7-4335-8316-4154a5cfa35f")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -344,7 +369,7 @@ namespace Kollity.User.API.Migrations
                         .IsRequired();
 
                     b.HasOne("Kollity.User.API.Models.BaseUser", null)
-                        .WithMany()
+                        .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -361,6 +386,8 @@ namespace Kollity.User.API.Migrations
 
             modelBuilder.Entity("Kollity.User.API.Models.BaseUser", b =>
                 {
+                    b.Navigation("Roles");
+
                     b.Navigation("UserRefreshTokens");
                 });
 #pragma warning restore 612, 618

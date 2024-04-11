@@ -26,6 +26,7 @@ public static class DoctorAddedHandler
             };
             return _eventBus.PublishAsync(new DoctorAddedIntegrationEvent
             {
+                Id = notification.Doctor.Id,
                 FullName = notification.Doctor.FullNameInArabic,
                 UserName = notification.Doctor.UserName,
                 Password = notification.Password,

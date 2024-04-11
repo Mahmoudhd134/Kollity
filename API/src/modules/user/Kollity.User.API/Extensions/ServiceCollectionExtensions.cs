@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Kollity.User.API.Abstraction;
+using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Data;
 using Kollity.User.API.Helpers;
 using Kollity.User.API.Models;
@@ -45,6 +46,11 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IAuthServices, JwtAuthServices>();
         services.AddScoped<IUserIntegrationServices, UserIntegrationServices>();
+        services.AddScoped<IProfileImageServices, PhysicalProfileImageServices>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IUserServices, HttpUserServices>();
+
+        services.AddMediatR(config => { config.RegisterServicesFromAssembly(typeof(Program).Assembly); });
 
         return services;
     }
@@ -53,6 +59,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services.Configure<JwtConfiguration>(configuration.GetSection("Jwt"));
+        services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
         return services;
     }
 

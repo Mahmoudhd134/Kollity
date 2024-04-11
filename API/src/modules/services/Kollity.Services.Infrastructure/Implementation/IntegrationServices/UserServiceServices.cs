@@ -12,6 +12,7 @@ public class UserServiceServices(IUserIntegrationServices userIntegrationService
     public Task<Result> AddStudent(Student student, string password)
     {
         return userIntegrationServices.AddUser(
+            student.Id,
             student.UserName,
             student.Email,
             password,
@@ -22,6 +23,7 @@ public class UserServiceServices(IUserIntegrationServices userIntegrationService
     public Task<Result> AddDoctor(Doctor doctor, string password, string role)
     {
         return userIntegrationServices.AddUser(
+            doctor.Id,
             doctor.UserName,
             doctor.Email,
             password,
@@ -29,3 +31,8 @@ public class UserServiceServices(IUserIntegrationServices userIntegrationService
         );
     }
 }
+// public class UserServiceServices : IUserServiceServices
+// {
+//     public Task<Result> AddStudent(Student student, string password) => throw new NotImplementedException();
+//     public Task<Result> AddDoctor(Doctor doctor, string password, string role) => throw new NotImplementedException();
+// }

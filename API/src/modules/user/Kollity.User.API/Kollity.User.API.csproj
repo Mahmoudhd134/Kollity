@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="MailKit" Version="4.4.0" />
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.0" />
+        <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
@@ -34,6 +36,8 @@
 
     <ItemGroup>
       <Folder Include="Consumers\" />
+      <Folder Include="Events\" />
+      <Folder Include="Mediator\" />
     </ItemGroup>
 
 </Project>
