@@ -61,6 +61,7 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
             };
         }
 
+        _context.RoomMessages.Add(message);
         await _context.SaveChangesAsync(cancellationToken);
 
         _eventCollection.Raise(new RoomChatMessageAddedEvent(message));

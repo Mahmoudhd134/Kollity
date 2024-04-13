@@ -46,8 +46,9 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task SendPoll(Guid trackId, AddChatPollDto addChatPollDto, Guid roomId)
+    public async Task SendPoll(Guid trackId, AddChatPollDto addChatPollDto)
     {
+        var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
         var result = await Sender.Send(new AddChatPollCommand(roomId, addChatPollDto));
 
         if (result.IsSuccess == false)
@@ -60,8 +61,9 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
     }
 
-    public async Task SendMessage(Guid trackId, string text, IFormFile file, Guid roomId)
+    public async Task SendMessage(Guid trackId, string text, IFormFile file)
     {
+        var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
         var result = await Sender.Send(new AddRoomMessageCommand(roomId, new AddRoomMessageDto
         {
             Text = text,
@@ -78,8 +80,9 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
     }
 
-    public async Task DeleteMessage(Guid messageId, Guid roomId)
+    public async Task DeleteMessage(Guid messageId)
     {
+        var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
         var result = await Sender.Send(new DeleteRoomChatMessageCommand(messageId));
         if (result.IsSuccess == false)
         {
