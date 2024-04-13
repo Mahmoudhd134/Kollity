@@ -63,9 +63,11 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
 
         await _context.SaveChangesAsync(cancellationToken);
 
+        _eventCollection.Raise(new RoomChatMessageAddedEvent(message));
+
         var sender = await _context.Users
             .Where(x => x.Id == userId)
-            .Select(x => new RoomChatMessageSender
+            .Select(x => new RoomChatMessageSenderDto
             {
                 Id = x.Id,
                 UserName = x.UserName,
@@ -73,12 +75,6 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
             })
             .FirstAsync(cancellationToken);
 
-        _eventCollection.Raise(new RoomChatMessageAddedEvent(
-            message,
-            sender.Id,
-            sender.UserName,
-            sender.Image
-        ));
 
         var messageDto = new RoomChatMessageDto
         {
@@ -86,7 +82,7 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
             Text = message.Text,
             IsRead = false,
             SentAt = message.Date,
-            Sender = sender,
+            SenderDto = sender,
             FileName = message.File?.FileName
         };
 

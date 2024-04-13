@@ -43,6 +43,22 @@ public static class RoomErrors
     public static readonly Error UnAuthorizeAddMessage = Error.Validation("Room.UnAuthorizeAddMessage",
         "You can not add a message to a room you are no joined");
 
+    public static readonly Error PollInvalidQuestionLength =
+        Error.Validation("Poll.InvalidQuestionLength", "Question length exceeds 500 characters.");
+
+    public static readonly Error PollInvalidOptionsCount =
+        Error.Validation("Poll.InvalidOptionsCount", "Invalid number of options it must be in range of 1 and 10.");
+
+    public static readonly Error PollInvalidOptionLength =
+        Error.Validation("Poll.InvalidOptionLength", "Option length exceeds 300 characters.");
+
+    public static readonly Error PollAlreadySubmitted = Error.Validation("Poll.AlreadySubmitted",
+        "you already submitted this poll before");
+
+    public static readonly Error PollOptionNotFound = Error.NotFound("Poll.OptionNotFound",
+        "This option is not found");
+
+
     public static Error NotFound(Guid roomId)
     {
         return Error.NotFound("Room.NotFound", $"The id '{roomId}' is wrong.");
@@ -73,5 +89,10 @@ public static class RoomErrors
     public static Error MessageNotFound(Guid messageId)
     {
         return Error.NotFound("Room.MessageNotFound", $"there is no message you sent with id {messageId}");
+    }
+
+    public static Error PollSubmissionNotFound(Guid pollId)
+    {
+        return Error.NotFound("Poll.SubmissionNotFound", $"this user dose not submit the poll with id '{pollId}' to delete its submission");
     }
 }

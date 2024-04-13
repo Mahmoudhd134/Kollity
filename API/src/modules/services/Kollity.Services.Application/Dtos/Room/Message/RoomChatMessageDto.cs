@@ -7,5 +7,6 @@ public class RoomChatMessageDto
     public DateTime SentAt { get; set; }
     public bool IsRead { get; set; }
     public string FileName { get; set; }
-    public RoomChatMessageSender Sender { get; set; }
+    public ChatPollDto Poll { get; set; }
+    public RoomChatMessageSenderDto SenderDto { get; set; }
 }

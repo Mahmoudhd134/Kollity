@@ -9,12 +9,15 @@ using Kollity.Services.Application.Commands.Room.DeleteSupervisor;
 using Kollity.Services.Application.Commands.Room.DenyJoin;
 using Kollity.Services.Application.Commands.Room.Edit;
 using Kollity.Services.Application.Commands.Room.Join;
+using Kollity.Services.Application.Commands.Room.Messages.DeletePollSubmission;
 using Kollity.Services.Application.Commands.Room.Messages.GetUnRead;
+using Kollity.Services.Application.Commands.Room.Messages.SubmitPoll;
 using Kollity.Services.Application.Dtos.Room;
 using Kollity.Services.Application.Dtos.Room.Message;
 using Kollity.Services.Application.Queries.Room.GetById;
 using Kollity.Services.Application.Queries.Room.GetMembers;
 using Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
+using Kollity.Services.Application.Queries.Room.Messages.GetPoll;
 using Kollity.Services.Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -101,6 +104,25 @@ public class RoomController : BaseController
     public Task<IResult> GetBeforeDate(Guid id, DateTime date)
     {
         return Send(new GetRoomChatMessagesBeforeDateQuery(id, date));
+    }
+
+    [HttpGet("poll/{pollId:guid}"),
+     SwaggerResponse(200, type: typeof(ChatPollDto))]
+    public Task<IResult> GetPoll(Guid pollId)
+    {
+        return Send(new GetMessageChatPollAnswersQuery(pollId));
+    }
+
+    [HttpPost("poll/{pollId:guid}/submit/{optionIndex})")]
+    public Task<IResult> SubmitPoll(Guid pollId, byte optionIndex)
+    {
+        return Send(new SubmitRoomChatMessagePollCommand(pollId, optionIndex));
+    }
+
+    [HttpDelete("poll/{pollId:guid}/delete-submission")]
+    public Task<IResult> SubmitPoll(Guid pollId)
+    {
+        return Send(new DeleteRoomChatPollSubmissionCommand(pollId));
     }
 
     [HttpPut]

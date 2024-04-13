@@ -1,5 +1,6 @@
 ﻿using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.Application.Commands.Room.Messages.Add;
+using Kollity.Services.Application.Commands.Room.Messages.AddPoll;
 using Kollity.Services.Application.Commands.Room.Messages.Delete;
 using Kollity.Services.Application.Commands.Room.Messages.Disconnect;
 using Kollity.Services.Application.Dtos.Room.Message;
@@ -43,6 +44,20 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await Sender.Send(new UserDisconnectRoomCommand(roomId));
         _roomConnectionServices.RemoveConnection(Context.ConnectionId);
         await base.OnDisconnectedAsync(exception);
+    }
+
+    public async Task SendPoll(Guid trackId, AddChatPollDto addChatPollDto, Guid roomId)
+    {
+        var result = await Sender.Send(new AddChatPollCommand(roomId, addChatPollDto));
+
+        if (result.IsSuccess == false)
+        {
+            await Clients.Caller.MessageHasNotBeenSentSuccessfully(trackId, result.Errors);
+            return;
+        }
+
+        await Clients.Caller.MessageSentSuccessfully(trackId, result.Data);
+        await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
     }
 
     public async Task SendMessage(Guid trackId, string text, IFormFile file, Guid roomId)

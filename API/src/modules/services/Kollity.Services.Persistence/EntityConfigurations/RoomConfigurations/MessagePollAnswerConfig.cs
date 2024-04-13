@@ -20,6 +20,8 @@ public class MessagePollAnswerConfig : IEntityTypeConfiguration<MessagePollAnswe
             .WithMany(x => x.PollAnswers)
             .HasForeignKey(x => x.PollId);
 
+        builder.HasIndex(x => x.OptionIndex);
+
         builder.ToTable("MessagePollAnswer");
     }
 }

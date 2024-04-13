@@ -27,28 +27,48 @@ public class
 
         if (isJoined == false)
             return RoomErrors.UserIsNotJoined(userId);
+
+
+        var utcDate = request.Date.ToUniversalTime();
         var roomMessageDtos = await _context.RoomMessages
-            .Where(m => m.RoomId == request.RoomId && m.Date < request.Date.ToUniversalTime())
+            .Where(m => m.RoomId == request.RoomId && m.Date < utcDate)
             .OrderByDescending(m => m.Date)
             .Take(100)
-            .Select(x => new RoomChatMessageDto
+            .Select(x => new
             {
-                Id = x.Id,
-                Text = x.Text,
+                x.Id,
+                x.Text,
+                x.IsRead,
                 SentAt = x.Date,
                 FileName = x.File != null ? x.File.FileName : null,
-                Sender = x.SenderId != null
-                    ? new RoomChatMessageSender
+                SenderDto = x.SenderId != null
+                    ? new RoomChatMessageSenderDto
                     {
                         Id = x.Sender.Id,
                         UserName = x.Sender.UserName,
                         Image = x.Sender.ProfileImage
                     }
-                    : null
+                    : null,
+                x.Poll
             })
             .Reverse()
             .ToListAsync(cancellationToken);
 
-        return roomMessageDtos;
+        return roomMessageDtos.Select(x => new RoomChatMessageDto
+        {
+            Id = x.Id,
+            Text = x.Text,
+            IsRead = x.IsRead,
+            SentAt = x.SentAt,
+            SenderDto = x.SenderDto,
+            FileName = x.FileName,
+            Poll = x.Poll != null
+                ? new ChatPollDto
+                {
+                    Question = x.Poll.Question,
+                    Options = x.Poll.Options.Select(xx => new ChatPollOptionDto { Option = xx }).ToList()
+                }
+                : null
+        }).ToList();
     }
 }
