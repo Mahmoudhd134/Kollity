@@ -54,6 +54,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.HasDefaultSchema("services");
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(PersistenceExtensions).Assembly);
         builder.ApplyUtcDateTimeConverter();

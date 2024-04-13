@@ -11,7 +11,8 @@ public static class PersistenceExtensions
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         var connectionString = configuration["ConnectionStrings:ServicesDatabase"];
-        services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
+        services.AddDbContext<ApplicationDbContext>(opt =>
+            opt.UseSqlServer(connectionString, o => o.MigrationsHistoryTable("__EFMigrationsHistory", "services")));
 
         // services.AddDefaultIdentity<BaseUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
         //     .AddRoles<BaseRole>()

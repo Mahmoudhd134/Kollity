@@ -8,9 +8,13 @@
 
     <ItemGroup>
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="SignalRSwaggerGen" Version="4.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>

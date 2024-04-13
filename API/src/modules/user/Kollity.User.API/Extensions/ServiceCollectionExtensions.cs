@@ -165,7 +165,8 @@ public static class ServiceCollectionExtensions
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         var connectionString = configuration["ConnectionStrings:UserDatabase"];
-        services.AddDbContext<UserDbContext>(opt => opt.UseSqlServer(connectionString));
+        services.AddDbContext<UserDbContext>(opt =>
+            opt.UseSqlServer(connectionString, o => o.MigrationsHistoryTable("__EFMigrationsHistory", "user")));
 
         services.AddDefaultIdentity<BaseUser>(opt => opt.SignIn.RequireConfirmedAccount = true)
             .AddRoles<IdentityRole<Guid>>()

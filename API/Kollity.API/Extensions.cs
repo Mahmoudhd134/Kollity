@@ -17,7 +17,7 @@ namespace Kollity.API;
 public static class Extensions
 {
     public static IServiceCollection AddMassTransitConfiguration(this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration, bool isProductionEnvironment)
     {
         services.Configure<RabbitMqConfig>(configuration.GetSection("Queues:RabbitMq"));
         services.AddSingleton(sp => sp.GetRequiredService<IOptions<RabbitMqConfig>>().Value);
@@ -29,16 +29,23 @@ public static class Extensions
                 typeof(KollityUserApiEntryPoint).Assembly
             );
 
-            busConfig.UsingRabbitMq((context, config) =>
+            if (isProductionEnvironment)
             {
-                config.ConfigureEndpoints(context);
-                var rabbitMqConfig = context.GetRequiredService<RabbitMqConfig>();
-                config.Host(new Uri(rabbitMqConfig.Host), host =>
+                busConfig.UsingRabbitMq((context, config) =>
                 {
-                    host.Username(rabbitMqConfig.Username);
-                    host.Password(rabbitMqConfig.Password);
+                    config.ConfigureEndpoints(context);
+                    var rabbitMqConfig = context.GetRequiredService<RabbitMqConfig>();
+                    config.Host(new Uri(rabbitMqConfig.Host), host =>
+                    {
+                        host.Username(rabbitMqConfig.Username);
+                        host.Password(rabbitMqConfig.Password);
+                    });
                 });
-            });
+            }
+            else
+            {
+                busConfig.UsingInMemory((context, config) => config.ConfigureEndpoints(context));
+            }
         });
         return services;
     }

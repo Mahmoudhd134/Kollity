@@ -16,6 +16,7 @@ public class UserDbContext : IdentityDbContext<BaseUser, IdentityRole<Guid>, Gui
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.HasDefaultSchema("user");
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(Program).Assembly);
         builder.ApplyUtcDateTimeConverter();
