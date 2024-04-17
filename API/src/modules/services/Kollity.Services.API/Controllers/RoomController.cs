@@ -12,8 +12,10 @@ using Kollity.Services.Application.Commands.Room.Join;
 using Kollity.Services.Application.Commands.Room.Messages.DeletePollSubmission;
 using Kollity.Services.Application.Commands.Room.Messages.GetUnRead;
 using Kollity.Services.Application.Commands.Room.Messages.SubmitPoll;
+using Kollity.Services.Application.Dtos.Reports;
 using Kollity.Services.Application.Dtos.Room;
 using Kollity.Services.Application.Dtos.Room.Message;
+using Kollity.Services.Application.Queries.Reports.UserRoomReport;
 using Kollity.Services.Application.Queries.Room.GetById;
 using Kollity.Services.Application.Queries.Room.GetMembers;
 using Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
@@ -33,6 +35,14 @@ public class RoomController : BaseController
     public RoomController(IHubContext<RoomHub, IRoomHubClient> roomHubContext)
     {
         _roomHubContext = roomHubContext;
+    }
+
+    [HttpGet("{roomId:guid}/student-report/{studentId:guid}"),
+     Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
+     SwaggerResponse(200, type: typeof(StudentRoomReportDto))]
+    public Task<IResult> StudentReport(Guid roomId, Guid studentId)
+    {
+        return Send(new GetStudentRoomReportQuery(studentId, roomId));
     }
 
     [HttpPost]
