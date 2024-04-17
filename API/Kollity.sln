@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Common", "src\share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.User.Contracts", "src\modules\user\Kollity.User.Contracts\Kollity.User.Contracts.csproj", "{7B62EA85-88A3-43CE-ACB5-4E8FE19F9F84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kollity.Reporting.Domain", "src\modules\reporting\Kollity.Reporting.Domain\Kollity.Reporting.Domain\Kollity.Reporting.Domain.csproj", "{EF44CABF-7E32-41AC-A6EC-4EBED03B1A5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{7B62EA85-88A3-43CE-ACB5-4E8FE19F9F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B62EA85-88A3-43CE-ACB5-4E8FE19F9F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B62EA85-88A3-43CE-ACB5-4E8FE19F9F84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF44CABF-7E32-41AC-A6EC-4EBED03B1A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF44CABF-7E32-41AC-A6EC-4EBED03B1A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF44CABF-7E32-41AC-A6EC-4EBED03B1A5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF44CABF-7E32-41AC-A6EC-4EBED03B1A5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5473F103-BF25-4CF7-9710-A51DB490A833} = {43D36339-4E45-4B24-B03F-9380024C6F43}
@@ -97,5 +103,6 @@ Global
 		{89CD0A12-7759-4155-9EE6-C0FBF9CC474C} = {43D36339-4E45-4B24-B03F-9380024C6F43}
 		{CD040562-A046-483F-A7B4-27B7B89E5F57} = {89CD0A12-7759-4155-9EE6-C0FBF9CC474C}
 		{7B62EA85-88A3-43CE-ACB5-4E8FE19F9F84} = {0E47CD2B-5654-42D8-A5F3-08608D4A945A}
+		{EF44CABF-7E32-41AC-A6EC-4EBED03B1A5E} = {BDA449EC-291B-4E6C-9EA8-3F4A5EC026A8}
 	EndGlobalSection
 EndGlobal
