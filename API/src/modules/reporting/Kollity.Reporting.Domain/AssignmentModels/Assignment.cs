@@ -16,7 +16,7 @@ public class Assignment
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
     public Guid DoctorId { get; set; }
-    public User Doctor { get; set; }
+    public Doctor Doctor { get; set; }
     public bool IsDeleted { get; set; }
 
     public List<AssignmentAnswer> AssignmentsAnswers { get; set; } = [];

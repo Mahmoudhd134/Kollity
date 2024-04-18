@@ -10,5 +10,5 @@ public class AssignmentGroup
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
     public Guid StudentId { get; set; }
-    public User Student { get; set; }
+    public Student Student { get; set; }
 }

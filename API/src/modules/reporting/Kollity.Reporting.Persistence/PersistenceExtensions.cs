@@ -7,7 +7,7 @@ namespace Kollity.Reporting.Persistence;
 
 public static class PersistenceExtensions
 {
-    public static IServiceCollection AddServicesPersistenceConfiguration(this IServiceCollection services)
+    public static IServiceCollection AddReportingPersistenceConfiguration(this IServiceCollection services)
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
         var connectionString = configuration["ConnectionStrings:ReportingDatabase"];

@@ -7,7 +7,7 @@ public class CourseDoctorAndAssistants
     public Guid CourseId { get; set; }
     public Course Course { get; set; }
     public Guid DoctorId { get; set; }
-    public User Doctor { get; set; }
+    public Doctor Doctor { get; set; }
 
     public bool IsDoctor { get; set; }
     public DateTime AssigningDate { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Domain.RoomModels;
+using Kollity.Reporting.Domain.UserModels;
 
 namespace Kollity.Reporting.Domain.ExamModels;
 
@@ -9,6 +10,9 @@ public class Exam
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public DateTime CreationDate { get; set; }
+
+    public Guid DoctorId { get; set; }
+    public Doctor Doctor { get; set; }
 
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
