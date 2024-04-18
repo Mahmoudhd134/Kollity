@@ -7,11 +7,11 @@ public class ExamConfig : IEntityTypeConfiguration<Domain.ExamModels.Exam>
 {
     public void Configure(EntityTypeBuilder<Domain.ExamModels.Exam> builder)
     {
-        builder.HasKey(x => new { x.ExamId, x.QuestionId, x.OptionId });
+        builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name).HasMaxLength(255).IsRequired();
-        builder.Property(x => x.QuestionText).HasMaxLength(1023).IsRequired();
-        builder.Property(x => x.Option).HasMaxLength(1023).IsRequired();
+        builder.Property(x => x.QuestionText).HasMaxLength(1023);
+        builder.Property(x => x.Option).HasMaxLength(1023);
 
         builder
             .HasOne(x => x.Room)
@@ -23,6 +23,7 @@ public class ExamConfig : IEntityTypeConfiguration<Domain.ExamModels.Exam>
             .WithMany()
             .HasForeignKey(x => x.DoctorId);
 
+        builder.HasIndex(x => new { x.ExamId, x.QuestionId, x.OptionId });
         builder.HasIndex(x => x.QuestionId);
         builder.HasIndex(x => x.OptionId);
 

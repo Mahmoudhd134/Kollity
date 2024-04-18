@@ -9,6 +9,6 @@ public class AssignmentAnswer
     public Guid StudentId { get; set; }
     public Student Student { get; set; }
     public int? Degree { get; set; }
-    public int? GroupCode { get; set; }
+    public Guid? GroupId { get; set; }
     public AssignmentGroup Group { get; set; }
 }

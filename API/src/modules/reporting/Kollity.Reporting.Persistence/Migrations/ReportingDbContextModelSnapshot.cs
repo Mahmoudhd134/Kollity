@@ -102,9 +102,9 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("degree");
 
-                    b.Property<int?>("GroupCode")
-                        .HasColumnType("int")
-                        .HasColumnName("group_code");
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("group_id");
 
                     b.HasKey("StudentId", "AssignmentId")
                         .HasName("pk_assignment_answer");
@@ -112,8 +112,8 @@ namespace Kollity.Reporting.Persistence.Migrations
                     b.HasIndex("AssignmentId")
                         .HasDatabaseName("ix_assignment_answer_assignment_id");
 
-                    b.HasIndex("GroupCode")
-                        .HasDatabaseName("ix_assignment_answer_group_code");
+                    b.HasIndex("GroupId", "StudentId")
+                        .HasDatabaseName("ix_assignment_answer_group_id_student_id");
 
                     b.ToTable("AssignmentAnswer", "reporting");
                 });
@@ -121,9 +121,12 @@ namespace Kollity.Reporting.Persistence.Migrations
             modelBuilder.Entity("Kollity.Reporting.Domain.AssignmentModels.AssignmentGroup", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("student_id");
 
                     b.Property<int>("Code")
                         .HasColumnType("int")
@@ -133,22 +136,17 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("room_id");
 
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("student_id");
-
-                    b.HasKey("Id")
+                    b.HasKey("Id", "StudentId")
                         .HasName("pk_assignment_group");
 
-                    b.HasAlternateKey("Code")
-                        .HasName("ak_assignment_groups_code");
+                    b.HasIndex("Code")
+                        .HasDatabaseName("ix_assignment_group_code");
+
+                    b.HasIndex("RoomId")
+                        .HasDatabaseName("ix_assignment_group_room_id");
 
                     b.HasIndex("StudentId")
                         .HasDatabaseName("ix_assignment_group_student_id");
-
-                    b.HasIndex("RoomId", "StudentId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_assignment_group_room_id_student_id");
 
                     b.ToTable("AssignmentGroup", "reporting");
                 });
@@ -246,17 +244,10 @@ namespace Kollity.Reporting.Persistence.Migrations
 
             modelBuilder.Entity("Kollity.Reporting.Domain.ExamModels.Exam", b =>
                 {
-                    b.Property<Guid>("ExamId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_id");
-
-                    b.Property<Guid>("QuestionId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("question_id");
-
-                    b.Property<Guid>("OptionId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("option_id");
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2")
@@ -270,7 +261,11 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("end_date");
 
-                    b.Property<bool>("IsRightOption")
+                    b.Property<Guid>("ExamId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("exam_id");
+
+                    b.Property<bool?>("IsRightOption")
                         .HasColumnType("bit")
                         .HasColumnName("is_right_option");
 
@@ -281,21 +276,27 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("Option")
-                        .IsRequired()
                         .HasMaxLength(1023)
                         .HasColumnType("nvarchar(1023)")
                         .HasColumnName("option");
 
-                    b.Property<byte>("QuestionDegree")
+                    b.Property<Guid?>("OptionId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("option_id");
+
+                    b.Property<byte?>("QuestionDegree")
                         .HasColumnType("tinyint")
                         .HasColumnName("question_degree");
 
-                    b.Property<int>("QuestionOpenForSeconds")
+                    b.Property<Guid?>("QuestionId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("question_id");
+
+                    b.Property<int?>("QuestionOpenForSeconds")
                         .HasColumnType("int")
                         .HasColumnName("question_open_for_seconds");
 
                     b.Property<string>("QuestionText")
-                        .IsRequired()
                         .HasMaxLength(1023)
                         .HasColumnType("nvarchar(1023)")
                         .HasColumnName("question_text");
@@ -308,7 +309,7 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("start_date");
 
-                    b.HasKey("ExamId", "QuestionId", "OptionId")
+                    b.HasKey("Id")
                         .HasName("pk_exam");
 
                     b.HasIndex("DoctorId")
@@ -323,26 +324,21 @@ namespace Kollity.Reporting.Persistence.Migrations
                     b.HasIndex("RoomId")
                         .HasDatabaseName("ix_exam_room_id");
 
+                    b.HasIndex("ExamId", "QuestionId", "OptionId")
+                        .HasDatabaseName("ix_exam_exam_id_question_id_option_id");
+
                     b.ToTable("Exam", "reporting");
                 });
 
             modelBuilder.Entity("Kollity.Reporting.Domain.ExamModels.ExamAnswer", b =>
                 {
-                    b.Property<Guid>("ExamId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_id");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("student_id");
-
                     b.Property<Guid>("OptionId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("option_id");
 
-                    b.Property<Guid>("QuestionId")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier")
-                        .HasColumnName("question_id");
+                        .HasColumnName("student_id");
 
                     b.Property<DateTime>("RequestTime")
                         .HasColumnType("datetime2")
@@ -352,20 +348,11 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("submit_time");
 
-                    b.HasKey("ExamId", "StudentId")
+                    b.HasKey("OptionId", "StudentId")
                         .HasName("pk_exam_answer");
-
-                    b.HasIndex("OptionId")
-                        .HasDatabaseName("ix_exam_answer_option_id");
-
-                    b.HasIndex("QuestionId")
-                        .HasDatabaseName("ix_exam_answer_question_id");
 
                     b.HasIndex("StudentId")
                         .HasDatabaseName("ix_exam_answer_student_id");
-
-                    b.HasIndex("ExamId", "QuestionId", "OptionId")
-                        .HasDatabaseName("ix_exam_answer_exam_id_question_id_option_id");
 
                     b.ToTable("ExamAnswer", "reporting");
                 });
@@ -494,6 +481,17 @@ namespace Kollity.Reporting.Persistence.Migrations
                     b.ToTable("User", "reporting");
 
                     b.HasDiscriminator().HasValue("Doctor");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"),
+                            Email = "nassermahmoud571@gmail.com",
+                            FullNameInArabic = "Mahmoud Ahmed Nasser Mahmoud",
+                            IsDeleted = false,
+                            UserName = "Mahmoudhd134",
+                            DoctorType = 1
+                        });
                 });
 
             modelBuilder.Entity("Kollity.Reporting.Domain.UserModels.Student", b =>
@@ -540,19 +538,18 @@ namespace Kollity.Reporting.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_assignment_answer_assignments_assignment_id");
 
-                    b.HasOne("Kollity.Reporting.Domain.AssignmentModels.AssignmentGroup", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupCode")
-                        .HasPrincipalKey("Code")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .HasConstraintName("fk_assignment_answer_assignment_groups_group_code");
-
                     b.HasOne("Kollity.Reporting.Domain.UserModels.Student", "Student")
                         .WithMany("AssignmentAnswers")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_assignment_answer_users_student_id");
+
+                    b.HasOne("Kollity.Reporting.Domain.AssignmentModels.AssignmentGroup", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId", "StudentId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasConstraintName("fk_assignment_answer_assignment_groups_group_id_student_id");
 
                     b.Navigation("Assignment");
 
@@ -647,19 +644,19 @@ namespace Kollity.Reporting.Persistence.Migrations
 
             modelBuilder.Entity("Kollity.Reporting.Domain.ExamModels.ExamAnswer", b =>
                 {
+                    b.HasOne("Kollity.Reporting.Domain.ExamModels.Exam", "Option")
+                        .WithMany("Answers")
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("fk_exam_answer_exams_option_id");
+
                     b.HasOne("Kollity.Reporting.Domain.UserModels.Student", "Student")
                         .WithMany("ExamAnswers")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired()
                         .HasConstraintName("fk_exam_answer_users_student_id");
-
-                    b.HasOne("Kollity.Reporting.Domain.ExamModels.Exam", "Option")
-                        .WithMany("Answers")
-                        .HasForeignKey("ExamId", "QuestionId", "OptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_answer_exams_exam_id_question_id_option_id");
 
                     b.Navigation("Option");
 

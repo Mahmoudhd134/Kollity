@@ -23,8 +23,7 @@ public class AssignmentAnswerConfig : IEntityTypeConfiguration<AssignmentAnswer>
         builder
             .HasOne(x => x.Group)
             .WithMany()
-            .HasForeignKey(x => x.GroupCode)
-            .HasPrincipalKey(x => x.Code);
+            .HasForeignKey(x => new { x.GroupId, x.StudentId });
 
         builder.ToTable("AssignmentAnswer");
     }

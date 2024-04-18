@@ -172,14 +172,13 @@ namespace Kollity.Reporting.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     code = table.Column<int>(type: "int", nullable: false),
-                    room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_assignment_group", x => x.id);
-                    table.UniqueConstraint("ak_assignment_groups_code", x => x.code);
+                    table.PrimaryKey("pk_assignment_group", x => new { x.id, x.student_id });
                     table.ForeignKey(
                         name: "fk_assignment_group_rooms_room_id",
                         column: x => x.room_id,
@@ -199,24 +198,25 @@ namespace Kollity.Reporting.Persistence.Migrations
                 schema: "reporting",
                 columns: table => new
                 {
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     exam_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    question_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    option_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     start_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     end_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     creation_date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     doctor_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     room_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    question_text = table.Column<string>(type: "nvarchar(1023)", maxLength: 1023, nullable: false),
-                    question_open_for_seconds = table.Column<int>(type: "int", nullable: false),
-                    question_degree = table.Column<byte>(type: "tinyint", nullable: false),
-                    option = table.Column<string>(type: "nvarchar(1023)", maxLength: 1023, nullable: false),
-                    is_right_option = table.Column<bool>(type: "bit", nullable: false)
+                    question_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    question_text = table.Column<string>(type: "nvarchar(1023)", maxLength: 1023, nullable: true),
+                    question_open_for_seconds = table.Column<int>(type: "int", nullable: true),
+                    question_degree = table.Column<byte>(type: "tinyint", nullable: true),
+                    option_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    option = table.Column<string>(type: "nvarchar(1023)", maxLength: 1023, nullable: true),
+                    is_right_option = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_exam", x => new { x.exam_id, x.question_id, x.option_id });
+                    table.PrimaryKey("pk_exam", x => x.id);
                     table.ForeignKey(
                         name: "fk_exam_rooms_room_id",
                         column: x => x.room_id,
@@ -264,17 +264,17 @@ namespace Kollity.Reporting.Persistence.Migrations
                     assignment_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     degree = table.Column<int>(type: "int", nullable: true),
-                    group_code = table.Column<int>(type: "int", nullable: true)
+                    group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_assignment_answer", x => new { x.student_id, x.assignment_id });
                     table.ForeignKey(
-                        name: "fk_assignment_answer_assignment_groups_group_code",
-                        column: x => x.group_code,
+                        name: "fk_assignment_answer_assignment_groups_group_id_student_id",
+                        columns: x => new { x.group_id, x.student_id },
                         principalSchema: "reporting",
                         principalTable: "AssignmentGroup",
-                        principalColumn: "code");
+                        principalColumns: new[] { "id", "student_id" });
                     table.ForeignKey(
                         name: "fk_assignment_answer_assignments_assignment_id",
                         column: x => x.assignment_id,
@@ -294,22 +294,20 @@ namespace Kollity.Reporting.Persistence.Migrations
                 schema: "reporting",
                 columns: table => new
                 {
-                    exam_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    question_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     option_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    student_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     request_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     submit_time = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_exam_answer", x => new { x.exam_id, x.student_id });
+                    table.PrimaryKey("pk_exam_answer", x => new { x.option_id, x.student_id });
                     table.ForeignKey(
-                        name: "fk_exam_answer_exams_exam_id_question_id_option_id",
-                        columns: x => new { x.exam_id, x.question_id, x.option_id },
+                        name: "fk_exam_answer_exams_option_id",
+                        column: x => x.option_id,
                         principalSchema: "reporting",
                         principalTable: "Exam",
-                        principalColumns: new[] { "exam_id", "question_id", "option_id" });
+                        principalColumn: "id");
                     table.ForeignKey(
                         name: "fk_exam_answer_users_student_id",
                         column: x => x.student_id,
@@ -317,6 +315,12 @@ namespace Kollity.Reporting.Persistence.Migrations
                         principalTable: "User",
                         principalColumn: "id");
                 });
+
+            migrationBuilder.InsertData(
+                schema: "reporting",
+                table: "User",
+                columns: new[] { "id", "doctor_type", "email", "full_name_in_arabic", "is_deleted", "profile_image", "type", "user_name" },
+                values: new object[] { new Guid("b26c556f-d543-4a2a-b15a-49fba7751ffa"), 1, "nassermahmoud571@gmail.com", "Mahmoud Ahmed Nasser Mahmoud", false, null, "Doctor", "Mahmoudhd134" });
 
             migrationBuilder.CreateIndex(
                 name: "ix_assignment_doctor_id",
@@ -337,17 +341,22 @@ namespace Kollity.Reporting.Persistence.Migrations
                 column: "assignment_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_assignment_answer_group_code",
+                name: "ix_assignment_answer_group_id_student_id",
                 schema: "reporting",
                 table: "AssignmentAnswer",
-                column: "group_code");
+                columns: new[] { "group_id", "student_id" });
 
             migrationBuilder.CreateIndex(
-                name: "ix_assignment_group_room_id_student_id",
+                name: "ix_assignment_group_code",
                 schema: "reporting",
                 table: "AssignmentGroup",
-                columns: new[] { "room_id", "student_id" },
-                unique: true);
+                column: "code");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_assignment_group_room_id",
+                schema: "reporting",
+                table: "AssignmentGroup",
+                column: "room_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_assignment_group_student_id",
@@ -381,6 +390,12 @@ namespace Kollity.Reporting.Persistence.Migrations
                 column: "doctor_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_exam_exam_id_question_id_option_id",
+                schema: "reporting",
+                table: "Exam",
+                columns: new[] { "exam_id", "question_id", "option_id" });
+
+            migrationBuilder.CreateIndex(
                 name: "ix_exam_option_id",
                 schema: "reporting",
                 table: "Exam",
@@ -397,24 +412,6 @@ namespace Kollity.Reporting.Persistence.Migrations
                 schema: "reporting",
                 table: "Exam",
                 column: "room_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_exam_answer_exam_id_question_id_option_id",
-                schema: "reporting",
-                table: "ExamAnswer",
-                columns: new[] { "exam_id", "question_id", "option_id" });
-
-            migrationBuilder.CreateIndex(
-                name: "ix_exam_answer_option_id",
-                schema: "reporting",
-                table: "ExamAnswer",
-                column: "option_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_exam_answer_question_id",
-                schema: "reporting",
-                table: "ExamAnswer",
-                column: "question_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_exam_answer_student_id",

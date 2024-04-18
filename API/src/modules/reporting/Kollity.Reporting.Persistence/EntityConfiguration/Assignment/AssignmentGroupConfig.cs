@@ -8,19 +8,20 @@ public class AssignmentGroupConfig : IEntityTypeConfiguration<AssignmentGroup>
 {
     public void Configure(EntityTypeBuilder<AssignmentGroup> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => new { x.Id, x.StudentId });
 
         builder
             .HasOne(x => x.Student)
             .WithMany()
             .HasForeignKey(x => x.StudentId);
-        
+
         builder
             .HasOne(x => x.Room)
             .WithMany(x => x.AssignmentGroups)
             .HasForeignKey(x => x.RoomId);
-        
-        builder.HasIndex(x => new { x.RoomId, x.StudentId }).IsUnique();
+
+        builder.HasIndex(x => x.Code);
+        builder.HasIndex(x => x.StudentId);
 
         builder.ToTable("AssignmentGroup");
     }
