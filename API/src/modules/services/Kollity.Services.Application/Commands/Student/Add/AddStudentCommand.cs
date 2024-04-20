@@ -2,4 +2,4 @@
 
 namespace Kollity.Services.Application.Commands.Student.Add;
 
-public record AddStudentCommand(AddStudentDto AddStudentDto) : ICommand;
+public record AddStudentCommand(AddStudentDto AddStudentDto) : ICommand, ITransactionalCommand;

@@ -12,6 +12,7 @@ public static class ApplicationExtensions
         {
             opt.RegisterServicesFromAssemblyContaining(typeof(ApplicationExtensions));
 
+            opt.AddOpenBehavior(typeof(HandelTransactionsPipeline<,>));
             opt.AddOpenBehavior(typeof(HandleEventsPipeline<,>));
         });
 

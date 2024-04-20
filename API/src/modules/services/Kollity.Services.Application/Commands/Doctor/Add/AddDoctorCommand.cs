@@ -2,4 +2,4 @@
 
 namespace Kollity.Services.Application.Commands.Doctor.Add;
 
-public record AddDoctorCommand(AddDoctorDto AddDoctorDto) : ICommand;
+public record AddDoctorCommand(AddDoctorDto AddDoctorDto) : ICommand, ITransactionalCommand;
