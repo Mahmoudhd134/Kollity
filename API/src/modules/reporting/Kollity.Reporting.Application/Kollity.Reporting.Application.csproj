@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="8.2.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\services\Kollity.Services.Contracts\Kollity.Services.Contracts.csproj" />
+      <ProjectReference Include="..\..\user\Kollity.User.Contracts\Kollity.User.Contracts.csproj" />
+      <ProjectReference Include="..\Kollity.Reporting.Persistence\Kollity.Reporting.Persistence.csproj" />
+    </ItemGroup>
+
+</Project>

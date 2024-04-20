@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Kollity.API.Helpers;
+using Kollity.Reporting.Application;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
 using MassTransit;
@@ -26,7 +27,8 @@ public static class Extensions
             busConfig.SetKebabCaseEndpointNameFormatter();
             busConfig.AddConsumers(
                 typeof(ApplicationExtensions).Assembly,
-                typeof(KollityUserApiEntryPoint).Assembly
+                typeof(KollityUserApiEntryPoint).Assembly,
+                typeof(ReportingApplicationConfiguration).Assembly
             );
 
             if (isProductionEnvironment)

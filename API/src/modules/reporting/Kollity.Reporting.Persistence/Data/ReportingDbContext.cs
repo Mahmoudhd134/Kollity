@@ -15,6 +15,8 @@ public class ReportingDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseDoctorAndAssistants> CourseDoctorAndAssistants { get; set; }
     public DbSet<CourseStudent> CourseStudents { get; set; }
