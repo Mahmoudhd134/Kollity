@@ -2,7 +2,7 @@
 using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Events.Identity;
 
-namespace Kollity.User.API.EventHandlers.Identity;
+namespace Kollity.User.API.EventHandlers.Internal.Identity;
 
 public static class EmailSetHandler
 {

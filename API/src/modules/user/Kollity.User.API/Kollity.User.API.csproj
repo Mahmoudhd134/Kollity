@@ -36,6 +36,7 @@
 
     <ItemGroup>
       <Folder Include="Consumers\" />
+      <Folder Include="EventHandlers\Internal\" />
       <Folder Include="Events\" />
       <Folder Include="Mediator\" />
     </ItemGroup>
