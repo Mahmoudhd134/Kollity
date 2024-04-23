@@ -25,6 +25,7 @@ public static class Extensions
         services.AddMassTransit(busConfig =>
         {
             busConfig.SetKebabCaseEndpointNameFormatter();
+            
             busConfig.AddConsumers(
                 typeof(ApplicationExtensions).Assembly,
                 typeof(KollityUserApiEntryPoint).Assembly,
@@ -42,6 +43,8 @@ public static class Extensions
                         host.Username(rabbitMqConfig.Username);
                         host.Password(rabbitMqConfig.Password);
                     });
+
+                    config.SendTopology.ErrorQueueNameFormatter = new KebabCaseErrorQueueNameFormatter();
                 });
             }
             else

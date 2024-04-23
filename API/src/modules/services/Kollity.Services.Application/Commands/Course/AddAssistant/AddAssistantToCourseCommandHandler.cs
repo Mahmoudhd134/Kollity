@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.CourseModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Courses;
+using Kollity.Services.Domain.CourseModels;
 using Kollity.Services.Domain.Errors;
 using Kollity.Services.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +11,14 @@ public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantTo
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public AddAssistantToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public AddAssistantToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AddAssistantToCourseCommand request, CancellationToken cancellationToken)
@@ -40,14 +45,18 @@ public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantTo
         if (isInAssistantRole == false)
             return CourseErrors.NonAssistantAssignation;
 
-        course.CoursesAssistants.Add(new CourseAssistant
+        var courseAssistant = new CourseAssistant
         {
             AssistantId = assistantId,
             CourseId = courseId
-        });
+        };
+        course.CoursesAssistants.Add(courseAssistant);
 
         var result = await _context.SaveChangesAsync(cancellationToken);
 
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new CourseAssistantAssignedEvent(courseAssistant));
+        return Result.Success();
     }
 }

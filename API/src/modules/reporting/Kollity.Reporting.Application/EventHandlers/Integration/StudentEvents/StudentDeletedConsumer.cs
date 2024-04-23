@@ -3,7 +3,7 @@ using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Student;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Reporting.Application.EventHandlers.Integration.Student;
+namespace Kollity.Reporting.Application.EventHandlers.Integration.StudentEvents;
 
 public class StudentDeletedConsumer(ReportingDbContext context)
     : IntegrationEventConsumer<StudentDeletedIntegrationEvent>
@@ -12,6 +12,7 @@ public class StudentDeletedConsumer(ReportingDbContext context)
     {
         return context.Students
             .Where(x => x.Id == integrationEvent.Id)
-            .ExecuteDeleteAsync();
+            .ExecuteUpdateAsync(c => c
+                .SetProperty(x => x.IsDeleted, true));
     }
 }

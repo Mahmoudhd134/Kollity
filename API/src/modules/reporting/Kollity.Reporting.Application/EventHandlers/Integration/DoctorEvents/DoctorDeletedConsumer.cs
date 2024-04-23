@@ -3,7 +3,7 @@ using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Doctor;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Reporting.Application.EventHandlers.Integration.Doctor;
+namespace Kollity.Reporting.Application.EventHandlers.Integration.DoctorEvents;
 
 public class DoctorDeletedConsumer(ReportingDbContext context)
     : IntegrationEventConsumer<DoctorDeletedIntegrationEvent>
@@ -12,6 +12,7 @@ public class DoctorDeletedConsumer(ReportingDbContext context)
     {
         return context.Doctors
             .Where(x => x.Id == integrationEvent.Id)
-            .ExecuteDeleteAsync();
+            .ExecuteUpdateAsync(c => c
+                .SetProperty(x => x.IsDeleted, true));
     }
 }

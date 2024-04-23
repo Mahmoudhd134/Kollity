@@ -3,7 +3,7 @@ using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Student;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Reporting.Application.EventHandlers.Integration.Student;
+namespace Kollity.Reporting.Application.EventHandlers.Integration.StudentEvents;
 
 public class StudentEditedConsumer(ReportingDbContext context) : IntegrationEventConsumer<StudentEditedIntegrationEvent>
 {

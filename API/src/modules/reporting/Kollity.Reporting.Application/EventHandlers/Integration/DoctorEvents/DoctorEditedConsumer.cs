@@ -3,7 +3,7 @@ using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Doctor;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Reporting.Application.EventHandlers.Integration.Doctor;
+namespace Kollity.Reporting.Application.EventHandlers.Integration.DoctorEvents;
 
 public class DoctorEditedConsumer(ReportingDbContext context) : IntegrationEventConsumer<DoctorEditedIntegrationEvent>
 {

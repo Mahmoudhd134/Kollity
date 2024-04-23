@@ -1,10 +1,9 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.User.Contracts.IntegrationEvents;
-using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Reporting.Application.EventHandlers.Integration.User;
+namespace Kollity.Reporting.Application.EventHandlers.Integration.UserEvents;
 
 public class UserProfileImageEditedConsumer(ReportingDbContext context)
     : IntegrationEventConsumer<UserProfileImageEditedIntegrationEvent>

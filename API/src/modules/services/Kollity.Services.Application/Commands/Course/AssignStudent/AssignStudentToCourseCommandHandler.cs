@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.StudentModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Courses;
+using Kollity.Services.Domain.StudentModels;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +9,12 @@ namespace Kollity.Services.Application.Commands.Course.AssignStudent;
 public class AssignStudentToCourseCommandHandler : ICommandHandler<AssignStudentToCourseCommand>
 {
     private readonly ApplicationDbContext _context;
+    private readonly EventCollection _eventCollection;
 
-    public AssignStudentToCourseCommandHandler(ApplicationDbContext context)
+    public AssignStudentToCourseCommandHandler(ApplicationDbContext context, EventCollection eventCollection)
     {
         _context = context;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AssignStudentToCourseCommand request, CancellationToken cancellationToken)
@@ -31,13 +35,17 @@ public class AssignStudentToCourseCommandHandler : ICommandHandler<AssignStudent
         if (isAssigned)
             return CourseErrors.StudentAlreadyAssigned;
 
-        _context.StudentCourses.Add(new StudentCourse
+        var studentCourse = new StudentCourse
         {
             StudentId = studentId,
             CourseId = courseId
-        });
+        };
+        _context.StudentCourses.Add(studentCourse);
 
         var result = await _context.SaveChangesAsync(cancellationToken);
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new CourseStudentAssignedEvent(studentCourse));
+        return Result.Success();
     }
 }
