@@ -4,6 +4,7 @@ using Kollity.Reporting.Application;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
 using MassTransit;
+using MassTransit.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -25,7 +26,7 @@ public static class Extensions
         services.AddMassTransit(busConfig =>
         {
             busConfig.SetKebabCaseEndpointNameFormatter();
-            
+
             busConfig.AddConsumers(
                 typeof(ApplicationExtensions).Assembly,
                 typeof(KollityUserApiEntryPoint).Assembly,
@@ -37,6 +38,12 @@ public static class Extensions
                 busConfig.UsingRabbitMq((context, config) =>
                 {
                     config.ConfigureEndpoints(context);
+                    config.UseMessageRetry(r =>
+                    {
+                        r.Exponential(2, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+                    });
+
+
                     var rabbitMqConfig = context.GetRequiredService<RabbitMqConfig>();
                     config.Host(new Uri(rabbitMqConfig.Host), host =>
                     {

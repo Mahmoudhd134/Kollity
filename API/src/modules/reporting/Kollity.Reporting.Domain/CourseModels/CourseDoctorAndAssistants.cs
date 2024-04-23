@@ -4,6 +4,7 @@ namespace Kollity.Reporting.Domain.CourseModels;
 
 public class CourseDoctorAndAssistants
 {
+    public Guid Id { get; set; }
     public Guid CourseId { get; set; }
     public Course Course { get; set; }
     public Guid DoctorId { get; set; }

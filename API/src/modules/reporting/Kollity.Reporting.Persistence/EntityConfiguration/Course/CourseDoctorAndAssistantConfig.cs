@@ -8,7 +8,7 @@ public class CourseDoctorAndAssistantConfig : IEntityTypeConfiguration<CourseDoc
 {
     public void Configure(EntityTypeBuilder<CourseDoctorAndAssistants> builder)
     {
-        builder.HasKey(x => new { x.CourseId, x.DoctorId });
+        builder.HasKey(x => x.Id);
 
         builder
             .HasOne(x => x.Course)
@@ -19,6 +19,8 @@ public class CourseDoctorAndAssistantConfig : IEntityTypeConfiguration<CourseDoc
             .HasOne(x => x.Doctor)
             .WithMany(x => x.DoctorsAndAssistants)
             .HasForeignKey(x => x.DoctorId);
+        
+        builder.HasIndex(x => new { x.CourseId, x.DoctorId });
 
         builder.ToTable("CourseDoctorAndAssistant");
     }

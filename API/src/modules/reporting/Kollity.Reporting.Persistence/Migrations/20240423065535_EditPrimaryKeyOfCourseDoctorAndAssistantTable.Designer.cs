@@ -4,6 +4,7 @@ using Kollity.Reporting.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Reporting.Persistence.Migrations
 {
     [DbContext(typeof(ReportingDbContext))]
-    partial class ReportingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240423065535_EditPrimaryKeyOfCourseDoctorAndAssistantTable")]
+    partial class EditPrimaryKeyOfCourseDoctorAndAssistantTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,35 +236,19 @@ namespace Kollity.Reporting.Persistence.Migrations
 
             modelBuilder.Entity("Kollity.Reporting.Domain.CourseModels.CourseStudent", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("AssigningDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("assigning_date");
-
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("course_id");
-
-                    b.Property<bool>("IsCurrentlyAssigned")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_currently_assigned");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("student_id");
 
-                    b.HasKey("Id")
+                    b.HasKey("CourseId", "StudentId")
                         .HasName("pk_course_student");
 
                     b.HasIndex("StudentId")
                         .HasDatabaseName("ix_course_student_student_id");
-
-                    b.HasIndex("CourseId", "StudentId")
-                        .HasDatabaseName("ix_course_student_course_id_student_id");
 
                     b.ToTable("CourseStudent", "reporting");
                 });

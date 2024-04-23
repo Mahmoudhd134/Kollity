@@ -2,16 +2,15 @@
 using Kollity.Reporting.Domain.CourseModels;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Course;
+using Microsoft.Extensions.Logging;
 
 namespace Kollity.Reporting.Application.EventHandlers.Integration.CourseEvents;
 
-public class CourseAddedConsumer(ReportingDbContext context) : IntegrationEventConsumer<CourseAddedIntegrationEvent>
+public class CourseAddedConsumer(ReportingDbContext context)
+    : IntegrationEventConsumer<CourseAddedIntegrationEvent>
 {
     protected override Task Handle(CourseAddedIntegrationEvent integrationEvent)
     {
-        if (integrationEvent.Name == "string")
-            throw new ArgumentException($"You can not use the default name '{integrationEvent.Name}'",
-                nameof(integrationEvent.Name));
         var course = new Course()
         {
             Id = integrationEvent.Id,

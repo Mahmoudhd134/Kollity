@@ -32,20 +32,21 @@
             select id, department, code, hours, name, cast(0 as bit)
             from KollityServicesDb.services.Course
 
-            insert into KollityReportingDb.reporting.CourseDoctorAndAssistant(course_id,
+            insert into KollityReportingDb.reporting.CourseDoctorAndAssistant(id,
+                                                                              course_id,
                                                                               doctor_id,
                                                                               is_doctor,
                                                                               assigning_date,
                                                                               is_currently_assigned)
-            select id, doctor_id, cast(1 as bit), getdate(), cast(1 as bit)
+            select newid(),id, doctor_id, cast(1 as bit), getdate(), cast(1 as bit)
             from KollityServicesDb.services.Course c
             where c.doctor_id is not null
             union all
-            select ca.course_id, ca.assistant_id, cast(0 as bit), getdate(), cast(1 as bit)
+            select newid(),ca.course_id, ca.assistant_id, cast(0 as bit), getdate(), cast(1 as bit)
             from KollityServicesDb.services.CourseAssistant ca
 
-            insert into KollityReportingDb.reporting.CourseStudent (course_id, student_id)
-            select course_id, student_id
+            insert into KollityReportingDb.reporting.CourseStudent (id,course_id, student_id,is_currently_assigned,assigning_date)
+            select newid(),course_id, student_id,cast(1 as bit),getdate()
             from KollityServicesDb.services.StudentCourse
             -- migration of course data ended
 
