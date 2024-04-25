@@ -1,4 +1,5 @@
-﻿
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Room;
 using Kollity.Services.Domain.Errors;
 using Kollity.Services.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,15 @@ public class DeleteRoomCommandHandler : ICommandHandler<DeleteRoomCommand>
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
     private readonly IFileServices _fileServices;
+    private readonly EventCollection _eventCollection;
 
     public DeleteRoomCommandHandler(ApplicationDbContext context, IUserServices userServices,
-        IFileServices fileServices)
+        IFileServices fileServices, EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _fileServices = fileServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteRoomCommand request, CancellationToken cancellationToken)
@@ -37,7 +40,7 @@ public class DeleteRoomCommandHandler : ICommandHandler<DeleteRoomCommand>
                 Contents = x.RoomContents.Select(xx => xx.FilePath).ToList(),
                 AssingmentFiles = x.Assignments.SelectMany(xx =>
                     xx.AssignmentFiles.Select(xxx => xxx.FilePath)).ToList(),
-                AssignmentAnswers = x.Assignments.SelectMany(xx => 
+                AssignmentAnswers = x.Assignments.SelectMany(xx =>
                     xx.AssignmentsAnswers.Select(xxx => xxx.File)).ToList()
             })
             .FirstOrDefaultAsync(cancellationToken);
@@ -48,9 +51,13 @@ public class DeleteRoomCommandHandler : ICommandHandler<DeleteRoomCommand>
         if (result == 0)
             return Error.UnKnown;
 
-        await _fileServices.Delete(content.Contents);
-        await _fileServices.Delete(content.AssingmentFiles);
-        await _fileServices.Delete(content.AssignmentAnswers);
+        await _fileServices.Delete(content.Contents
+            .Concat(content.AssignmentAnswers)
+            .Concat(content.AssingmentFiles)
+            .ToList());
+        
+        _eventCollection.Raise(new RoomDeletedEvent(room));
+
         return Result.Success();
     }
 }

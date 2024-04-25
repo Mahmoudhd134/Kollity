@@ -1,6 +1,6 @@
 ﻿namespace Kollity.Services.Contracts.Room;
 
-public class RoomAddedIntegrationEvent
+public class RoomAddedIntegrationEvent : BaseIntegrationEvent
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

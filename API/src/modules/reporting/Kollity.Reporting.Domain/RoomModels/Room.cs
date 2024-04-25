@@ -13,6 +13,7 @@ public class Room
     public Course Course { get; set; }
     public Guid DoctorId { get; set; }
     public Doctor Doctor { get; set; }
+    public DateTime CreatedAt { get; set; }
     public bool IsDeleted { get; set; }
 
     public List<RoomUser> RoomUsers { get; set; } = [];

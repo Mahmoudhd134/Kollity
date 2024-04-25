@@ -52,8 +52,8 @@
 
 
             --migrate rooms data
-            insert into KollityReportingDb.reporting.Room (id, name, course_id, doctor_id, is_deleted)
-            select id, name, course_id, doctor_id, cast(0 as bit)
+            insert into KollityReportingDb.reporting.Room (id, name, course_id, doctor_id, is_deleted,created_at)
+            select id, name, course_id, doctor_id, cast(0 as bit),getdate()
             from KollityServicesDb.services.Room;
 
             insert into KollityReportingDb.reporting.RoomUser(room_id, user_id)
