@@ -56,7 +56,8 @@ public class AddChatPollCommandHandler(
             {
                 Question = request.AddChatPollDto.Question,
                 Options = request.AddChatPollDto.Options
-            }
+            },
+            Type = RoomMessageType.Poll
         };
 
         context.RoomMessages.Add(message);
@@ -91,7 +92,8 @@ public class AddChatPollCommandHandler(
                     Count = 0
                 }).ToList(),
                 Question = message.Poll.Question,
-            }
+            },
+            Type = message.Type
         };
 
         return dto;

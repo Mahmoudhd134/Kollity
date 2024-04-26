@@ -61,13 +61,12 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
     }
 
-    public async Task SendMessage(Guid trackId, string text, IFormFile file)
+    public async Task SendMessage(Guid trackId, string text)
     {
         var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
         var result = await Sender.Send(new AddRoomMessageCommand(roomId, new AddRoomMessageDto
         {
             Text = text,
-            File = file
         }));
 
         if (result.IsSuccess == false)

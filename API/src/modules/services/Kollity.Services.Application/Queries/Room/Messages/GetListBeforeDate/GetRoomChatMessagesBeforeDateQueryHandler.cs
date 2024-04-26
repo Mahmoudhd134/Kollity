@@ -49,7 +49,8 @@ public class
                         Image = x.Sender.ProfileImage
                     }
                     : null,
-                x.Poll
+                x.Poll,
+                x.Type
             })
             .Reverse()
             .ToListAsync(cancellationToken);
@@ -68,7 +69,8 @@ public class
                     Question = x.Poll.Question,
                     Options = x.Poll.Options.Select(xx => new ChatPollOptionDto { Option = xx }).ToList()
                 }
-                : null
+                : null,
+            Type = x.Type
         }).ToList();
     }
 }

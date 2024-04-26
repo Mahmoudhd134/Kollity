@@ -30,6 +30,14 @@ public class SignalRRoomConnectionServices : IRoomConnectionsServices, IRoomConn
         return userRoom.RoomId;
     }
 
+    public List<string> GetUserRoomConnectionId(Guid userId, Guid roomId)
+    {
+        return _roomConnections
+            .Where(x => x.Value.RoomId == roomId && x.Value.UserId == userId)
+            .Select(x => x.Key)
+            .ToList();
+    }
+
     public List<Guid> GetUsersConnectedToRoom(Guid roomId)
     {
         return _roomConnections
