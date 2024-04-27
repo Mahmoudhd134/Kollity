@@ -36,6 +36,9 @@ public class GetDoctorByIdQueryHandler : IQueryHandler<GetDoctorByIdQuery, Docto
                     }).ToList()
             })
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        
+        if (doctorDto is null)
+            return DoctorErrors.IdNotFound(request.Id);
 
         var doctorCourses = await _context.Courses
             .Where(x => x.DoctorId == request.Id)
@@ -50,6 +53,6 @@ public class GetDoctorByIdQueryHandler : IQueryHandler<GetDoctorByIdQuery, Docto
 
         doctorDto.Courses.AddRange(doctorCourses);
 
-        return doctorDto is null ? DoctorErrors.IdNotFound(request.Id) : doctorDto;
+        return doctorDto;
     }
 }
