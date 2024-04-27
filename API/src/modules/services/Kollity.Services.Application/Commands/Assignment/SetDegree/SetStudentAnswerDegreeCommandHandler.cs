@@ -56,7 +56,6 @@ public class SetStudentAnswerDegreeCommandHandler : ICommandHandler<SetStudentAn
             return AssignmentErrors.AssignmentDegreeOutOfRange(assignment.Degree);
 
         int result;
-        UserEmailDto student;
         if (answer.StudentId != null) // individual assignment
         {
             if (answer.StudentId != studentId)

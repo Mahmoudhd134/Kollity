@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Assignment;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Assignment.Edit;
@@ -7,13 +9,16 @@ public class EditAssignmentCommandHandler : ICommandHandler<EditAssignmentComman
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly EventCollection _eventCollection;
     private readonly IUserServices _userServices;
 
-    public EditAssignmentCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper)
+    public EditAssignmentCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _mapper = mapper;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(EditAssignmentCommand request, CancellationToken cancellationToken)
@@ -47,7 +52,11 @@ public class EditAssignmentCommandHandler : ICommandHandler<EditAssignmentComman
         request.EditAssignmentDto.OpenUntilDate = request.EditAssignmentDto.OpenUntilDate.ToUniversalTime();
         _mapper.Map(request.EditAssignmentDto, assignment);
         assignment.LastUpdateDate = DateTime.UtcNow;
-        await _context.SaveChangesAsync(cancellationToken);
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+
+        _eventCollection.Raise(new AssignmentEditedEvent(assignment));
         return Result.Success();
     }
 }

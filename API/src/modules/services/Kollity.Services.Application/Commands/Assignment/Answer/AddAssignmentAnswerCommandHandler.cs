@@ -1,5 +1,7 @@
-﻿using Kollity.Services.Domain.AssignmentModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Domain.AssignmentModels;
 using Kollity.Services.Application.Abstractions.Files;
+using Kollity.Services.Application.Events.Assignment;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,13 +12,15 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
     private readonly ApplicationDbContext _context;
     private readonly IFileServices _fileServices;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
     public AddAssignmentAnswerCommandHandler(ApplicationDbContext context, IFileServices fileServices,
-        IUserServices userServices)
+        IUserServices userServices, EventCollection eventCollection)
     {
         _context = context;
         _fileServices = fileServices;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AddAssignmentAnswerCommand request, CancellationToken cancellationToken)
@@ -41,10 +45,11 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
 
         if (DateTime.UtcNow > assignment.OpenUntilDate)
             return AssignmentErrors.SubmitTimeEnd(assignment.OpenUntilDate);
-        
+
         //check that the user is in the room which the assignment belongs to
         var isInTheRoom = await _context.UserRooms
-            .AnyAsync(x => x.UserId == userId && x.RoomId == assignment.RoomId && x.JoinRequestAccepted, cancellationToken);
+            .AnyAsync(x => x.UserId == userId && x.RoomId == assignment.RoomId && x.JoinRequestAccepted,
+                cancellationToken);
         if (isInTheRoom == false)
             return RoomErrors.UserIsNotJoined(username);
 
@@ -71,7 +76,11 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
             _context.AssignmentAnswers.Add(assignmentAnswer);
             var result = await _context.SaveChangesAsync(cancellationToken);
             if (result != 0)
+            {
+                _eventCollection.Raise(new AssignmentAnswerAddedEvent(assignmentAnswer));
                 return Result.Success();
+            }
+
             await _fileServices.Delete(path);
             return Error.UnKnown;
         }
@@ -93,17 +102,21 @@ public class AddAssignmentAnswerCommandHandler : ICommandHandler<AddAssignmentAn
             return AssignmentErrors.AlreadyAnswered;
 
         path = await _fileServices.UploadFile(file, Category.AssignmentAnswer);
-        var assignmentAnswers = new AssignmentAnswer
+        var groupAssignmentAnswer = new AssignmentAnswer
         {
             File = path,
             AssignmentId = assignmentId,
             UploadDate = DateTime.UtcNow,
             AssignmentGroupId = groupId,
         };
-        _context.AssignmentAnswers.AddRange(assignmentAnswers);
+        _context.AssignmentAnswers.Add(groupAssignmentAnswer);
         var result1 = await _context.SaveChangesAsync(cancellationToken);
         if (result1 != 0)
+        {
+            _eventCollection.Raise(new AssignmentAnswerAddedEvent(groupAssignmentAnswer));
             return Result.Success();
+        }
+
         await _fileServices.Delete(path);
         return Error.UnKnown;
     }
