@@ -25,6 +25,12 @@ public class AssignmentAnswerConfig : IEntityTypeConfiguration<AssignmentAnswer>
             .WithMany()
             .HasForeignKey(x => new { x.GroupId, x.StudentId });
 
+        builder
+            .HasOne(x => x.Room)
+            .WithMany()
+            .HasForeignKey(x => x.RoomId)
+            .IsRequired(false);
+
         builder.ToTable("AssignmentAnswer");
     }
 }
