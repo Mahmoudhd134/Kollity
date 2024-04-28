@@ -2,6 +2,7 @@
 using Kollity.Services.Application.Events.Doctor;
 using Kollity.Services.Application.Queries.Identity.IsUserNameUsed;
 using Kollity.Services.Domain.Errors;
+using Kollity.Services.Domain.Identity;
 using MediatR;
 
 namespace Kollity.Services.Application.Commands.Doctor.Add;
@@ -31,6 +32,21 @@ public class AddDoctorCommandHandler : ICommandHandler<AddDoctorCommand>
 
         var doctor = _mapper.Map<Domain.DoctorModels.Doctor>(request.AddDoctorDto);
         doctor.NormalizedUserName = doctor.UserName?.ToUpper();
+
+        try
+        {
+            doctor.UserType = request.AddDoctorDto.Role switch
+            {
+                Role.Assistant => UserType.Assistant,
+                Role.Doctor => UserType.Doctor,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            return RoleErrors.RoleNotFound(request.AddDoctorDto.Role);
+        }
+
         _context.Doctors.Add(doctor);
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)

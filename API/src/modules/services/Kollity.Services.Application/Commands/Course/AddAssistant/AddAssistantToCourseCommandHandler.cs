@@ -1,6 +1,7 @@
 ﻿using Kollity.Services.Domain.CourseModels;
 using Kollity.Services.Domain.Errors;
 using Kollity.Services.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.AddAssistant;
@@ -8,12 +9,10 @@ namespace Kollity.Services.Application.Commands.Course.AddAssistant;
 public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantToCourseCommand>
 {
     private readonly ApplicationDbContext _context;
-    private readonly IUserServices _userServices;
 
-    public AddAssistantToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public AddAssistantToCourseCommandHandler(ApplicationDbContext context)
     {
         _context = context;
-        _userServices = userServices;
     }
 
     public async Task<Result> Handle(AddAssistantToCourseCommand request, CancellationToken cancellationToken)
@@ -36,8 +35,7 @@ public class AddAssistantToCourseCommandHandler : ICommandHandler<AddAssistantTo
         if (isAssigned)
             return CourseErrors.AssistantAlreadyAssigned;
 
-        var isInAssistantRole = _userServices.IsInRole(Role.Assistant);
-        if (isInAssistantRole == false)
+        if (doctor.UserType != UserType.Assistant)
             return CourseErrors.NonAssistantAssignation;
 
         course.CoursesAssistants.Add(new CourseAssistant
