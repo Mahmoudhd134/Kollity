@@ -10,4 +10,6 @@ public interface IRoomHubClient
     Task MessageDeleted(Guid messageId);
     Task MessageHasNotBeenDeletedSuccessfully(Guid messageId, List<Error> errors);
     Task MessagesHaveBeenRead(List<Guid> messagesId);
+    Task PollOptionChosen(Guid pollId, int option);
+    Task PollOptionUnChosen(Guid pollId, int option);
 }
