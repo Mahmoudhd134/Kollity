@@ -3,6 +3,7 @@ using Kollity.Services.Application.Commands.Room.Messages.Add;
 using Kollity.Services.Application.Commands.Room.Messages.AddPoll;
 using Kollity.Services.Application.Commands.Room.Messages.Delete;
 using Kollity.Services.Application.Commands.Room.Messages.Disconnect;
+using Kollity.Services.Application.Commands.Room.Messages.SubmitPoll;
 using Kollity.Services.Application.Dtos.Room.Message;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;

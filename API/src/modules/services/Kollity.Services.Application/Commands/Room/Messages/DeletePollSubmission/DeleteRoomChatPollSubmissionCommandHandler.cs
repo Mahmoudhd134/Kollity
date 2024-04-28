@@ -10,7 +10,7 @@ public class DeleteRoomChatPollSubmissionCommandHandler(ApplicationDbContext con
     {
         var userId = userServices.GetCurrentUserId();
         var result = await context.RoomMessagePollAnswers
-            .Where(x => x.PollId == request.PollId && x.UserId == userId)
+            .Where(x => x.PollId == request.PollId && x.UserId == userId && x.OptionIndex == request.OptionIndex)
             .ExecuteDeleteAsync(cancellationToken);
         return result > 0 ? Result.Success() : RoomErrors.PollSubmissionNotFound(request.PollId);
     }

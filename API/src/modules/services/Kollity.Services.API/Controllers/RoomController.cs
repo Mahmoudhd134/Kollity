@@ -118,16 +118,33 @@ public class RoomController : BaseController
         return Send(new GetMessageChatPollAnswersQuery(pollId));
     }
 
-    [HttpPost("poll/{pollId:guid}/submit/{optionIndex})")]
-    public Task<IResult> SubmitPoll(Guid pollId, byte optionIndex)
+    [HttpPost("{roomId:guid}/poll/{pollId:guid}/submit/{optionIndex}")]
+    public async Task<IResult> SubmitPoll(Guid roomId, Guid pollId, byte optionIndex)
     {
-        return Send(new SubmitRoomChatMessagePollCommand(pollId, optionIndex));
+        var result = await Sender.Send(new SubmitRoomChatMessagePollCommand(pollId, optionIndex));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        var userConnections = _roomConnectionServices.GetUserRoomConnectionId(Guid.Parse(Id), roomId);
+        await _roomHubContext.Clients
+            .GroupExcept(roomId.ToString(), userConnections)
+            .PollOptionChosen(pollId, optionIndex);
+        return result.ToIResult();
     }
 
-    [HttpDelete("poll/{pollId:guid}/delete-submission")]
-    public Task<IResult> SubmitPoll(Guid pollId)
+    [HttpDelete("{roomId:guid}/poll/{pollId:guid}/delete-submit/{optionIndex}")]
+    public async Task<IResult> DeSubmitPoll(Guid roomId, Guid pollId, byte optionIndex)
     {
-        return Send(new DeleteRoomChatPollSubmissionCommand(pollId));
+        var result = await Sender.Send(new DeleteRoomChatPollSubmissionCommand(pollId, optionIndex));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        var userConnections = _roomConnectionServices.GetUserRoomConnectionId(Guid.Parse(Id), roomId);
+        await _roomHubContext.Clients
+            .GroupExcept(roomId.ToString(), userConnections)
+            .PollOptionUnChosen(pollId, optionIndex);
+
+        return result.ToIResult();
     }
 
     [HttpPut]
