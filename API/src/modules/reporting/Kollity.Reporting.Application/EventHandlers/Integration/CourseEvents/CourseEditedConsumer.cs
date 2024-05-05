@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Course;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ public class CourseEditedConsumer(ReportingDbContext context) : IntegrationEvent
         var course = await context.Courses
             .FirstOrDefaultAsync(x => x.Id == integrationEvent.Id);
         if (course is null)
-            return;
+            throw new CourseExceptions.CourseNotFound(integrationEvent.Id);
         course.Id = integrationEvent.Id;
         course.Code = integrationEvent.Code;
         course.Department = integrationEvent.Department;

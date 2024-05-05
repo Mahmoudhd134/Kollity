@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Room;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ public class RoomEditedConsumer(ReportingDbContext context) : IntegrationEventCo
         var room = await context.Rooms
             .FirstOrDefaultAsync(x => x.Id == integrationEvent.Id);
         if (room is null)
-            return;
+            throw new RoomExceptions.RoomNotFound(integrationEvent.Id);
 
         room.Name = integrationEvent.Name;
 

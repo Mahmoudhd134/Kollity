@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Assignment;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +9,13 @@ namespace Kollity.Reporting.Application.EventHandlers.Integration.AssignmentEven
 public class AssignmentDeletedConsumer(ReportingDbContext context)
     : IntegrationEventConsumer<AssignmentDeletedIntegrationEvent>
 {
-    protected override Task Handle(AssignmentDeletedIntegrationEvent integrationEvent)
+    protected override async Task Handle(AssignmentDeletedIntegrationEvent integrationEvent)
     {
-        return context.Assignments
+        var result = await context.Assignments
             .Where(x => x.Id == integrationEvent.Id)
             .ExecuteUpdateAsync(c => c
                 .SetProperty(x => x.IsDeleted, true));
+        if (result == 0)
+            throw new AssignmentExceptions.AssignmentNotFound(integrationEvent.Id);
     }
 }

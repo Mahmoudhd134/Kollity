@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Course;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ public class StudentDeAssignedFromCourseConsumer(
             logger.LogError(
                 "Trying to de assign the student {StudentId} from course {CourseId}, but the student is not assigned to the course",
                 sId, cId);
-            return;
+            throw new CourseExceptions.StudentIsNotAssigned(sId, cId);
         }
 
         courseStudent.IsCurrentlyAssigned = false;

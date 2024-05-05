@@ -1,4 +1,6 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
+using Kollity.Reporting.Application.Exceptions.Generic;
 using Kollity.Reporting.Domain.CourseModels;
 using Kollity.Reporting.Domain.UserModels;
 using Kollity.Reporting.Persistence.Data;
@@ -25,7 +27,7 @@ public class AssistantAssignedToCourseConsumer(
             logger.LogError(
                 "Assigning assistant with id {AssistantId} to course {CourseId}, but the assistant is not found",
                 aId, cId);
-            return;
+            throw new UserExceptions.AssistantNotFound(aId);
         }
 
         var courseExists = await context.Courses
@@ -35,7 +37,7 @@ public class AssistantAssignedToCourseConsumer(
             logger.LogError(
                 "Assigning assistant with id {AssistantId} to course {CourseId}, but the course is not found",
                 aId, cId);
-            return;
+            throw new CourseExceptions.CourseNotFound(cId);
         }
 
         var assistantAlreadyAssigned = await context.CourseDoctorAndAssistants
@@ -45,7 +47,7 @@ public class AssistantAssignedToCourseConsumer(
             logger.LogError(
                 "Assigning assistant with id {Assistant} to course {CourseId}, but the course already has that assistant assigned to it",
                 aId, cId);
-            return;
+            throw new CourseExceptions.AssistantAlreadyAssigned(aId, cId);
         }
 
         var courseAssistant = new CourseDoctorAndAssistants

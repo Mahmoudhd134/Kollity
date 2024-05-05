@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Course;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ public class AssistantDeAssignedFromCourseConsumer(
             logger.LogError(
                 "Trying to de assign the assistant {AssistantId} from course {CourseId}, but the assistant is not assigned to the course",
                 aId, cId);
-            return;
+            throw new CourseExceptions.AssistantIsNotAssigned(aId, cId);
         }
 
         courseAssistant.IsCurrentlyAssigned = false;

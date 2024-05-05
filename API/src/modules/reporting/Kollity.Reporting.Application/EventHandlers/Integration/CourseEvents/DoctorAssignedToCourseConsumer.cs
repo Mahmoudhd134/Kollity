@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Domain.CourseModels;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Course;
@@ -21,7 +22,7 @@ public class DoctorAssignedToCourseConsumer(ReportingDbContext context, ILogger<
         {
             logger.LogError("Assigning doctor with id {DoctorId} to course {CourseId}, but the doctor is not found",
                 dId, cId);
-            return;
+            throw new UserExceptions.DoctorNotFound(dId);
         }
 
         var courseExists = await context.Courses
@@ -30,7 +31,7 @@ public class DoctorAssignedToCourseConsumer(ReportingDbContext context, ILogger<
         {
             logger.LogError("Assigning doctor with id {DoctorId} to course {CourseId}, but the course is not found",
                 dId, cId);
-            return;
+            throw new CourseExceptions.CourseNotFound(cId);
         }
 
         var courseDoctorId = await context.CourseDoctorAndAssistants
@@ -42,7 +43,7 @@ public class DoctorAssignedToCourseConsumer(ReportingDbContext context, ILogger<
             logger.LogError(
                 "Assigning doctor with id {DoctorId} to course {CourseId}, but the course already has a doctor assigned to it with id {CourseDoctorId}",
                 dId, cId, courseDoctorId);
-            return;
+            throw new CourseExceptions.AssignDoctorToCourseThatHasADoctor(cId);
         }
 
         var courseDoctor = new CourseDoctorAndAssistants

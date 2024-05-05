@@ -1,4 +1,6 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
+using Kollity.Reporting.Application.Exceptions.Generic;
 using Kollity.Reporting.Domain.AssignmentModels;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Assignment;
@@ -14,7 +16,7 @@ public class AssignmentEditedConsumer(ReportingDbContext context)
         var assignment = await context.Assignments
             .FirstOrDefaultAsync(x => x.Id == integrationEvent.Id);
         if (assignment is null)
-            return;
+            throw new AssignmentExceptions.AssignmentNotFound(integrationEvent.Id);
 
         assignment.Degree = integrationEvent.Degree;
         assignment.Description = integrationEvent.Description;

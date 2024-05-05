@@ -1,4 +1,6 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
+using Kollity.Reporting.Application.Exceptions.Generic;
 using Kollity.Reporting.Domain.AssignmentModels;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.AssignmentGroup;
@@ -17,7 +19,7 @@ public class AssignmentGroupInvitationAcceptedConsumer(ReportingDbContext contex
             .FirstOrDefaultAsync();
 
         if (group is null)
-            return;
+            throw new AssignmentExceptions.GroupNotFound(integrationEvent.GroupId);
 
         var assignmentGroup = new AssignmentGroup
         {

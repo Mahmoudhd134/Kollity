@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Domain.CourseModels;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Course;
@@ -23,7 +24,7 @@ public class StudentAssignedToCourseConsumer(
         {
             logger.LogError("Assigning student with id {Student} to course {CourseId}, but the student is not found",
                 sId, cId);
-            return;
+            throw new UserExceptions.StudentNotFound(sId);
         }
 
         var courseExists = await context.Courses
@@ -32,7 +33,7 @@ public class StudentAssignedToCourseConsumer(
         {
             logger.LogError("Assigning student with id {StudentId} to course {CourseId}, but the course is not found",
                 sId, cId);
-            return;
+            throw new CourseExceptions.CourseNotFound(cId);
         }
 
         var studentAlreadyAssigned = await context.CourseStudents
@@ -42,7 +43,7 @@ public class StudentAssignedToCourseConsumer(
             logger.LogError(
                 "Assigning student with id {StudentId} to course {CourseId}, but the student already assigned to the course",
                 sId, cId);
-            return;
+            throw new CourseExceptions.StudentAlreadyAssigned(sId, cId);
         }
 
         var courseStudent = new CourseStudent

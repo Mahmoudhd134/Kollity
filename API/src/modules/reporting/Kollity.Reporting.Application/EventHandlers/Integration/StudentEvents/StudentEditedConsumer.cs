@@ -1,4 +1,5 @@
 ﻿using Kollity.Reporting.Application.Abstractions;
+using Kollity.Reporting.Application.Exceptions;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.Contracts.Student;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ public class StudentEditedConsumer(ReportingDbContext context) : IntegrationEven
         var student = await context.Students
             .FirstOrDefaultAsync(s => s.Id == integrationEvent.Id);
         if (student is null)
-            return;
+            throw new UserExceptions.StudentNotFound(integrationEvent.Id);
         student.FullNameInArabic = integrationEvent.FullName;
         student.UserName = integrationEvent.UserName;
         student.Email = integrationEvent.Email;
