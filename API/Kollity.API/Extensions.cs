@@ -40,7 +40,10 @@ public static class Extensions
                     config.ConfigureEndpoints(context);
                     config.UseMessageRetry(r =>
                     {
-                        r.Exponential(2, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1));
+                        r.Exponential(7,
+                            TimeSpan.FromSeconds(30),
+                            TimeSpan.FromMinutes(60),
+                            TimeSpan.FromMinutes(10));
                     });
 
 
