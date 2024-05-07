@@ -34,10 +34,10 @@ public class GetMessageChatPollAnswersQueryHandler(
             })
             .ToDictionaryAsync(x => x.Index, cancellationToken);
 
-        var userChooseOption = await context.RoomMessagePollAnswers
+        var userChooseOptions = await context.RoomMessagePollAnswers
             .Where(x => x.UserId == userId && x.PollId == request.PollId)
-            .Select(x => new { x.OptionIndex })
-            .FirstOrDefaultAsync(cancellationToken);
+            .Select(x => x.OptionIndex)
+            .ToListAsync(cancellationToken);
 
         return new ChatPollDto
         {
@@ -50,7 +50,7 @@ public class GetMessageChatPollAnswersQueryHandler(
                     {
                         Option = o,
                         Count = answer?.Count ?? 0,
-                        IsChoose = i == userChooseOption?.OptionIndex
+                        IsChoose = userChooseOptions.Contains((byte)i)
                     };
                 })
                 .ToList()

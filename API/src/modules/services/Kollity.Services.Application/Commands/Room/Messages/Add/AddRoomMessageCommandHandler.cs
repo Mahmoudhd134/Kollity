@@ -91,7 +91,7 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
         {
             Id = message.Id,
             Text = message.Text,
-            IsRead = false,
+            IsRead = message.IsRead,
             SentAt = message.Date,
             SenderDto = sender,
             FileName = message.File?.FileName,

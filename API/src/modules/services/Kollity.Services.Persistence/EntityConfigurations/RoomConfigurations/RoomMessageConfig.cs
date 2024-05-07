@@ -31,7 +31,7 @@ public class RoomMessageConfig : IEntityTypeConfiguration<RoomMessage>
                 s => JsonConvert.DeserializeObject<MessagePoll>(s)
             )
             .IsRequired(false)
-            .HasMaxLength(3550);
+            .HasMaxLength(3650);
 
         builder
             .HasOne(x => x.Sender)
