@@ -35,7 +35,7 @@ public class AddChatPollCommandHandler(
             errors.Add(RoomErrors.PollInvalidOptionLength);
         }
 
-        if (poll.IsMultiAnswer && (poll.MaxOptionsCountForSubmission >= poll.Options.Count ||
+        if (poll.IsMultiAnswer && (poll.MaxOptionsCountForSubmission > poll.Options.Count ||
                                    poll.MaxOptionsCountForSubmission == 0))
             errors.Add(RoomErrors.PollInvalidMaxOptionsCount);
 
@@ -98,6 +98,8 @@ public class AddChatPollCommandHandler(
                     Count = 0
                 }).ToList(),
                 Question = message.Poll.Question,
+                IsMultiAnswer = message.Poll.IsMultiAnswer,
+                MaxOptionsCountForSubmission = message.Poll.MaxOptionsCountForSubmission
             },
             Type = message.Type
         };
