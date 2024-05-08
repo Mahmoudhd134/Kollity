@@ -1,4 +1,5 @@
 ﻿using Kollity.Services.API.Extensions;
+using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.API.Hubs.Hubs.Room;
 using Kollity.Services.Application.Commands.Room.AcceptAllJoins;
 using Kollity.Services.Application.Commands.Room.AcceptJoin;
@@ -9,11 +10,14 @@ using Kollity.Services.Application.Commands.Room.DeleteSupervisor;
 using Kollity.Services.Application.Commands.Room.DenyJoin;
 using Kollity.Services.Application.Commands.Room.Edit;
 using Kollity.Services.Application.Commands.Room.Join;
+using Kollity.Services.Application.Commands.Room.Messages.Add;
 using Kollity.Services.Application.Commands.Room.Messages.DeletePollSubmission;
 using Kollity.Services.Application.Commands.Room.Messages.GetUnRead;
 using Kollity.Services.Application.Commands.Room.Messages.SubmitPoll;
+using Kollity.Services.Application.Dtos.Reports;
 using Kollity.Services.Application.Dtos.Room;
 using Kollity.Services.Application.Dtos.Room.Message;
+using Kollity.Services.Application.Queries.Reports.UserRoomReport;
 using Kollity.Services.Application.Queries.Room.GetById;
 using Kollity.Services.Application.Queries.Room.GetMembers;
 using Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
@@ -29,10 +33,21 @@ namespace Kollity.Services.API.Controllers;
 public class RoomController : BaseController
 {
     private readonly IHubContext<RoomHub, IRoomHubClient> _roomHubContext;
+    private readonly IRoomConnectionServices _roomConnectionServices;
 
-    public RoomController(IHubContext<RoomHub, IRoomHubClient> roomHubContext)
+    public RoomController(IHubContext<RoomHub, IRoomHubClient> roomHubContext,
+        IRoomConnectionServices roomConnectionServices)
     {
         _roomHubContext = roomHubContext;
+        _roomConnectionServices = roomConnectionServices;
+    }
+
+    [HttpGet("{roomId:guid}/student-report/{studentId:guid}"),
+     Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
+     SwaggerResponse(200, type: typeof(StudentRoomReportDto))]
+    public Task<IResult> StudentReport(Guid roomId, Guid studentId)
+    {
+        return Send(new GetStudentRoomReportQuery(studentId, roomId));
     }
 
     [HttpPost]
@@ -113,16 +128,33 @@ public class RoomController : BaseController
         return Send(new GetMessageChatPollAnswersQuery(pollId));
     }
 
-    [HttpPost("poll/{pollId:guid}/submit/{optionIndex})")]
-    public Task<IResult> SubmitPoll(Guid pollId, byte optionIndex)
+    [HttpPost("{roomId:guid}/poll/{pollId:guid}/submit/{optionIndex}")]
+    public async Task<IResult> SubmitPoll(Guid roomId, Guid pollId, byte optionIndex)
     {
-        return Send(new SubmitRoomChatMessagePollCommand(pollId, optionIndex));
+        var result = await Sender.Send(new SubmitRoomChatMessagePollCommand(pollId, optionIndex));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        var userConnections = _roomConnectionServices.GetUserRoomConnectionId(Guid.Parse(Id), roomId);
+        await _roomHubContext.Clients
+            .GroupExcept(roomId.ToString(), userConnections)
+            .PollOptionChosen(pollId, optionIndex);
+        return result.ToIResult();
     }
 
-    [HttpDelete("poll/{pollId:guid}/delete-submission")]
-    public Task<IResult> SubmitPoll(Guid pollId)
+    [HttpDelete("{roomId:guid}/poll/{pollId:guid}/delete-submit/{optionIndex}")]
+    public async Task<IResult> DeSubmitPoll(Guid roomId, Guid pollId, byte optionIndex)
     {
-        return Send(new DeleteRoomChatPollSubmissionCommand(pollId));
+        var result = await Sender.Send(new DeleteRoomChatPollSubmissionCommand(pollId, optionIndex));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        var userConnections = _roomConnectionServices.GetUserRoomConnectionId(Guid.Parse(Id), roomId);
+        await _roomHubContext.Clients
+            .GroupExcept(roomId.ToString(), userConnections)
+            .PollOptionUnChosen(pollId, optionIndex);
+
+        return result.ToIResult();
     }
 
     [HttpPut]
@@ -157,5 +189,19 @@ public class RoomController : BaseController
             RoomId = roomId,
             UserId = supervisorId
         }));
+    }
+
+    [HttpPost("{id:guid}/send-message")]
+    public async Task<IResult> SendMessage(Guid id, [FromForm] AddRoomMessageDto dto, Guid trackId)
+    {
+        var result = await Sender.Send(new AddRoomMessageCommand(id, dto));
+        if (result.IsSuccess == false)
+            return result.ToIResult();
+
+        var cIds = _roomConnectionServices.GetUserRoomConnectionId(Guid.Parse(Id), id);
+        await _roomHubContext.Clients.Clients(cIds).MessageSentSuccessfully(trackId, result.Data);
+        await _roomHubContext.Clients.GroupExcept(id.ToString(), cIds).MessageReceived(result.Data);
+
+        return Results.Empty;
     }
 }
