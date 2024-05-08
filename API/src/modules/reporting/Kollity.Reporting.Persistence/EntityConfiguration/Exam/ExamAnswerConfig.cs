@@ -8,19 +8,39 @@ public class ExamAnswerConfig : IEntityTypeConfiguration<ExamAnswer>
 {
     public void Configure(EntityTypeBuilder<ExamAnswer> builder)
     {
-        builder.HasKey(x => new { x.OptionId, x.StudentId });
+        builder.HasKey(x => x.Id);
 
         builder
             .HasOne(x => x.Student)
             .WithMany(x => x.ExamAnswers)
-            .HasForeignKey(x => x.StudentId);
+            .HasForeignKey(x => x.StudentId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
-            .HasOne(x => x.Option)
+            .HasOne(x => x.Exam)
             .WithMany(x => x.Answers)
-            .HasForeignKey(x => x.OptionId);
+            .HasForeignKey(x => x.ExamId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasIndex(x => x.StudentId);
+        builder
+            .HasOne(x => x.ExamQuestion)
+            .WithMany(x => x.ExamAnswers)
+            .HasForeignKey(x => x.ExamQuestionId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+            .HasOne(x => x.ExamQuestionOption)
+            .WithMany(x => x.ExamAnswers)
+            .HasForeignKey(x => x.ExamQuestionOptionId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
+        builder
+            .HasOne(x => x.Room)
+            .WithMany()
+            .HasForeignKey(x => x.RoomId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasIndex(x => new { x.StudentId, x.ExamQuestionId }).IsUnique();
 
         builder.ToTable("ExamAnswer");
     }

@@ -1,5 +1,7 @@
-﻿using Kollity.Services.Domain.ExamModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Domain.ExamModels;
 using Kollity.Services.Application.Dtos.Exam;
+using Kollity.Services.Application.Events.Exam;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,12 +12,15 @@ public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionComm
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
     private readonly IMapper _mapper;
+    private readonly EventCollection _eventCollection;
 
-    public AddExamQuestionCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper)
+    public AddExamQuestionCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _mapper = mapper;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result<ExamQuestionDto>> Handle(AddExamQuestionCommand request,
@@ -51,17 +56,19 @@ public class AddExamQuestionCommandHandler : ICommandHandler<AddExamQuestionComm
 
         var question = _mapper.Map<ExamQuestion>(request.Dto);
         question.ExamId = examId;
-        question.ExamQuestionOptions.Add(new ExamQuestionOption()
+        var option = new ExamQuestionOption()
         {
             Option =
                 "Temporally option, make another option, mark it as the right one, then remove this option.\nThis is for ensuring that at leaset one option will be present.",
             IsRightOption = true,
-        });
+        };
+        question.ExamQuestionOptions.Add(option);
         _context.ExamQuestions.Add(question);
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
 
+        _eventCollection.Raise(new ExamQuestionAddedEvent(question));
         return _mapper.Map<ExamQuestionDto>(question);
     }
 }

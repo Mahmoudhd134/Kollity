@@ -23,6 +23,8 @@ public class ReportingDbContext : DbContext
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomUser> RoomUsers { get; set; }
     public DbSet<Exam> Exams { get; set; }
+    public DbSet<ExamQuestion> ExamQuestions { get; set; }
+    public DbSet<ExamQuestionOption> ExamsQuestionOptions { get; set; }
     public DbSet<ExamAnswer> ExamAnswers { get; set; }
     public DbSet<Assignment> Assignments { get; set; }
     public DbSet<AssignmentGroup> AssignmentGroups { get; set; }

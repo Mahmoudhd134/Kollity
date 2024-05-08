@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Exam.Edit;
@@ -8,12 +10,15 @@ public class EditExamCommandHandler : ICommandHandler<EditExamCommand>
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
     private readonly IMapper _mapper;
+    private readonly EventCollection _eventCollection;
 
-    public EditExamCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper)
+    public EditExamCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _mapper = mapper;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(EditExamCommand request, CancellationToken cancellationToken)
@@ -49,6 +54,9 @@ public class EditExamCommandHandler : ICommandHandler<EditExamCommand>
         _mapper.Map(request.Dto, exam);
         exam.LastUpdatedDate = DateTime.UtcNow;
         var result = await _context.SaveChangesAsync(cancellationToken);
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new ExamEditedEvent(exam));
+        return Result.Success();
     }
 }

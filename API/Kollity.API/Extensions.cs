@@ -43,7 +43,7 @@ public static class Extensions
                         r.Exponential(7,
                             TimeSpan.FromSeconds(30),
                             TimeSpan.FromMinutes(60),
-                            TimeSpan.FromMinutes(10));
+                            TimeSpan.FromMinutes(1));
                     });
 
 

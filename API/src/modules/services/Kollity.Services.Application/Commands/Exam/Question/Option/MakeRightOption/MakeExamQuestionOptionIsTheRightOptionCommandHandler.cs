@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Exam.Question.Option.MakeRightOption;
@@ -8,12 +10,14 @@ public class MakeExamQuestionOptionIsTheRightOptionCommandHandler :
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
     public MakeExamQuestionOptionIsTheRightOptionCommandHandler(ApplicationDbContext context,
-        IUserServices userServices)
+        IUserServices userServices, EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(MakeExamQuestionOptionIsTheRightOptionCommand request,
@@ -44,13 +48,15 @@ public class MakeExamQuestionOptionIsTheRightOptionCommandHandler :
             .Where(x => x.ExamQuestionId == exam.ExamQuestionId)
             .ExecuteUpdateAsync(c =>
                 c.SetProperty(x => x.IsRightOption, false), cancellationToken);
-        
+
         // mark the option as the right one
-        await _context.ExamQuestionOptions
+        var option = await _context.ExamQuestionOptions
             .Where(x => x.Id == optionId)
-            .ExecuteUpdateAsync(c =>
-                c.SetProperty(x => x.IsRightOption, true), cancellationToken);
-        
+            .FirstOrDefaultAsync(cancellationToken);
+        option.IsRightOption = true;
+        await _context.SaveChangesAsync(cancellationToken);
+
+        _eventCollection.Raise(new ExamQuestionOptionMarkedAsRightOptionEvent(option));
         return Result.Success();
     }
 }

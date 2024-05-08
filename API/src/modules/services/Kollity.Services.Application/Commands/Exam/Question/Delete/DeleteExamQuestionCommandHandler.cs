@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Exam.Question.Delete;
@@ -7,11 +9,14 @@ public class DeleteExamQuestionCommandHandler : ICommandHandler<DeleteExamQuesti
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public DeleteExamQuestionCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public DeleteExamQuestionCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteExamQuestionCommand request, CancellationToken cancellationToken)
@@ -33,11 +38,16 @@ public class DeleteExamQuestionCommandHandler : ICommandHandler<DeleteExamQuesti
             return RoomErrors.RoomHasNoDoctor;
         if (exam.DoctorId != userId)
             return ExamErrors.UnAuthorizeAction;
-        
-        await _context.ExamQuestions
+
+        var question = await _context.ExamQuestions
             .Where(x => x.Id == questionId)
-            .ExecuteDeleteAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
+
+        _context.ExamQuestions.Remove(question);
+        await _context.SaveChangesAsync(cancellationToken);
         
+        _eventCollection.Raise(new ExamQuestionDeletedEvent(question));
+
         return Result.Success();
     }
 }

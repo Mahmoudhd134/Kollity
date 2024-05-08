@@ -63,46 +63,32 @@
             -- migration of rooms data ended
 
             -- migrate exam data
-            insert into KollityReportingDb.reporting.Exam (id,
-                                                           exam_id,
-                                                           question_id,
-                                                           option_id,
-                                                           name,
-                                                           start_date,
-                                                           end_date,
-                                                           creation_date,
-                                                           doctor_id,
-                                                           room_id,
-                                                           question_text,
-                                                           question_open_for_seconds,
-                                                           question_degree,
-                                                           [option],
-                                                           is_right_option)
-            select newid(),
-                   E.id,
-                   EQ.id,
-                   EQO.id,
-                   E.name,
-                   E.start_date,
-                   E.end_date,
-                   E.creation_date,
-                   R.doctor_id,
-                   E.room_id,
-                   EQ.question,
-                   EQ.open_for_seconds,
-                   EQ.degree,
-                   EQO.[option],
-                   EQO.is_right_option
+            insert into KollityReportingDb.reporting.Exam (id, name, start_date, end_date, creation_date, room_id)
+            select e.id, name, start_date, end_date, creation_date, room_id
             from KollityServicesDb.services.Exam E
-                     left join KollityServicesDb.services.Room R on R.id = E.room_id
-                     left join KollityServicesDb.services.ExamQuestion EQ on E.id = EQ.exam_id
-                     left join KollityServicesDb.services.ExamQuestionOption EQO on EQ.id = EQO.exam_question_id
 
-            insert into KollityReportingDb.reporting.ExamAnswer (student_id, option_id, request_time, submit_time)
-            select EA.student_id, E.id, EA.request_time, EA.submit_time
+            insert into KollityReportingDb.reporting.ExamQuestion (id, exam_id, question, open_for_seconds, degree)
+            select EQ.id, exam_id, question, open_for_seconds, degree
+            from KollityServicesDb.services.ExamQuestion EQ
+
+            insert into KollityReportingDb.reporting.ExamQuestionOption (id, exam_question_id, [option], is_right_option)
+            select EQO.id, exam_question_id, [option], is_right_option
+            from KollityServicesDb.services.ExamQuestionOption EQO
+
+            insert into KollityReportingDb.reporting.ExamAnswer (id, student_id, exam_id, exam_question_id,
+                                                                 exam_question_option_id, request_time, submit_time,
+                                                                 room_id)
+            select EA.id,
+                   student_id,
+                   exam_id,
+                   exam_question_id,
+                   exam_question_option_id,
+                   request_time,
+                   submit_time,
+                   E.room_id
             from KollityServicesDb.services.ExamAnswer EA
-                     inner join KollityReportingDb.reporting.Exam E
-                                on E.option_id = EA.exam_question_option_id and E.question_id = EA.exam_question_id
+                     left join KollityServicesDB.services.Exam E on E.id = EA.exam_id
+            where EA.exam_question_option_id is not null and EA.submit_time is not null and EA.student_id is not null
             -- migration of exam data ended
 
             -- migrate assignment data
@@ -150,6 +136,10 @@ end
 delete
 from KollityReportingDb.reporting.[ExamAnswer]
 delete
+from KollityReportingDb.reporting.[ExamQuestionOption]
+delete
+from KollityReportingDb.reporting.[ExamQuestion]
+delete
 from KollityReportingDb.reporting.[Exam]
 delete
 from KollityReportingDb.reporting.AssignmentAnswer
@@ -171,7 +161,7 @@ delete
 from KollityReportingDb.reporting.[User]
 
 select *
-from KollityReportingDb.reporting.[User]
+from KollityReportingDb.reporting.[ExamAnswer]
 
 select E.name, E.question_text, E.question_degree, E.[option], E.is_right_option
 from KollityReportingDb.reporting.[ExamAnswer]

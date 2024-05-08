@@ -7,4 +7,6 @@ public class ExamQuestionAddedIntegrationEvent
     public int OpenForSeconds { get; set; }
     public byte Degree { get; set; }
     public Guid ExamId { get; set; }
+
+    public Guid DefaultOptionId { get; set; }
 }
