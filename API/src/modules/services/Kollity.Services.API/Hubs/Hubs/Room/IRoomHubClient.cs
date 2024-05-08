@@ -12,4 +12,6 @@ public interface IRoomHubClient
     Task MessagesHaveBeenRead(List<Guid> messagesId);
     Task PollOptionChosen(Guid pollId, List<byte> options);
     Task PollOptionUnChosen(Guid pollId, List<byte> options);
+    Task MessagePinned(RoomChatMessageDto message);
+    Task MessageUnPinned(Guid messageId);
 }

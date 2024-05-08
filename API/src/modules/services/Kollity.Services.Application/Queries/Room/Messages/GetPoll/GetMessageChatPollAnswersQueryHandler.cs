@@ -53,7 +53,9 @@ public class GetMessageChatPollAnswersQueryHandler(
                         IsChoose = userChooseOptions.Contains((byte)i)
                     };
                 })
-                .ToList()
+                .ToList(),
+            MaxOptionsCountForSubmission = poll.Poll.MaxOptionsCountForSubmission,
+            IsMultiAnswer = poll.Poll.IsMultiAnswer
         };
     }
 }
