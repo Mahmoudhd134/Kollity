@@ -1,21 +1,21 @@
 ﻿using System.Security.Claims;
 using Kollity.Common.Abstractions.Messages;
-using Kollity.User.API.Extensions;
-using Kollity.User.API.Helpers;
+using Kollity.Reporting.API.Extensions;
+using Kollity.Reporting.API.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Kollity.User.API.Controllers;
+namespace Kollity.Reporting.API.Controllers;
 
 [ApiController]
 [Authorize]
 [Route("api/[controller]")]
-[SwaggerResponse(400, type: typeof(UserFailureType))]
-[SwaggerResponse(404, type: typeof(UserFailureType))]
-[SwaggerResponse(409, type: typeof(UserFailureType))]
-[SwaggerResponse(500, type: typeof(UserFailureType))]
+[SwaggerResponse(400, type: typeof(ReportingFailureType))]
+[SwaggerResponse(404, type: typeof(ReportingFailureType))]
+[SwaggerResponse(409, type: typeof(ReportingFailureType))]
+[SwaggerResponse(500, type: typeof(ReportingFailureType))]
 public class BaseController : ControllerBase
 {
     protected const long MaxFileSize = 1L * 1024L * 1024L * 1024L;

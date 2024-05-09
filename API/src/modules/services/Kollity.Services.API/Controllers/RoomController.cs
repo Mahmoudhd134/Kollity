@@ -1,4 +1,5 @@
-﻿using Kollity.Services.API.Extensions;
+﻿using Kollity.Common;
+using Kollity.Services.API.Extensions;
 using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.API.Hubs.Hubs.Room;
 using Kollity.Services.Application.Commands.Room.AcceptAllJoins;

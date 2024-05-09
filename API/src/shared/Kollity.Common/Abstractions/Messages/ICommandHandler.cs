@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Kollity.Common.ErrorHandling;
+using MediatR;
 
-namespace Kollity.Services.Application.Abstractions.Messages;
+namespace Kollity.Common.Abstractions.Messages;
 
 public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand, Result>
     where TCommand : ICommand

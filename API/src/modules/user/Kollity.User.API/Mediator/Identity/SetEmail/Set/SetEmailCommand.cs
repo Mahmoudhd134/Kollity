@@ -1,4 +1,4 @@
-﻿using Kollity.User.API.Abstraction.Messages;
+﻿using Kollity.Common.Abstractions.Messages;
 
 namespace Kollity.User.API.Mediator.Identity.SetEmail.Set;
 

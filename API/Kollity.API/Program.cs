@@ -42,7 +42,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
 builder.Services.AddCustomSwaggerGen();
 builder.Services.AddModelBindingErrorsMap();
-builder.Services.AddMassTransitConfiguration(builder.Configuration, true);
+builder.Services.AddMassTransitConfiguration(builder.Configuration, false);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCorsExtension();
 builder.Services.AddSignalR();

@@ -163,14 +163,6 @@ from KollityReportingDb.reporting.[User]
 select *
 from KollityReportingDb.reporting.[ExamAnswer]
 
-select E.name, E.question_text, E.question_degree, E.[option], E.is_right_option
-from KollityReportingDb.reporting.[ExamAnswer]
-         left join reporting.Exam E on E.id = ExamAnswer.option_id
-
-select *
-from KollityReportingDb.reporting.[Exam]
-order by exam_id, question_id, option_id
-
 select *
 from KollityReportingDb.reporting.[AssignmentGroup]
 

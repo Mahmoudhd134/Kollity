@@ -1,4 +1,4 @@
-﻿namespace Kollity.Services.Application.Abstractions.Messages;
+﻿namespace Kollity.Services.Application.Abstractions.Events;
 
 public interface IEventBus
 {

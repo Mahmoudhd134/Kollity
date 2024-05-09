@@ -1,5 +1,5 @@
 ﻿using Kollity.Services.Application;
-using Kollity.Services.Application.Abstractions.Messages;
+using Kollity.Services.Application.Abstractions.Events;
 using Kollity.Services.Application.Abstractions.Services;
 using Kollity.Services.Contracts.Student;
 using Kollity.Services.Infrastructure.Files;
