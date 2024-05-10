@@ -14,8 +14,8 @@ public class ReportingController(ReportingDbContext context) : BaseController
     [HttpGet("course/{courseId:guid}"),
      Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(CourseReportDto))]
-    public Task<IResult> Get(Guid courseId)
+    public Task<IResult> Get(Guid courseId, DateTime? from = null, DateTime? to = null)
     {
-        return Send(new GetCourseReportQuery(courseId));
+        return Send(new GetCourseReportQuery(courseId, from, to));
     }
 }

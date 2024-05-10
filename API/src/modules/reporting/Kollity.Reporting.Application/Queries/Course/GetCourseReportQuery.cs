@@ -2,4 +2,4 @@
 
 namespace Kollity.Reporting.Application.Queries.Course;
 
-public record GetCourseReportQuery(Guid Id) : IQuery<CourseReportDto>;
+public record GetCourseReportQuery(Guid Id, DateTime? From, DateTime? To) : IQuery<CourseReportDto>;

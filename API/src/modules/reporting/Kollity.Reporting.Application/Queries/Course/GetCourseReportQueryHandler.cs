@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Reporting.Application.Queries.Course;
 
-public class assignmentsetCourseReportQueryHandler(ReportingDbContext context)
+public class GetCourseReportQueryHandler(ReportingDbContext context)
     : IQueryHandler<GetCourseReportQuery, CourseReportDto>
 {
     public async Task<Result<CourseReportDto>> Handle(GetCourseReportQuery request, CancellationToken cancellationToken)
     {
+        DateTime? from = request.From?.ToUniversalTime(),
+            to = request.To?.ToUniversalTime();
+
         var courseDto = await context.Courses
             .Where(x => x.Id == request.Id)
             .Select(x => new CourseReportDto
@@ -23,6 +26,8 @@ public class assignmentsetCourseReportQueryHandler(ReportingDbContext context)
                 Department = x.Department,
                 Hours = x.Hours,
                 Doctors = x.CourseDoctorAndAssistants
+                    .Where(cd => from == null || cd.AssigningDate >= from)
+                    .Where(cd => to == null || cd.AssigningDate <= to)
                     .Select(d => new DoctorForCourseReportDto
                     {
                         Id = d.Id,
@@ -33,7 +38,10 @@ public class assignmentsetCourseReportQueryHandler(ReportingDbContext context)
                         AssignedAtUtc = d.AssigningDate
                     })
                     .ToList(),
-                Rooms = x.Rooms.Select(r => new RoomForCourseReportDto
+                Rooms = x.Rooms
+                    .Where(r => from == null || r.CreatedAt >= from)
+                    .Where(r => to == null || r.CreatedAt <= to)
+                    .Select(r => new RoomForCourseReportDto
                     {
                         Id = r.Id,
                         Name = r.Name,
