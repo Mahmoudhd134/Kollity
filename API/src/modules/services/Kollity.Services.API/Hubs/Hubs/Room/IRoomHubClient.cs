@@ -10,6 +10,8 @@ public interface IRoomHubClient
     Task MessageDeleted(Guid messageId);
     Task MessageHasNotBeenDeletedSuccessfully(Guid messageId, List<Error> errors);
     Task MessagesHaveBeenRead(List<Guid> messagesId);
-    Task PollOptionChosen(Guid pollId, int option);
-    Task PollOptionUnChosen(Guid pollId, int option);
+    Task PollOptionChosen(Guid pollId, List<byte> options);
+    Task PollOptionUnChosen(Guid pollId, List<byte> options);
+    Task MessagePinned(RoomChatMessageDto message);
+    Task MessageUnPinned(Guid messageId);
 }

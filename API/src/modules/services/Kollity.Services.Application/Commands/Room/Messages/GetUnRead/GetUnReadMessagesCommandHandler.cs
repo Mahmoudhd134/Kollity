@@ -64,7 +64,9 @@ public class GetUnReadMessagesCommandHandler : ICommandHandler<GetUnReadMessages
                 ? new ChatPollDto
                 {
                     Question = x.Poll.Question,
-                    Options = x.Poll.Options.Select(xx => new ChatPollOptionDto { Option = xx }).ToList()
+                    Options = x.Poll.Options.Select(xx => new ChatPollOptionDto { Option = xx }).ToList(),
+                    MaxOptionsCountForSubmission = x.Poll.MaxOptionsCountForSubmission,
+                    IsMultiAnswer = x.Poll.IsMultiAnswer
                 }
                 : null,
             Type = x.Type

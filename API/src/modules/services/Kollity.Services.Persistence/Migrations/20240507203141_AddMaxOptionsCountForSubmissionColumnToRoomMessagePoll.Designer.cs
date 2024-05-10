@@ -4,6 +4,7 @@ using Kollity.Services.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Services.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240507203141_AddMaxOptionsCountForSubmissionColumnToRoomMessagePoll")]
+    partial class AddMaxOptionsCountForSubmissionColumnToRoomMessagePoll
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -748,10 +751,6 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasMaxLength(1023)
                         .HasColumnType("nvarchar(1023)")
                         .HasColumnName("file");
-
-                    b.Property<bool>("IsPinned")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_pinned");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit")

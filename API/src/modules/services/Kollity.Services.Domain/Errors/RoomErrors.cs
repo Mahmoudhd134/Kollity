@@ -58,6 +58,12 @@ public static class RoomErrors
     public static readonly Error PollOptionNotFound = Error.NotFound("Poll.OptionNotFound",
         "This option is not found");
 
+    public static readonly Error PollIsNotMultiAnswer = Error.Validation("Poll.PollIsNotMultiAnswer",
+        "This poll is not a multi answer poll");
+
+    public static readonly Error PollInvalidMaxOptionsCount = Error.Validation("Poll.InvalidMaxOptionsCount",
+        "Max options count is invalid");
+
 
     public static Error NotFound(Guid roomId)
     {
@@ -93,6 +99,13 @@ public static class RoomErrors
 
     public static Error PollSubmissionNotFound(Guid pollId)
     {
-        return Error.NotFound("Poll.SubmissionNotFound", $"this user dose not submit the poll with id '{pollId}' to delete its submission");
+        return Error.NotFound("Poll.SubmissionNotFound",
+            $"this user dose not submit the poll with id '{pollId}' to delete its submission");
+    }
+
+    public static Error PollAnswersLimitExceeds(byte maxOptionsCountForSubmission)
+    {
+        return Error.Validation("Poll.PollAnswersLimitExceeds",
+            $"This multi answer poll ans a max limit of {maxOptionsCountForSubmission}");
     }
 }

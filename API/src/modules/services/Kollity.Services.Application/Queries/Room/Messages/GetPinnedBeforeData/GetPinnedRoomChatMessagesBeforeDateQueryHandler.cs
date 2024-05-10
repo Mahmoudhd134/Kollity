@@ -2,38 +2,29 @@
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
+namespace Kollity.Services.Application.Queries.Room.Messages.GetPinnedBeforeData;
 
 public class
-    GetRoomChatMessagesBeforeDateQueryHandler : IQueryHandler<GetRoomChatMessagesBeforeDateQuery,
-    List<RoomChatMessageDto>>
+    GetPinnedRoomChatMessagesBeforeDateQueryHandler(ApplicationDbContext context, IUserServices userServices)
+    : IQueryHandler<GetPinnedRoomChatMessagesBeforeDateQuery,
+        List<RoomChatMessageDto>>
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IUserServices _userServices;
-
-    public GetRoomChatMessagesBeforeDateQueryHandler(ApplicationDbContext context, IUserServices userServices)
-    {
-        _context = context;
-        _userServices = userServices;
-    }
-
-    public async Task<Result<List<RoomChatMessageDto>>> Handle(GetRoomChatMessagesBeforeDateQuery request,
+    public async Task<Result<List<RoomChatMessageDto>>> Handle(GetPinnedRoomChatMessagesBeforeDateQuery request,
         CancellationToken cancellationToken)
     {
-        var userId = _userServices.GetCurrentUserId();
-        var isJoined = await _context.UserRooms
+        var userId = userServices.GetCurrentUserId();
+        var isJoined = await context.UserRooms
             .AnyAsync(x => x.RoomId == request.RoomId && x.UserId == userId && x.JoinRequestAccepted,
                 cancellationToken);
 
         if (isJoined == false)
             return RoomErrors.UserIsNotJoined(userId);
 
-
         var utcDate = request.Date.ToUniversalTime();
-        var roomMessageDtos = await _context.RoomMessages
-            .Where(m => m.RoomId == request.RoomId && m.Date < utcDate)
+        var roomMessageDtos = await context.RoomMessages
+            .Where(m => m.RoomId == request.RoomId && m.IsPinned && m.Date < utcDate)
             .OrderByDescending(m => m.Date)
-            .Take(100)
+            .Take(request.Count)
             .Select(x => new
             {
                 x.Id,

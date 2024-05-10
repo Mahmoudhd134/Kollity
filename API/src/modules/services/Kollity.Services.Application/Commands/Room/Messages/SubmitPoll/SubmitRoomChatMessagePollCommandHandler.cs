@@ -24,7 +24,16 @@ public class SubmitRoomChatMessagePollCommandHandler(
         if (poll?.Poll is null)
             return RoomErrors.MessageNotFound(pollId);
 
-        if (poll.Poll.Options.Count - 1 < request.OptionIndex)
+        if (poll.Poll.IsMultiAnswer == false && request.OptionIndexes.Count > 1)
+            return RoomErrors.PollIsNotMultiAnswer;
+
+        if (poll.Poll.IsMultiAnswer && request.OptionIndexes.Count > poll.Poll.MaxOptionsCountForSubmission)
+            return RoomErrors.PollAnswersLimitExceeds(poll.Poll.MaxOptionsCountForSubmission);
+
+        if (poll.Poll.Options.Count < request.OptionIndexes.Count)
+            return RoomErrors.PollOptionNotFound;
+
+        if (request.OptionIndexes.Any(x => x >= poll.Poll.Options.Count))
             return RoomErrors.PollOptionNotFound;
 
         var isSubmittedBefore = await context.RoomMessagePollAnswers
@@ -39,13 +48,13 @@ public class SubmitRoomChatMessagePollCommandHandler(
         if (isJoined == false)
             return RoomErrors.UserIsNotJoined(userId);
 
-        var answer = new MessagePollAnswer
+        var answers = request.OptionIndexes.Select(x => new MessagePollAnswer
         {
             PollId = pollId,
             UserId = userId,
-            OptionIndex = request.OptionIndex
-        };
-        context.RoomMessagePollAnswers.Add(answer);
+            OptionIndex = x
+        });
+        context.RoomMessagePollAnswers.AddRange(answers);
         var result = await context.SaveChangesAsync(cancellationToken);
         return result > 0 ? Result.Success() : Error.UnKnown;
     }
