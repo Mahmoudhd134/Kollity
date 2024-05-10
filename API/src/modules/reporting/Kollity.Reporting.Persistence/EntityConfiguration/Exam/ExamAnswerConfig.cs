@@ -36,7 +36,7 @@ public class ExamAnswerConfig : IEntityTypeConfiguration<ExamAnswer>
         
         builder
             .HasOne(x => x.Room)
-            .WithMany()
+            .WithMany(r => r.ExamAnswers)
             .HasForeignKey(x => x.RoomId)
             .OnDelete(DeleteBehavior.NoAction);
 

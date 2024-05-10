@@ -27,7 +27,7 @@ public class AssignmentAnswerConfig : IEntityTypeConfiguration<AssignmentAnswer>
 
         builder
             .HasOne(x => x.Room)
-            .WithMany()
+            .WithMany(r => r.AssignmentAnswers)
             .HasForeignKey(x => x.RoomId)
             .IsRequired(false);
 

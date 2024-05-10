@@ -88,7 +88,9 @@
                    E.room_id
             from KollityServicesDb.services.ExamAnswer EA
                      left join KollityServicesDB.services.Exam E on E.id = EA.exam_id
-            where EA.exam_question_option_id is not null and EA.submit_time is not null and EA.student_id is not null
+            where EA.exam_question_option_id is not null
+              and EA.submit_time is not null
+              and EA.student_id is not null
             -- migration of exam data ended
 
             -- migrate assignment data
@@ -255,3 +257,149 @@ begin
 
 
 end
+
+select eq.id, eq.question, eq.degree, eqo.[option] user_chosen_option, eqo.is_right_option
+from KollityReportingDb.reporting.examanswer ea
+         left join KollityReportingDb.reporting.examQuestion eq on eq.id = ea.exam_question_id
+         left join KollityReportingDb.reporting.examQuestionOption eqo on eqo.id = ea.exam_question_option_id
+
+select o.id
+from reporting.ExamQuestionOption o
+where exam_question_id = '92b1f30c-033e-4a51-0b37-08dc3fccf02e' and is_right_option = 1 
+SELECT (
+           SELECT COUNT(*)
+           FROM [reporting].[Exam] AS [e]
+           WHERE [r].[id] = [e].[room_id]) AS [NumberOfExams], (
+           SELECT AVG(CAST(CAST([e1].[degree] AS int) AS float))
+           FROM [reporting].[Exam] AS [e0]
+                    INNER JOIN [reporting].[ExamQuestion] AS [e1] ON [e0].[id] = [e1].[exam_id]
+           WHERE [r].[id] = [e0].[room_id]) AS [AvgExamsDegree]
+FROM [reporting].[Room] AS [r]
+
+
+declare @__request_Id_0 uniqueidentifier = 'e971ce05-a6b2-4a66-556b-08dc2f249d91'
+
+SELECT [t].[id], [t].[code], [t].[name], [t].[department], [t].[hours], [t0].[Id], [t0].[Image], [t0].[FullName], [t0].[DoctorType], [t0].[IsCurrentlyAssigned], [t0].[AssignedAtUtc], [t0].[id0], [t2].[Id], [t2].[Name], [t2].[DoctorId], [t2].[DoctorName], [t2].[CreatedAtUtc], [t2].[id0]
+FROM (
+         SELECT TOP(1) [c].[id], [c].[code], [c].[name], [c].[department], [c].[hours]
+         FROM [reporting].[Course] AS [c]
+         WHERE [c].[id] = @__request_Id_0
+     ) AS [t]
+         LEFT JOIN (
+    SELECT [c0].[id] AS [Id], [t1].[profile_image] AS [Image], [t1].[full_name_in_arabic] AS [FullName], CASE
+                                                                                                             WHEN [c0].[is_doctor] = CAST(1 AS bit) THEN 1
+                                                                                                             ELSE 2
+        END AS [DoctorType], [c0].[is_currently_assigned] AS [IsCurrentlyAssigned], [c0].[assigning_date] AS [AssignedAtUtc], [t1].[id] AS [id0],
+           [c0].[course_id]
+    FROM [reporting].[CourseDoctorAndAssistant] AS [c0]
+             INNER JOIN (
+        SELECT [u].[id], [u].[full_name_in_arabic], [u].[profile_image]
+        FROM [reporting].[User] AS [u]
+        WHERE [u].[type] = N'Doctor'
+    ) AS [t1] ON [c0].[doctor_id] = [t1].[id]
+) AS [t0] ON [t].[id] = [t0].[course_id]
+         LEFT JOIN (
+    SELECT [r].[id] AS [Id], [r].[name] AS [Name], [r].[doctor_id] AS [DoctorId], [t3].[full_name_in_arabic] AS [DoctorName], [r].[created_at]
+                    AS [CreatedAtUtc], [t3].[id] AS [id0], [r].[course_id]
+    FROM [reporting].[Room] AS [r]
+             INNER JOIN (
+        SELECT [u0].[id], [u0].[full_name_in_arabic]
+        FROM [reporting].[User] AS [u0]
+        WHERE [u0].[type] = N'Doctor'
+    ) AS [t3] ON [r].[doctor_id] = [t3].[id]
+) AS [t2] ON [t].[id] = [t2].[course_id]
+ORDER BY [t].[id], [t0].[Id], [t0].[id0], [t2].[Id]
+      
+SELECT [r].[id] AS [Id], (
+    SELECT COUNT(*)
+    FROM [reporting].[Exam] AS [e]
+    WHERE [r].[id] = [e].[room_id]) AS [NumberOfExams], (
+           SELECT COUNT(*)
+           FROM [reporting].[Exam] AS [e0]
+                    INNER JOIN [reporting].[ExamQuestion] AS [e1] ON [e0].[id] = [e1].[exam_id]
+           WHERE [r].[id] = [e0].[room_id]) AS [CountOfAllQuestions], (
+           SELECT AVG(CAST(CAST([e3].[degree] AS int) AS float))
+           FROM [reporting].[Exam] AS [e2]
+                    INNER JOIN [reporting].[ExamQuestion] AS [e3] ON [e2].[id] = [e3].[exam_id]
+           WHERE [r].[id] = [e2].[room_id]) AS [AvgQuestionDegree], (
+           SELECT COALESCE(SUM(CASE
+                                   WHEN [e5].[is_right_option] = CAST(1 AS bit) THEN CAST([e6].[degree] AS int)
+                                   ELSE 0
+               END), 0)
+           FROM [reporting].[ExamAnswer] AS [e4]
+                    INNER JOIN [reporting].[ExamQuestionOption] AS [e5] ON [e4].[exam_question_option_id] = [e5].[id]
+                    INNER JOIN [reporting].[ExamQuestion] AS [e6] ON [e4].[exam_question_id] = [e6].[id]
+           WHERE [r].[id] = [e4].[room_id]) AS [SumOfAllDegrees], (
+           SELECT MAX([t].[c])
+           FROM (
+                    SELECT (
+                               SELECT COALESCE(SUM(CASE
+                                                       WHEN [e9].[is_right_option] = CAST(1 AS bit) THEN CAST([e10].[degree] AS int)
+                                                       ELSE 0
+                                   END), 0)
+                               FROM [reporting].[ExamAnswer] AS [e8]
+                                        INNER JOIN [reporting].[ExamQuestionOption] AS [e9] ON [e8].[exam_question_option_id] = [e9].[id]
+                                        INNER JOIN [reporting].[ExamQuestion] AS [e10] ON [e8].[exam_question_id] = [e10].[id]
+                               WHERE [r].[id] = [e8].[room_id] AND [e7].[student_id] = [e8].[student_id]) AS [c], [e7].[student_id]
+                    FROM [reporting].[ExamAnswer] AS [e7]
+                    WHERE [r].[id] = [e7].[room_id]
+                    GROUP BY [e7].[student_id]
+                ) AS [t]) AS [MaxSumOfStudentDegree], (
+           SELECT MIN([t0].[c])
+           FROM (
+                    SELECT (
+                               SELECT COALESCE(SUM(CASE
+                                                       WHEN [e13].[is_right_option] = CAST(1 AS bit) THEN CAST([e14].[degree] AS int)
+                                                       ELSE 0
+                                   END), 0)
+                               FROM [reporting].[ExamAnswer] AS [e12]
+                                        INNER JOIN [reporting].[ExamQuestionOption] AS [e13] ON [e12].[exam_question_option_id] = [e13].[id]
+                                        INNER JOIN [reporting].[ExamQuestion] AS [e14] ON [e12].[exam_question_id] = [e14].[id]
+                               WHERE [r].[id] = [e12].[room_id] AND [e11].[student_id] = [e12].[student_id]) AS [c], [e11].[student_id]
+                    FROM [reporting].[ExamAnswer] AS [e11]
+                    WHERE [r].[id] = [e11].[room_id]
+                    GROUP BY [e11].[student_id]
+                ) AS [t0]) AS [MinSumOfStudentDegree], (
+           SELECT COUNT(*)
+           FROM (
+                    SELECT DISTINCT [e15].[student_id]
+                    FROM [reporting].[ExamAnswer] AS [e15]
+                    WHERE [r].[id] = [e15].[room_id]
+                ) AS [t1]) AS [NumberOfStudentsAnswers]
+FROM [reporting].[Room] AS [r]
+WHERE [r].[course_id] = @__request_Id_0
+
+
+SELECT [r].[id] AS [Id], (
+    SELECT COUNT(*)
+    FROM [reporting].[Assignment] AS [a]
+    WHERE [r].[id] = [a].[room_id]) AS [NumberOfAssignments], (
+           SELECT AVG(CAST(CAST([a0].[degree] AS int) AS float))
+           FROM [reporting].[Assignment] AS [a0]
+           WHERE [r].[id] = [a0].[room_id]) AS [AvgAssignmentsDegree], (
+           SELECT COALESCE(SUM([a1].[degree]), 0)
+           FROM [reporting].[AssignmentAnswer] AS [a1]
+           WHERE [r].[id] = [a1].[room_id]) AS [SumOfAllDegrees], (
+           SELECT MAX([t].[c])
+           FROM (
+                    SELECT COALESCE(SUM([a2].[degree]), 0) AS [c], [a2].[student_id]
+                    FROM [reporting].[AssignmentAnswer] AS [a2]
+                    WHERE [r].[id] = [a2].[room_id]
+                    GROUP BY [a2].[student_id]
+                ) AS [t]) AS [MaxSumStudentDegree], (
+           SELECT MIN([t0].[c])
+           FROM (
+                    SELECT COALESCE(SUM([a3].[degree]), 0) AS [c], [a3].[student_id]
+                    FROM [reporting].[AssignmentAnswer] AS [a3]
+                    WHERE [r].[id] = [a3].[room_id]
+                    GROUP BY [a3].[student_id]
+                ) AS [t0]) AS [MinSumStudentDegree], (
+           SELECT COUNT(*)
+           FROM (
+                    SELECT DISTINCT [a4].[student_id]
+                    FROM [reporting].[AssignmentAnswer] AS [a4]
+                    WHERE [r].[id] = [a4].[room_id]
+                ) AS [t1]) AS [NumberOfStudentsAnswers]
+FROM [reporting].[Room] AS [r]
+WHERE [r].[course_id] = @__request_Id_0
+

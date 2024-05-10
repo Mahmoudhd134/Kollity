@@ -1,5 +1,6 @@
 using Kollity.API;
 using Kollity.API.Helpers;
+using Kollity.Reporting.Application;
 using Kollity.Reporting.Persistence;
 using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.API.Extensions;
@@ -31,6 +32,7 @@ builder.Services.AddServicesServicesInjection();
 
 // reporting services
 builder.Services.AddReportingPersistenceConfiguration();
+builder.Services.AddReportingApplicationConfiguration();
 
 
 // base service

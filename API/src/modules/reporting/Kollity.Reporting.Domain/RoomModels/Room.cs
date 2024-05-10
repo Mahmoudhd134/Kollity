@@ -18,6 +18,8 @@ public class Room
 
     public List<RoomUser> RoomUsers { get; set; } = [];
     public List<Exam> Exams { get; set; } = [];
+    public List<ExamAnswer> ExamAnswers { get; set; } = [];
     public List<Assignment> Assignments { get; set; } = [];
+    public List<AssignmentAnswer> AssignmentAnswers { get; set; } = [];
     public List<AssignmentGroup> AssignmentGroups { get; set; } = [];
 }

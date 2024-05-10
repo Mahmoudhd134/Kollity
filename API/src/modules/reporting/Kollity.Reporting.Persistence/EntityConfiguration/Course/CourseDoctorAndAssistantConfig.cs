@@ -12,12 +12,12 @@ public class CourseDoctorAndAssistantConfig : IEntityTypeConfiguration<CourseDoc
 
         builder
             .HasOne(x => x.Course)
-            .WithMany(x => x.DoctorsAndAssistants)
+            .WithMany(x => x.CourseDoctorAndAssistants)
             .HasForeignKey(x => x.CourseId);
         
         builder
             .HasOne(x => x.Doctor)
-            .WithMany(x => x.DoctorsAndAssistants)
+            .WithMany(x => x.CourseDoctorAndAssistants)
             .HasForeignKey(x => x.DoctorId);
         
         builder.HasIndex(x => new { x.CourseId, x.DoctorId });
