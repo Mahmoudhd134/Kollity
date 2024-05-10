@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Courses;
+using Kollity.Services.Domain.Errors;
 using Kollity.Services.Domain.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +10,14 @@ public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorTo
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public AssignDoctorToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public AssignDoctorToCourseCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AssignDoctorToCourseCommand request, CancellationToken cancellationToken)
@@ -37,6 +42,9 @@ public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorTo
 
         course.DoctorId = doctorId;
         var result = await _context.SaveChangesAsync(cancellationToken);
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new CourseDoctorAssignedEvent(course));
+        return Result.Success();
     }
 }

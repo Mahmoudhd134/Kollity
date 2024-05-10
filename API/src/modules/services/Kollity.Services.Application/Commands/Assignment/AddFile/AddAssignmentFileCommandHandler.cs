@@ -1,5 +1,7 @@
-﻿using Kollity.Services.Domain.AssignmentModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Domain.AssignmentModels;
 using Kollity.Services.Application.Abstractions.Files;
+using Kollity.Services.Application.Events.Assignment;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,14 +11,16 @@ public class AddAssignmentFileCommandHandler : ICommandHandler<AddAssignmentFile
 {
     private readonly ApplicationDbContext _context;
     private readonly IFileServices _fileServices;
+    private readonly EventCollection _eventCollection;
     private readonly IUserServices _userServices;
 
     public AddAssignmentFileCommandHandler(ApplicationDbContext context, IUserServices userServices,
-        IFileServices fileServices)
+        IFileServices fileServices, EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _fileServices = fileServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AddAssignmentFileCommand request, CancellationToken cancellationToken)
@@ -37,13 +41,14 @@ public class AddAssignmentFileCommandHandler : ICommandHandler<AddAssignmentFile
             return AssignmentErrors.UnAuthorizedAddFile;
 
         var path = await _fileServices.UploadFile(file, Category.AssignmentFile);
-        _context.AssignmentFiles.Add(new AssignmentFile
+        var assignmentFile = new AssignmentFile
         {
             AssignmentId = assignmentId,
             FilePath = path,
             Name = file.FileName,
             UploadDate = DateTime.UtcNow
-        });
+        };
+        _context.AssignmentFiles.Add(assignmentFile);
 
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
@@ -56,6 +61,7 @@ public class AddAssignmentFileCommandHandler : ICommandHandler<AddAssignmentFile
         if (result == 0)
             return Error.UnKnown;
 
+        _eventCollection.Raise(new AssignmentFileAddedEvent(assignmentFile));
         return Result.Success();
     }
 }

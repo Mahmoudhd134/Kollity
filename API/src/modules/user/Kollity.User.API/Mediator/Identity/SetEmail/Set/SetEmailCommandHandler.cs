@@ -1,6 +1,5 @@
-﻿using Kollity.Common.ErrorHandling;
-using Kollity.User.API.Abstraction;
-using Kollity.User.API.Abstraction.Messages;
+﻿using Kollity.Common.Abstractions.Messages;
+using Kollity.Common.ErrorHandling;
 using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Data;
 using Kollity.User.API.Events.Identity;

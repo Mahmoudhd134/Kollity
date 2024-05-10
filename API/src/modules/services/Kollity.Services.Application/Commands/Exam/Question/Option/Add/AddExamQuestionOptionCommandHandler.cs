@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.ExamModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Exam;
+using Kollity.Services.Domain.ExamModels;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,12 +11,14 @@ public class AddExamQuestionOptionCommandHandler : ICommandHandler<AddExamQuesti
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
     private readonly IMapper _mapper;
+    private readonly EventCollection _eventCollection;
 
-    public AddExamQuestionOptionCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper)
+    public AddExamQuestionOptionCommandHandler(ApplicationDbContext context, IUserServices userServices, IMapper mapper,EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _mapper = mapper;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result<Guid>> Handle(AddExamQuestionOptionCommand request, CancellationToken cancellationToken)
@@ -46,6 +50,7 @@ public class AddExamQuestionOptionCommandHandler : ICommandHandler<AddExamQuesti
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
+        _eventCollection.Raise(new ExamQuestionOptionAddedEvent(option));
         return option.Id;
     }
 }

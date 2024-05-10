@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.RoomModels;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Room;
+using Kollity.Services.Domain.RoomModels;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +10,14 @@ public class JoinRoomCommandHandler : ICommandHandler<JoinRoomCommand>
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public JoinRoomCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public JoinRoomCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(JoinRoomCommand request, CancellationToken cancellationToken)
@@ -28,15 +33,24 @@ public class JoinRoomCommandHandler : ICommandHandler<JoinRoomCommand>
         if (room is null)
             return RoomErrors.NotFound(roomId);
 
-        room.UsersRooms.Add(new UserRoom
+        var userRoom = new UserRoom
         {
             UserId = userId,
             LastOnlineDate = DateTime.UtcNow,
             IsSupervisor = false,
             JoinRequestAccepted = room.EnsureJoinRequest == false
-        });
+        };
 
-        await _context.SaveChangesAsync(cancellationToken);
+        room.UsersRooms.Add(userRoom);
+
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+
+        if (room.EnsureJoinRequest)
+            _eventCollection.Raise(new UserJoinRequestSentEvent(userRoom));
+        else
+            _eventCollection.Raise(new UsersJoinRequestAcceptedEvent([userId], roomId));
         return Result.Success();
     }
 }

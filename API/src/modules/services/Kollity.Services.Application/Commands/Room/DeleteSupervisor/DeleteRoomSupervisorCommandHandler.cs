@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Room;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Room.DeleteSupervisor;
@@ -7,11 +9,14 @@ public class DeleteRoomSupervisorCommandHandler : ICommandHandler<DeleteRoomSupe
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public DeleteRoomSupervisorCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public DeleteRoomSupervisorCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteRoomSupervisorCommand request, CancellationToken cancellationToken)
@@ -31,10 +36,20 @@ public class DeleteRoomSupervisorCommandHandler : ICommandHandler<DeleteRoomSupe
         if (supervisorId == roomDoctor)
             return RoomErrors.DoctorMustBeAnSupervisor;
 
-        await _context.UserRooms
+        var userRoom = await _context.UserRooms
             .Where(x => x.RoomId == roomId && x.UserId == supervisorId)
-            .ExecuteUpdateAsync(calls => calls
-                .SetProperty(x => x.IsSupervisor, false), cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (userRoom is null)
+            return RoomErrors.UserIsNotJoined(supervisorId);
+
+        userRoom.IsSupervisor = false;
+
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+
+        _eventCollection.Raise(new RoomSupervisorDeletedEvent(userRoom));
 
         return Result.Success();
     }

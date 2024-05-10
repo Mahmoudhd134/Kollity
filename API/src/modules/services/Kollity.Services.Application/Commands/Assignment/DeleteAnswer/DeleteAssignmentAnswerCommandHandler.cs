@@ -1,4 +1,5 @@
-﻿
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Assignment;
 using Kollity.Services.Domain.AssignmentModels;
 using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,15 @@ public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssign
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
     private readonly IFileServices _fileServices;
+    private readonly EventCollection _eventCollection;
 
     public DeleteAssignmentAnswerCommandHandler(ApplicationDbContext context, IUserServices userServices,
-        IFileServices fileServices)
+        IFileServices fileServices, EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _fileServices = fileServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteAssignmentAnswerCommand request, CancellationToken cancellationToken)
@@ -32,21 +35,22 @@ public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssign
         if (assignment == null)
             return AssignmentErrors.NotFound(assignmentId);
 
-        string filePath;
+        AssignmentAnswer answer;
         if (assignment.Mode == AssignmentMode.Individual)
         {
-            filePath = await _context.AssignmentAnswers
+            answer = await _context.AssignmentAnswers
                 .Where(x => x.AssignmentId == assignmentId && x.StudentId == userId)
-                .Select(x => x.File)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(cancellationToken);
-            if (string.IsNullOrWhiteSpace(filePath))
+            if (string.IsNullOrWhiteSpace(answer.File))
                 return AssignmentErrors.AnswerNotFound;
             var result = await _context.AssignmentAnswers
                 .Where(x => x.AssignmentId == assignmentId && x.StudentId == userId)
                 .ExecuteDeleteAsync(cancellationToken);
             if (result == 0)
                 return Error.UnKnown;
-            await _fileServices.Delete(filePath);
+            await _fileServices.Delete(answer.File);
+            _eventCollection.Raise(new AssignmentAnswerDeletedEvent(answer));
             return Result.Success();
         }
 
@@ -58,18 +62,20 @@ public class DeleteAssignmentAnswerCommandHandler : ICommandHandler<DeleteAssign
         if (groupId == default)
             return AssignmentErrors.UserIsNotInAnyGroup;
 
-        filePath = await _context.AssignmentAnswers
+        answer = await _context.AssignmentAnswers
             .Where(x => x.AssignmentId == assignmentId && x.AssignmentGroupId == groupId)
-            .Select(x => x.File)
+            .AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
-        if (string.IsNullOrWhiteSpace(filePath))
+
+        if (string.IsNullOrWhiteSpace(answer.File))
             return AssignmentErrors.AnswerNotFound;
         var result1 = await _context.AssignmentAnswers
             .Where(x => x.AssignmentId == assignmentId && x.AssignmentGroupId == groupId)
             .ExecuteDeleteAsync(cancellationToken);
         if (result1 == 0)
             return Error.UnKnown;
-        await _fileServices.Delete(filePath);
+        await _fileServices.Delete(answer.File);
+        _eventCollection.Raise(new AssignmentAnswerDeletedEvent(answer));
         return Result.Success();
     }
 }

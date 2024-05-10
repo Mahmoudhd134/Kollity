@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Courses;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.DeAssignStudent;
@@ -6,10 +8,12 @@ namespace Kollity.Services.Application.Commands.Course.DeAssignStudent;
 public class DeAssignStudentFromCourseCommandHandler : ICommandHandler<DeAssignStudentFromCourseCommand>
 {
     private readonly ApplicationDbContext _context;
+    private readonly EventCollection _eventCollection;
 
-    public DeAssignStudentFromCourseCommandHandler(ApplicationDbContext context)
+    public DeAssignStudentFromCourseCommandHandler(ApplicationDbContext context, EventCollection eventCollection)
     {
         _context = context;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeAssignStudentFromCourseCommand request, CancellationToken cancellationToken)
@@ -17,17 +21,17 @@ public class DeAssignStudentFromCourseCommandHandler : ICommandHandler<DeAssignS
         Guid sid = request.Ids.StudentId,
             cid = request.Ids.CourseId;
 
-        var id = await _context.StudentCourses
+        var studentCourse = await _context.StudentCourses
             .Where(x => x.StudentId == sid && x.CourseId == cid)
-            .Select(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
-        if (id == Guid.Empty)
+        if (studentCourse is null)
             return CourseErrors.StudentIsNotAssignedToThisCourse;
 
-        await _context.StudentCourses
-            .Where(x => x.Id == id)
-            .ExecuteDeleteAsync(cancellationToken);
-
+        _context.StudentCourses.Remove(studentCourse);
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new CourseStudentDeAssignedEvent(studentCourse));
         return Result.Success();
     }
 }

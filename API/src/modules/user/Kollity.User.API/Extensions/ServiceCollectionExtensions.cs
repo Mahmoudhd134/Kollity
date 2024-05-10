@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Kollity.User.API.Abstraction;
 using Kollity.User.API.Abstraction.Events;
 using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Data;

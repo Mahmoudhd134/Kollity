@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.AssignmentGroup;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Assignment.Group.CancelInvitation;
@@ -8,11 +10,14 @@ public class
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public CancelJoinAssignmentGroupInvitationCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public CancelJoinAssignmentGroupInvitationCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(CancelJoinAssignmentGroupInvitationCommand request,
@@ -29,10 +34,17 @@ public class
         if (isJoined == false)
             return AssignmentErrors.UserIsNotInTheGroup;
 
-        await _context.AssignmentGroupStudents
+        var assignmentGroupStudent = await _context.AssignmentGroupStudents
             .Where(x => x.StudentId == studentId && x.AssignmentGroupId == groupId && x.JoinRequestAccepted == false)
-            .ExecuteDeleteAsync(cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
+        if (assignmentGroupStudent is null)
+            return AssignmentErrors.UserIsNotInTheGroup;
 
+        _context.AssignmentGroupStudents.Remove(assignmentGroupStudent);
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new AssignmentGroupInvitationCanceledEvent(assignmentGroupStudent));
         return Result.Success();
     }
 }

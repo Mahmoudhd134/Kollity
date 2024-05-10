@@ -1,5 +1,4 @@
-﻿using Kollity.User.API.Abstraction;
-using Kollity.User.API.Abstraction.Services;
+﻿using Kollity.User.API.Abstraction.Services;
 
 namespace Kollity.User.API.Services;
 
