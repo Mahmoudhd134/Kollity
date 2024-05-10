@@ -33,25 +33,6 @@ public class GetCourseByIdQueryHandler : IQueryHandler<GetCourseByIdQuery, Cours
         courseDto.IsTheDoctorAssigned = courseDto.Doctor?.Id == currentUserId ||
                                         courseDto.Assistants.Any(x => x.Id == currentUserId);
 
-        var idNameMaps = courseDto.Assistants.Select(x => new
-        {
-            x.Id,
-            x.UserName
-        }).ToDictionary(x => x.Id);
-        if (courseDto.Doctor is not null)
-            idNameMaps.Add(courseDto.Doctor.Id, new
-            {
-                courseDto.Doctor.Id,
-                courseDto.Doctor.UserName
-            });
-        idNameMaps.Add(Guid.Empty, new
-        {
-            Id = Guid.Empty,
-            UserName = "No Doctor"
-        });
-
-        courseDto.Rooms.ForEach(r => r.DoctorName = idNameMaps.GetValueOrDefault(r.DoctorId).UserName);
-
         return courseDto;
     }
 }
