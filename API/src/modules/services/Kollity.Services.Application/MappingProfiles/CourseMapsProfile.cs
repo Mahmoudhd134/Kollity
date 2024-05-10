@@ -32,7 +32,8 @@ public class CourseMapsProfile : Profile
                 {
                     Id = r.Id,
                     Name = r.Name,
-                    DoctorId = r.DoctorId ?? Guid.Empty
+                    DoctorId = r.DoctorId ?? Guid.Empty,
+                    DoctorName = r.DoctorId != null ? r.Doctor.UserName : ""
                 })));
 
         CreateMap<EditCourseDto, Course>();

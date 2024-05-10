@@ -29,6 +29,7 @@ public class GetUserAssignmentGroupQueryHandler : IQueryHandler<GetUserAssignmen
             {
                 Id = x.Id,
                 Code = x.Code,
+                RoomId = x.RoomId,
                 Members = x.AssignmentGroupsStudents
                     .Select(xx => new AssignmentGroupMemberDto
                     {
