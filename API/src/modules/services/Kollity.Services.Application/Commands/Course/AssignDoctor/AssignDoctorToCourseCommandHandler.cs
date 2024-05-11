@@ -23,6 +23,9 @@ public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorTo
         var doctor = await _context.Doctors.FirstOrDefaultAsync(x => x.Id == doctorId, cancellationToken);
         if (doctor is null)
             return DoctorErrors.IdNotFound(doctorId);
+        
+        if (doctor.UserType != UserType.Doctor)
+            return CourseErrors.NonDoctorAssignation;
 
         var course = await _context.Courses.FirstOrDefaultAsync(x => x.Id == courseId, cancellationToken);
         if (course is null)
@@ -30,11 +33,7 @@ public class AssignDoctorToCourseCommandHandler : ICommandHandler<AssignDoctorTo
 
         if (course.DoctorId != null)
             return CourseErrors.HasAnAssignedDoctor;
-
-        var isInDoctorRole = _userServices.IsInRole(Role.Doctor);
-        if (isInDoctorRole == false)
-            return CourseErrors.NonDoctorAssignation;
-
+        
         course.DoctorId = doctorId;
         var result = await _context.SaveChangesAsync(cancellationToken);
         return result > 0 ? Result.Success() : Error.UnKnown;
