@@ -22,8 +22,8 @@ public class AssignmentEditedConsumer(ReportingDbContext context)
         assignment.Description = integrationEvent.Description;
         assignment.Name = integrationEvent.Name;
         assignment.Mode = integrationEvent.Type == AssignmentType.Group
-            ? AssignmentMode.Group
-            : AssignmentMode.Individual;
+            ? ReportingAssignmentMode.Group
+            : ReportingAssignmentMode.Individual;
         assignment.LastUpdateDate = integrationEvent.EventPublishedDateOnUtc;
         assignment.OpenUntilDate = integrationEvent.OpenUntilDate;
 

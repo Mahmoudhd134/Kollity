@@ -1,4 +1,4 @@
-﻿namespace Kollity.Reporting.Application.Queries.Course;
+﻿namespace Kollity.Reporting.Application.Queries.Common;
 
 public class AssignmentQueryResult
 {

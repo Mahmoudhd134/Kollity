@@ -1,6 +1,7 @@
 ﻿using Kollity.Common.ErrorHandling;
 using Kollity.Reporting.Application.Dtos.Course;
 using Kollity.Reporting.Application.Extensions;
+using Kollity.Reporting.Application.Queries.Common;
 using Kollity.Reporting.Domain.Errors;
 using Kollity.Reporting.Domain.UserModels;
 using Kollity.Reporting.Persistence.Data;

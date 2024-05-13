@@ -18,7 +18,7 @@ public class AssignmentAddedConsumer(ReportingDbContext context)
             Description = integrationEvent.Description,
             Name = integrationEvent.Name,
             DoctorId = integrationEvent.DoctorId,
-            Mode = integrationEvent.Type == AssignmentType.Group ? AssignmentMode.Group : AssignmentMode.Individual,
+            Mode = integrationEvent.Type == AssignmentType.Group ? ReportingAssignmentMode.Group : ReportingAssignmentMode.Individual,
             CreatedDate = integrationEvent.CreatedDate,
             IsDeleted = false,
             LastUpdateDate = integrationEvent.CreatedDate,

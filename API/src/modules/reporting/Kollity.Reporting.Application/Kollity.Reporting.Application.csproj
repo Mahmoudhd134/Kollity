@@ -16,8 +16,4 @@
       <ProjectReference Include="..\Kollity.Reporting.Persistence\Kollity.Reporting.Persistence.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Dtos\Room\" />
-    </ItemGroup>
-
 </Project>

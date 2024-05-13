@@ -1,6 +1,6 @@
 ﻿namespace Kollity.Reporting.Domain.AssignmentModels;
 
-public enum AssignmentMode
+public enum ReportingAssignmentMode
 {
     Individual = 1,
     Group = 2
