@@ -59,6 +59,8 @@ public class GetCourseReportQueryHandler(ReportingDbContext context)
 
         var rowExams = await context.Rooms
             .Where(x => x.CourseId == request.Id)
+            .Where(r => from == null || r.CreatedAt >= from)
+            .Where(r => to == null || r.CreatedAt <= to)
             .Select(r => new
             {
                 r.Id,
@@ -89,6 +91,8 @@ public class GetCourseReportQueryHandler(ReportingDbContext context)
 
         var rowAssignments = await context.Rooms
             .Where(x => x.CourseId == request.Id)
+            .Where(r => from == null || r.CreatedAt >= from)
+            .Where(r => to == null || r.CreatedAt <= to)
             .Select(r => new
             {
                 r.Id,
