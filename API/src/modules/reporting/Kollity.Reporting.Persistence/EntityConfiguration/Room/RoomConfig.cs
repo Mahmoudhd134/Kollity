@@ -18,7 +18,7 @@ public class RoomConfig : IEntityTypeConfiguration<Domain.RoomModels.Room>
 
         builder
             .HasOne(x => x.Doctor)
-            .WithMany()
+            .WithMany(x => x.Rooms)
             .HasForeignKey(x => x.DoctorId);
 
         builder.ToTable("Room");
