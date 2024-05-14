@@ -1,4 +1,6 @@
-﻿namespace Kollity.Reporting.Domain.UserModels;
+﻿using Kollity.Reporting.Domain.RoomModels;
+
+namespace Kollity.Reporting.Domain.UserModels;
 
 public class User
 {
@@ -9,4 +11,5 @@ public class User
     public string ProfileImage { get; set; }
     public bool IsDeleted { get; set; }
     public string Type { get; set; }
+    public List<RoomUser> RoomUsers { get; set; }
 }

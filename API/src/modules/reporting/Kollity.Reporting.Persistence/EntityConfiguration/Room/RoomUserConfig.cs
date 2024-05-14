@@ -17,7 +17,7 @@ public class RoomUserConfig : IEntityTypeConfiguration<RoomUser>
         
         builder
             .HasOne(x => x.User)
-            .WithMany()
+            .WithMany(x => x.RoomUsers)
             .HasForeignKey(x => x.UserId);
         
         builder.ToTable("RoomUser");

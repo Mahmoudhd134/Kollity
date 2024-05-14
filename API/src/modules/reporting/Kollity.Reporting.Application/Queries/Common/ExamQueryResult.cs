@@ -9,4 +9,5 @@ public class ExamQueryResult
     public int? MaxSumOfStudentDegree { get; set; }
     public int? MinSumOfStudentDegree { get; set; }
     public int? NumberOfStudentsAnswers { get; set; }
+    public int? SumOfStudentDegree { get; set; }
 }

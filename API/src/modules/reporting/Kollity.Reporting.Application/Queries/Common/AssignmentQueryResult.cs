@@ -8,4 +8,5 @@ public class AssignmentQueryResult
     public int? MaxSumStudentDegree { get; set; }
     public int? MinSumStudentDegree { get; set; }
     public int? NumberOfStudentsAnswers { get; set; }
+    public int? SumOfStudentDegree { get; set; }
 }
