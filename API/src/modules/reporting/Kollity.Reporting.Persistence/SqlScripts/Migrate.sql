@@ -60,6 +60,10 @@
             select room_id, user_id
             from KollityServicesDb.services.UserRoom
             where join_request_accepted = 1
+
+            insert into KollityReportingDB.reporting.RoomContent(id, name, upload_time, uploader_id, room_id)
+            select id, name, upload_time, uploader_id, room_id
+            from KollityServicesDB.services.RoomContent
             -- migration of rooms data ended
 
             -- migrate exam data
