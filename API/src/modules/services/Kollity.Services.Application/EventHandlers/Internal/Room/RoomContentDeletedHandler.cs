@@ -10,8 +10,6 @@ public static class RoomContentDeletedHandler
     {
         public Task Handle(RoomContentDeletedEvent notification, CancellationToken cancellationToken)
         {
-            if (notification.RoomContent.UploaderId is null)
-                throw new ArgumentNullException(nameof(notification.RoomContent.UploaderId));
             return eventBus.PublishAsync(new RoomContentDeletedIntegrationEvent
             {
                 RoomId = notification.RoomContent.RoomId,
