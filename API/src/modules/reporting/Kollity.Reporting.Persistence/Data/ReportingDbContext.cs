@@ -21,6 +21,7 @@ public class ReportingDbContext : DbContext
     public DbSet<CourseDoctorAndAssistants> CourseDoctorAndAssistants { get; set; }
     public DbSet<CourseStudent> CourseStudents { get; set; }
     public DbSet<Room> Rooms { get; set; }
+    public DbSet<RoomContent> RoomContents { get; set; }
     public DbSet<RoomUser> RoomUsers { get; set; }
     public DbSet<Exam> Exams { get; set; }
     public DbSet<ExamQuestion> ExamQuestions { get; set; }

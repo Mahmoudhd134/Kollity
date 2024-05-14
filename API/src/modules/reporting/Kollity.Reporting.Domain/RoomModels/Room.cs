@@ -22,4 +22,5 @@ public class Room
     public List<Assignment> Assignments { get; set; } = [];
     public List<AssignmentAnswer> AssignmentAnswers { get; set; } = [];
     public List<AssignmentGroup> AssignmentGroups { get; set; } = [];
+    public List<RoomContent> Contents { get; set; } = [];
 }

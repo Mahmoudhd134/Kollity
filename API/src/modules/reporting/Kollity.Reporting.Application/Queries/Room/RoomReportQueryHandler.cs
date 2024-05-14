@@ -77,8 +77,25 @@ public class RoomReportQueryHandler(ReportingDbContext context) : IQueryHandler<
             })
             .ToListAsync(cancellationToken);
 
+        var contents = await context.RoomContents
+            .Where(x => x.RoomId == request.Id)
+            .Select(c => new RoomContentForRoomReportDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                UploadedAt = c.UploadTime,
+                Uploader = new UserUsernameDto
+                {
+                    Id = c.Uploader.Id,
+                    UserName = c.Uploader.UserName,
+                    Image = c.Uploader.ProfileImage
+                }
+            })
+            .ToListAsync(cancellationToken);
+
         roomDto.Exams = exams;
         roomDto.Assignments = assignments;
+        roomDto.Contents = contents;
 
         return roomDto;
     }
