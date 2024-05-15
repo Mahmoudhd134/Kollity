@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="MyCollege@. [2]" uuid="e941c6c9-efbd-476b-b1d1-8a3093f35d4e">
+    <data-source source="LOCAL" name="Microsoft SQL Server LocalDB (JetBrains)" uuid="8dd9c3df-d005-4aa8-9d48-9fcc6bb7a748">
+      <driver-ref>sqlserver.localdb.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>server=.;database=KollityServicesDb;trusted_connection=true;encrypt=false;</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="db_aa6797_userdb@sql5113.site4now.net" uuid="09b0feec-84a2-4b46-afb3-8ef9ad336a29">
       <driver-ref>sqlserver.jb</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
-      <jdbc-url>server=.;database=MyCollege;trusted_connection=true;encrypt=false;</jdbc-url>
+      <jdbc-url>server=sql5113.site4now.net;database=db_aa6797_userdb;user id=db_aa6797_userdb_admin;password=Smarterasp2320030@;encrypt=false;TrustServerCertificate=true;</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="Microsoft SQL Server LocalDB (JetBrains)" uuid="b3ec6aa9-b1b3-4b50-b0cd-32ad4b328e09">

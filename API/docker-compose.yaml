@@ -26,6 +26,16 @@ services:
       - api-and-mssql
     depends_on:
       - mssql
+  
+  mq:
+    container_name: MessageQueue
+    image: rabbitmq:management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - D:\rabbitmq\log:/var/log/rabbitmq
+      - D:\rabbitmq\data:/var/data/rabbitmq
 
 volumes:
   sqlvolume:

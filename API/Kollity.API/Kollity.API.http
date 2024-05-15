@@ -1,0 +1,6 @@
+@Kollity.API_HostAddress = http://localhost:5084
+
+GET {{Kollity.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
