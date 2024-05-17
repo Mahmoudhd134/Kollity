@@ -9,6 +9,13 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="b0ce3046-a49d-4add-abb0-c999e4e70dd6" name="monsterasp" url="http://site4697.siteasp.net">
+        <fileTransfer rootFolder="/wwwroot" host="site4697.siteasp.net" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
