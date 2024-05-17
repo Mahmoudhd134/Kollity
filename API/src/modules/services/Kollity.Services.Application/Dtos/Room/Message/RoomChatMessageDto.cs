@@ -1,4 +1,6 @@
-﻿namespace Kollity.Services.Application.Dtos.Room.Message;
+﻿using Kollity.Services.Domain.RoomModels;
+
+namespace Kollity.Services.Application.Dtos.Room.Message;
 
 public class RoomChatMessageDto
 {
@@ -7,5 +9,7 @@ public class RoomChatMessageDto
     public DateTime SentAt { get; set; }
     public bool IsRead { get; set; }
     public string FileName { get; set; }
-    public RoomChatMessageSender Sender { get; set; }
+    public ChatPollDto Poll { get; set; }
+    public RoomMessageType Type { get; set; }
+    public RoomChatMessageSenderDto SenderDto { get; set; }
 }

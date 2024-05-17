@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Courses;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.Edit;
@@ -7,11 +9,13 @@ public class EditCourseCommandHandler : ICommandHandler<EditCourseCommand>
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly EventCollection _eventCollection;
 
-    public EditCourseCommandHandler(ApplicationDbContext context, IMapper mapper)
+    public EditCourseCommandHandler(ApplicationDbContext context, IMapper mapper, EventCollection eventCollection)
     {
         _context = context;
         _mapper = mapper;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(EditCourseCommand request, CancellationToken cancellationToken)
@@ -33,6 +37,9 @@ public class EditCourseCommandHandler : ICommandHandler<EditCourseCommand>
 
         var result = await _context.SaveChangesAsync(cancellationToken);
 
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new CourseEditedEvent(course));
+        return Result.Success();
     }
 }

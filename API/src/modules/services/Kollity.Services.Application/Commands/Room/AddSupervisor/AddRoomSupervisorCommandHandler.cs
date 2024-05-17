@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Room;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Room.AddSupervisor;
@@ -6,12 +8,15 @@ namespace Kollity.Services.Application.Commands.Room.AddSupervisor;
 public class AddRoomSupervisorCommandHandler : ICommandHandler<AddRoomSupervisorCommand>
 {
     private readonly ApplicationDbContext _context;
+    private readonly EventCollection _eventCollection;
     private readonly IUserServices _userServices;
 
-    public AddRoomSupervisorCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public AddRoomSupervisorCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(AddRoomSupervisorCommand request, CancellationToken cancellationToken)
@@ -28,10 +33,17 @@ public class AddRoomSupervisorCommandHandler : ICommandHandler<AddRoomSupervisor
         if (roomDoctor is null || roomDoctor != userId)
             return RoomErrors.UnAuthorizeAddSupervisor;
 
-        await _context.UserRooms
+        var userRoom = await _context.UserRooms
             .Where(x => x.RoomId == roomId && x.UserId == supervisorId)
-            .ExecuteUpdateAsync(calls => calls
-                .SetProperty(x => x.IsSupervisor, true), cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
+
+        userRoom.IsSupervisor = true;
+
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+
+        _eventCollection.Raise(new RoomSupervisorAddedEvent(userRoom));
 
         return Result.Success();
     }

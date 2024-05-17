@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Exam;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Exam.Submit;
@@ -7,11 +9,14 @@ public class SubmitExamAnswerCommandHandler : ICommandHandler<SubmitExamAnswerCo
 {
     private readonly ApplicationDbContext _context;
     private readonly IUserServices _userServices;
+    private readonly EventCollection _eventCollection;
 
-    public SubmitExamAnswerCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public SubmitExamAnswerCommandHandler(ApplicationDbContext context, IUserServices userServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(SubmitExamAnswerCommand request, CancellationToken cancellationToken)
@@ -30,14 +35,8 @@ public class SubmitExamAnswerCommandHandler : ICommandHandler<SubmitExamAnswerCo
 
         var answer = await _context.ExamAnswers
             .Where(x => x.ExamQuestionId == questionId && x.StudentId == userId)
-            .Select(x => new
-            {
-                x.Id,
-                x.RequestTime,
-                x.SubmitTime,
-                ExamEndDate = x.Exam.EndDate,
-                QuestionOpenForSeconds = x.ExamQuestion.OpenForSeconds
-            })
+            .Include(x => x.Exam)
+            .Include(x => x.ExamQuestion)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (answer is null)
@@ -46,19 +45,19 @@ public class SubmitExamAnswerCommandHandler : ICommandHandler<SubmitExamAnswerCo
         if (answer.SubmitTime is not null)
             return ExamErrors.QuestionAlreadyAnswered;
 
-        if (utcNow > answer.ExamEndDate)
+        if (utcNow > answer.Exam.EndDate)
             return ExamErrors.ExamEnded;
 
-        var lastDate = answer.RequestTime.AddSeconds(answer.QuestionOpenForSeconds);
+        var lastDate = answer.RequestTime.AddSeconds(answer.ExamQuestion.OpenForSeconds);
         if (utcNow > lastDate)
             return ExamErrors.QuestionTimeEnd;
 
-        await _context.ExamAnswers
-            .Where(x => x.Id == answer.Id)
-            .ExecuteUpdateAsync(c => c
-                .SetProperty(x => x.ExamQuestionOptionId, optionId)
-                .SetProperty(x => x.SubmitTime, utcNow), cancellationToken);
-
+        answer.ExamQuestionOptionId = optionId;
+        answer.SubmitTime = utcNow;
+        var result = await _context.SaveChangesAsync(cancellationToken);
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new ExamAnswerSubmittedEvent(answer));
         return Result.Success();
     }
 }

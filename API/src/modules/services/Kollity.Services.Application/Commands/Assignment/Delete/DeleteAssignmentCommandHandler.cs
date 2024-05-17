@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Assignment;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Assignment.Delete;
@@ -7,14 +9,16 @@ public class DeleteAssignmentCommandHandler : ICommandHandler<DeleteAssignmentCo
 {
     private readonly ApplicationDbContext _context;
     private readonly IFileServices _fileServices;
+    private readonly EventCollection _eventCollection;
     private readonly IUserServices _userServices;
 
     public DeleteAssignmentCommandHandler(ApplicationDbContext context, IUserServices userServices,
-        IFileServices fileServices)
+        IFileServices fileServices, EventCollection eventCollection)
     {
         _context = context;
         _userServices = userServices;
         _fileServices = fileServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteAssignmentCommand request, CancellationToken cancellationToken)
@@ -22,17 +26,17 @@ public class DeleteAssignmentCommandHandler : ICommandHandler<DeleteAssignmentCo
         Guid assignmentId = request.Id,
             userId = _userServices.GetCurrentUserId();
 
-        var assignmentDoctorId = await _context.Assignments
+        var assignment = await _context.Assignments
             .Where(x => x.Id == assignmentId)
-            .Select(x => x.DoctorId)
+            .AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (assignmentDoctorId is null)
+        if (assignment is null)
             return AssignmentErrors.NotFound(assignmentId);
-        if (assignmentDoctorId == Guid.Empty)
+        if (assignment.DoctorId == Guid.Empty)
             return AssignmentErrors.AssignmentHasNoDoctor;
 
-        if (assignmentDoctorId != userId)
+        if (assignment.DoctorId != userId)
             return AssignmentErrors.UnAuthorizedDelete;
 
         var files = await _context.AssignmentFiles
@@ -53,9 +57,13 @@ public class DeleteAssignmentCommandHandler : ICommandHandler<DeleteAssignmentCo
             .Where(x => x.Id == assignmentId)
             .ExecuteDeleteAsync(cancellationToken);
 
-        await _fileServices.Delete(files);
-        await _fileServices.Delete(answers);
+        if (result == 0)
+            return Error.UnKnown;
 
-        return result > 0 ? Result.Success() : Error.UnKnown;
+        await _fileServices.Delete(files.Concat(answers).ToList());
+
+        _eventCollection.Raise(new AssignmentDeletedEvent(assignment));
+
+        return Result.Success();
     }
 }

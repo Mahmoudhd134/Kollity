@@ -8,7 +8,7 @@ public class MessagePollAnswerConfig : IEntityTypeConfiguration<MessagePollAnswe
 {
     public void Configure(EntityTypeBuilder<MessagePollAnswer> builder)
     {
-        builder.HasKey(x => new { x.PollId, x.UserId });
+        builder.HasKey(x => new { x.PollId, x.UserId, x.OptionIndex });
 
         builder
             .HasOne(x => x.User)
@@ -19,6 +19,9 @@ public class MessagePollAnswerConfig : IEntityTypeConfiguration<MessagePollAnswe
             .HasOne(x => x.Poll)
             .WithMany(x => x.PollAnswers)
             .HasForeignKey(x => x.PollId);
+
+        builder.HasIndex(x => x.OptionIndex);
+        builder.HasIndex(x => x.UserId);
 
         builder.ToTable("MessagePollAnswer");
     }

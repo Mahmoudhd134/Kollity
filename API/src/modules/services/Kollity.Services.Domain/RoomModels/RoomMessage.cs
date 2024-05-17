@@ -12,7 +12,8 @@ public class RoomMessage
     public Guid RoomId { get; set; }
     public Room Room { get; set; }
     public bool IsRead { get; set; }
-
+    public RoomMessageType Type { get; set; }
+    public bool IsPinned { get; set; }
     public MessageFile File { get; set; }
     public MessagePoll Poll { get; set; }
     public List<MessagePollAnswer> PollAnswers { get; set; } = [];

@@ -1,5 +1,4 @@
-﻿
-using Kollity.Common.ErrorHandling;
+﻿using Kollity.Common.ErrorHandling;
 
 namespace Kollity.Services.Domain.Errors;
 
@@ -26,6 +25,9 @@ public static class CourseErrors
 
     public static readonly Error UnAuthorizeAddRoom = Error.Validation("UnAuthorizeAddRoom",
         "You can not add room to a course that you are not assigned to");
+
+    public static readonly Error HasNoDoctor = Error.Validation("Course.HasNoDoctor",
+        "You can not perform this action on a course that has not assigned doctor.");
 
     public static Error DuplicatedCode(int code)
     {

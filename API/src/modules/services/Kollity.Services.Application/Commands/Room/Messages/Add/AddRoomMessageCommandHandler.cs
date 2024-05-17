@@ -48,7 +48,8 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
             SenderId = userId,
             RoomId = roomId,
             Date = DateTime.UtcNow,
-            IsRead = _roomConnectionsServices.GetUsersConnectedToRoom(roomId).Count > 1
+            IsRead = _roomConnectionsServices.GetUsersConnectedToRoom(roomId).Count > 1,
+            Type = RoomMessageType.Text
         };
 
         if (request.Dto.File != null)
@@ -59,13 +60,25 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
                 FileName = request.Dto.File.FileName,
                 FilePath = path
             };
+            var ct = request.Dto.File.ContentType.ToLower();
+            if (ct.StartsWith("video"))
+                message.Type = RoomMessageType.Video;
+            else if (ct.StartsWith("audio"))
+                message.Type = RoomMessageType.Audio;
+            else if (ct.StartsWith("image"))
+                message.Type = RoomMessageType.Image;
+            else
+                message.Type = RoomMessageType.File;
         }
 
+        _context.RoomMessages.Add(message);
         await _context.SaveChangesAsync(cancellationToken);
+
+        _eventCollection.Raise(new RoomChatMessageAddedEvent(message));
 
         var sender = await _context.Users
             .Where(x => x.Id == userId)
-            .Select(x => new RoomChatMessageSender
+            .Select(x => new RoomChatMessageSenderDto
             {
                 Id = x.Id,
                 UserName = x.UserName,
@@ -73,21 +86,16 @@ public class AddRoomMessageCommandHandler : ICommandHandler<AddRoomMessageComman
             })
             .FirstAsync(cancellationToken);
 
-        _eventCollection.Raise(new RoomChatMessageAddedEvent(
-            message,
-            sender.Id,
-            sender.UserName,
-            sender.Image
-        ));
 
         var messageDto = new RoomChatMessageDto
         {
             Id = message.Id,
             Text = message.Text,
-            IsRead = false,
+            IsRead = message.IsRead,
             SentAt = message.Date,
-            Sender = sender,
-            FileName = message.File?.FileName
+            SenderDto = sender,
+            FileName = message.File?.FileName,
+            Type = message.Type
         };
 
         return messageDto;

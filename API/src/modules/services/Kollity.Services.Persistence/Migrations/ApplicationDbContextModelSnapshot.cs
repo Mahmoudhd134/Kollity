@@ -633,8 +633,11 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasColumnType("tinyint")
                         .HasColumnName("option_index");
 
-                    b.HasKey("PollId", "UserId")
+                    b.HasKey("PollId", "UserId", "OptionIndex")
                         .HasName("pk_message_poll_answer");
+
+                    b.HasIndex("OptionIndex")
+                        .HasDatabaseName("ix_message_poll_answer_option_index");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_message_poll_answer_user_id");
@@ -746,13 +749,17 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasColumnType("nvarchar(1023)")
                         .HasColumnName("file");
 
+                    b.Property<bool>("IsPinned")
+                        .HasColumnType("bit")
+                        .HasColumnName("is_pinned");
+
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit")
                         .HasColumnName("is_read");
 
                     b.Property<string>("Poll")
-                        .HasMaxLength(3550)
-                        .HasColumnType("nvarchar(3550)")
+                        .HasMaxLength(3650)
+                        .HasColumnType("nvarchar(3650)")
                         .HasColumnName("poll");
 
                     b.Property<Guid>("RoomId")
@@ -767,6 +774,10 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasMaxLength(4067)
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnName("type");
 
                     b.HasKey("Id")
                         .HasName("pk_room_message");

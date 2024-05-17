@@ -29,7 +29,6 @@ public static class DoctorAddedHandler
                 Id = notification.Doctor.Id,
                 FullName = notification.Doctor.FullNameInArabic,
                 UserName = notification.Doctor.UserName,
-                Password = notification.Password,
                 Email = notification.Doctor.Email,
                 Type = type
             }, cancellationToken);

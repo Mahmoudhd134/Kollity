@@ -1,5 +1,5 @@
-﻿using Kollity.Common.ErrorHandling;
-using Kollity.User.API.Abstraction.Messages;
+﻿using Kollity.Common.Abstractions.Messages;
+using Kollity.Common.ErrorHandling;
 using Kollity.User.API.Models;
 using Microsoft.AspNetCore.Identity;
 

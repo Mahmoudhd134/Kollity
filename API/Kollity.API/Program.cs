@@ -1,5 +1,8 @@
 using Kollity.API;
 using Kollity.API.Helpers;
+using Kollity.Reporting.Application;
+using Kollity.Reporting.Persistence;
+using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.API.Extensions;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
@@ -26,6 +29,10 @@ builder.Services.AddServicesApplicationConfiguration();
 builder.Services.AddServicesPersistenceConfiguration();
 builder.Services.AddServicesInfrastructureConfiguration();
 builder.Services.AddServicesServicesInjection();
+
+// reporting services
+builder.Services.AddReportingPersistenceConfiguration();
+builder.Services.AddReportingApplicationConfiguration();
 
 
 // base service
@@ -73,9 +80,12 @@ try
     await using var userDbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<UserDbContext>();
     await using var serviceDbContext =
         app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await using var reportingDbContext =
+        app.Services.CreateScope().ServiceProvider.GetRequiredService<ReportingDbContext>();
 
     await userDbContext.Database.MigrateAsync();
     await serviceDbContext.Database.MigrateAsync();
+    await reportingDbContext.Database.MigrateAsync();
 }
 catch (Exception e)
 {

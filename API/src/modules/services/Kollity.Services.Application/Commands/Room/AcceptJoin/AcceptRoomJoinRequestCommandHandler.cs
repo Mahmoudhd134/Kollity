@@ -1,4 +1,6 @@
-﻿using Kollity.Services.Domain.Errors;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Room;
+using Kollity.Services.Domain.Errors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Room.AcceptJoin;
@@ -6,11 +8,14 @@ namespace Kollity.Services.Application.Commands.Room.AcceptJoin;
 public class AcceptRoomJoinRequestCommandHandler : ICommandHandler<AcceptRoomJoinRequestCommand>
 {
     private readonly ApplicationDbContext _context;
+    private readonly EventCollection _eventCollection;
     private readonly IUserServices _userServices;
 
-    public AcceptRoomJoinRequestCommandHandler(ApplicationDbContext context, IUserServices userServices)
+    public AcceptRoomJoinRequestCommandHandler(ApplicationDbContext context, EventCollection eventCollection,
+        IUserServices userServices)
     {
         _context = context;
+        _eventCollection = eventCollection;
         _userServices = userServices;
     }
 
@@ -30,6 +35,9 @@ public class AcceptRoomJoinRequestCommandHandler : ICommandHandler<AcceptRoomJoi
             .Where(x => x.RoomId == roomId && x.UserId == userId)
             .ExecuteUpdateAsync(calls => calls
                 .SetProperty(x => x.JoinRequestAccepted, true), cancellationToken);
-        return result == 1 ? Result.Success() : Error.UnKnown;
+        if (result == 0)
+            return Error.UnKnown;
+        _eventCollection.Raise(new UsersJoinRequestAcceptedEvent([userId], roomId));
+        return Result.Success();
     }
 }

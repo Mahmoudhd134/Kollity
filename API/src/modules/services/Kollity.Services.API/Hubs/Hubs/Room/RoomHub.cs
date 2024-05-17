@@ -1,7 +1,9 @@
 ﻿using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.Application.Commands.Room.Messages.Add;
+using Kollity.Services.Application.Commands.Room.Messages.AddPoll;
 using Kollity.Services.Application.Commands.Room.Messages.Delete;
 using Kollity.Services.Application.Commands.Room.Messages.Disconnect;
+using Kollity.Services.Application.Commands.Room.Messages.SubmitPoll;
 using Kollity.Services.Application.Dtos.Room.Message;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Primitives;
@@ -45,12 +47,27 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task SendMessage(Guid trackId, string text, IFormFile file, Guid roomId)
+    public async Task SendPoll(Guid trackId, AddChatPollDto addChatPollDto)
     {
+        var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
+        var result = await Sender.Send(new AddChatPollCommand(roomId, addChatPollDto));
+
+        if (result.IsSuccess == false)
+        {
+            await Clients.Caller.MessageHasNotBeenSentSuccessfully(trackId, result.Errors);
+            return;
+        }
+
+        await Clients.Caller.MessageSentSuccessfully(trackId, result.Data);
+        await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
+    }
+
+    public async Task SendMessage(Guid trackId, string text)
+    {
+        var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
         var result = await Sender.Send(new AddRoomMessageCommand(roomId, new AddRoomMessageDto
         {
             Text = text,
-            File = file
         }));
 
         if (result.IsSuccess == false)
@@ -63,8 +80,9 @@ public class RoomHub : BaseHub<IRoomHubClient>
         await Clients.OthersInGroup(roomId.ToString()).MessageReceived(result.Data);
     }
 
-    public async Task DeleteMessage(Guid messageId, Guid roomId)
+    public async Task DeleteMessage(Guid messageId)
     {
+        var roomId = _roomConnectionServices.GetConnectionRoomId(Context.ConnectionId);
         var result = await Sender.Send(new DeleteRoomChatMessageCommand(messageId));
         if (result.IsSuccess == false)
         {

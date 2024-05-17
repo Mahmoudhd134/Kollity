@@ -47,8 +47,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserServices, HttpUserServices>();
         services.AddHttpContextAccessor();
 
-        services.AddScoped<IRoomConnectionServices, SignalRRoomConnectionServices>();
-        services.AddScoped<IRoomConnectionsServices, SignalRRoomConnectionServices>();
+        var roomConnectionServices = new SignalRRoomConnectionServices();
+        services.AddSingleton<IRoomConnectionServices>(roomConnectionServices);
+        services.AddSingleton<IRoomConnectionsServices>(roomConnectionServices);
 
         return services;
     }

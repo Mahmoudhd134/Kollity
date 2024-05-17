@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Kollity.Services.Application.Abstractions.Events;
+using Kollity.Services.Application.Events.Courses;
+using Kollity.Services.Domain.Errors;
+using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Services.Application.Commands.Course.Delete;
 
@@ -6,11 +9,14 @@ public class DeleteCourseCommandHandler : ICommandHandler<DeleteCourseCommand>
 {
     private readonly ApplicationDbContext _context;
     private readonly IFileServices _fileServices;
+    private readonly EventCollection _eventCollection;
 
-    public DeleteCourseCommandHandler(ApplicationDbContext context, IFileServices fileServices)
+    public DeleteCourseCommandHandler(ApplicationDbContext context, IFileServices fileServices,
+        EventCollection eventCollection)
     {
         _context = context;
         _fileServices = fileServices;
+        _eventCollection = eventCollection;
     }
 
     public async Task<Result> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
@@ -28,12 +34,17 @@ public class DeleteCourseCommandHandler : ICommandHandler<DeleteCourseCommand>
             })
             .ToListAsync(cancellationToken);
 
-        var result = await _context.Courses
-            .Where(x => x.Id == request.Id)
-            .ExecuteDeleteAsync(cancellationToken);
+        var course = await _context.Courses
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        if (course is null)
+            return CourseErrors.IdNotFound(courseId);
 
+        _context.Courses.Remove(course);
+        var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
+
+        _eventCollection.Raise(new CourseDeletedEvent(course));
 
         foreach (var content in contents)
         {

@@ -23,21 +23,23 @@ public class GetUnReadMessagesCommandHandler : ICommandHandler<GetUnReadMessages
             .Where(x => x.RoomId == request.RoomId &&
                         x.Date > _context.UserRooms
                             .FirstOrDefault(ur => ur.UserId == userId && ur.RoomId == request.RoomId).LastOnlineDate)
-            .Select(x => new RoomChatMessageDto()
+            .Select(x => new
             {
-                Id = x.Id,
-                Text = x.Text,
-                IsRead = x.IsRead,
+                x.Id,
+                x.Text,
+                x.IsRead,
                 SentAt = x.Date,
                 FileName = x.File != null ? x.File.FileName : null,
-                Sender = x.SenderId != null
-                    ? new RoomChatMessageSender
+                SenderDto = x.SenderId != null
+                    ? new RoomChatMessageSenderDto
                     {
                         Id = x.Sender.Id,
                         UserName = x.Sender.UserName,
                         Image = x.Sender.ProfileImage
                     }
-                    : null
+                    : null,
+                x.Poll,
+                x.Type
             })
             .ToListAsync(cancellationToken);
 
@@ -50,6 +52,24 @@ public class GetUnReadMessagesCommandHandler : ICommandHandler<GetUnReadMessages
             .ExecuteUpdateAsync(c => c
                 .SetProperty(x => x.IsRead, true), cancellationToken);
 
-        return messages;
+        return messages.Select(x => new RoomChatMessageDto
+        {
+            Id = x.Id,
+            Text = x.Text,
+            IsRead = x.IsRead,
+            SentAt = x.SentAt,
+            SenderDto = x.SenderDto,
+            FileName = x.FileName,
+            Poll = x.Poll != null
+                ? new ChatPollDto
+                {
+                    Question = x.Poll.Question,
+                    Options = x.Poll.Options.Select(xx => new ChatPollOptionDto { Option = xx }).ToList(),
+                    MaxOptionsCountForSubmission = x.Poll.MaxOptionsCountForSubmission,
+                    IsMultiAnswer = x.Poll.IsMultiAnswer
+                }
+                : null,
+            Type = x.Type
+        }).ToList();
     }
 }

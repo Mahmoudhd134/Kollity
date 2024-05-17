@@ -1,11 +1,9 @@
 ﻿using Kollity.Common.ErrorHandling;
-using Kollity.User.API.Abstraction;
 using Kollity.User.API.Abstraction.Services;
 using Kollity.User.API.Dtos.Auth;
 using Kollity.User.API.Extensions;
 using Kollity.User.API.Helpers;
 using Kollity.User.API.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Annotations;

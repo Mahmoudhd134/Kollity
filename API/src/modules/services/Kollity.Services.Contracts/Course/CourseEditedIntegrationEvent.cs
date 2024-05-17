@@ -1,6 +1,6 @@
 ﻿namespace Kollity.Services.Contracts.Course;
 
-public class CourseEditedIntegrationEvent
+public class CourseEditedIntegrationEvent : BaseIntegrationEvent
 {
     public Guid Id { get; set; }
     public string Department { get; set; }

@@ -1,4 +1,4 @@
-﻿using Kollity.Services.Application.Abstractions.Messages;
+﻿using Kollity.Services.Application.Abstractions.Events;
 using MassTransit;
 
 namespace Kollity.Services.Infrastructure.Messages;

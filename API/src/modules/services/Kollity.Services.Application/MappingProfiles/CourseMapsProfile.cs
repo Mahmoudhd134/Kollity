@@ -1,5 +1,6 @@
 ﻿using Kollity.Services.Domain.CourseModels;
 using Kollity.Services.Application.Dtos.Course;
+using Kollity.Services.Contracts.Course;
 
 namespace Kollity.Services.Application.MappingProfiles;
 
@@ -32,10 +33,14 @@ public class CourseMapsProfile : Profile
                 {
                     Id = r.Id,
                     Name = r.Name,
-                    DoctorId = r.DoctorId ?? Guid.Empty
+                    DoctorId = r.DoctorId ?? Guid.Empty,
+                    DoctorName = r.DoctorId != null ? r.Doctor.UserName : ""
                 })));
 
         CreateMap<EditCourseDto, Course>();
         CreateMap<Course, CourseForListDto>();
+
+        CreateMap<Course, CourseAddedIntegrationEvent>();
+        CreateMap<Course, CourseEditedIntegrationEvent>();
     }
 }

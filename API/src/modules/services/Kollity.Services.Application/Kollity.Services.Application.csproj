@@ -36,8 +36,4 @@
       </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="EventHandlers\Internal\" />
-    </ItemGroup>
-
 </Project>

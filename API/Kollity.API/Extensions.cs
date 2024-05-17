@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using Kollity.API.Helpers;
+using Kollity.Reporting.Application;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
 using MassTransit;
+using MassTransit.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -24,9 +26,11 @@ public static class Extensions
         services.AddMassTransit(busConfig =>
         {
             busConfig.SetKebabCaseEndpointNameFormatter();
+
             busConfig.AddConsumers(
                 typeof(ApplicationExtensions).Assembly,
-                typeof(KollityUserApiEntryPoint).Assembly
+                typeof(KollityUserApiEntryPoint).Assembly,
+                typeof(ReportingApplicationConfiguration).Assembly
             );
 
             if (isProductionEnvironment)
@@ -34,12 +38,23 @@ public static class Extensions
                 busConfig.UsingRabbitMq((context, config) =>
                 {
                     config.ConfigureEndpoints(context);
+                    config.UseMessageRetry(r =>
+                    {
+                        r.Exponential(7,
+                            TimeSpan.FromSeconds(30),
+                            TimeSpan.FromMinutes(60),
+                            TimeSpan.FromMinutes(1));
+                    });
+
+
                     var rabbitMqConfig = context.GetRequiredService<RabbitMqConfig>();
                     config.Host(new Uri(rabbitMqConfig.Host), host =>
                     {
                         host.Username(rabbitMqConfig.Username);
                         host.Password(rabbitMqConfig.Password);
                     });
+
+                    config.SendTopology.ErrorQueueNameFormatter = new KebabCaseErrorQueueNameFormatter();
                 });
             }
             else

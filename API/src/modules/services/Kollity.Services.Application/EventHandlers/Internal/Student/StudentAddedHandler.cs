@@ -23,7 +23,6 @@ public static class StudentAddedHandler
                 Email = notification.Student.Email,
                 UserName = notification.Student.UserName,
                 FullName = notification.Student.FullNameInArabic,
-                Password = notification.Password,
                 Code = notification.Student.Code
             }, cancellationToken);
         }

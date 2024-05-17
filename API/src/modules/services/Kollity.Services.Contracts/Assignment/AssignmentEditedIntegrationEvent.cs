@@ -1,6 +1,6 @@
 ﻿namespace Kollity.Services.Contracts.Assignment;
 
-public class AssignmentEditedIntegrationEvent
+public class AssignmentEditedIntegrationEvent : BaseIntegrationEvent
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
