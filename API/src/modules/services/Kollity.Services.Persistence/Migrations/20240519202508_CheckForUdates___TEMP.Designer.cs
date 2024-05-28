@@ -4,6 +4,7 @@ using Kollity.Services.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Kollity.Services.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240519202508_CheckForUdates___TEMP")]
+    partial class CheckForUdates___TEMP
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -506,90 +509,6 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasDatabaseName("ix_exam_question_option_exam_question_id");
 
                     b.ToTable("ExamQuestionOption", "services");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.FeedbackModels.FeedbackAnswer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<int?>("Answer")
-                        .HasColumnType("int")
-                        .HasColumnName("answer");
-
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("course_id");
-
-                    b.Property<Guid?>("DoctorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("doctor_id");
-
-                    b.Property<Guid?>("ExamId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_id");
-
-                    b.Property<Guid>("QuestionId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("question_id");
-
-                    b.Property<string>("StringAnswer")
-                        .HasMaxLength(4095)
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("string_answer");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("student_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_feedback_answer");
-
-                    b.HasIndex("CourseId")
-                        .HasDatabaseName("ix_feedback_answer_course_id");
-
-                    b.HasIndex("DoctorId")
-                        .HasDatabaseName("ix_feedback_answer_doctor_id");
-
-                    b.HasIndex("ExamId")
-                        .HasDatabaseName("ix_feedback_answer_exam_id");
-
-                    b.HasIndex("QuestionId")
-                        .HasDatabaseName("ix_feedback_answer_question_id");
-
-                    b.HasIndex("StudentId")
-                        .HasDatabaseName("ix_feedback_answer_student_id");
-
-                    b.ToTable("FeedbackAnswer", "services");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.FeedbackModels.FeedbackQuestion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("int")
-                        .HasColumnName("category");
-
-                    b.Property<bool>("IsMcq")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_mcq");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasMaxLength(1023)
-                        .HasColumnType("nvarchar(1023)")
-                        .HasColumnName("question");
-
-                    b.HasKey("Id")
-                        .HasName("pk_feedback_question");
-
-                    b.ToTable("FeedbackQuestion", "services");
                 });
 
             modelBuilder.Entity("Kollity.Services.Domain.Identity.BaseUser", b =>
@@ -1218,48 +1137,6 @@ namespace Kollity.Services.Persistence.Migrations
                         .HasConstraintName("fk_exam_question_option_exam_question_exam_question_id");
 
                     b.Navigation("ExamQuestion");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.FeedbackModels.FeedbackAnswer", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.CourseModels.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .HasConstraintName("fk_feedback_answer_course_course_id");
-
-                    b.HasOne("Kollity.Services.Domain.DoctorModels.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .HasConstraintName("fk_feedback_answer_doctors_doctor_id");
-
-                    b.HasOne("Kollity.Services.Domain.ExamModels.Exam", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamId")
-                        .HasConstraintName("fk_feedback_answer_exam_exam_id");
-
-                    b.HasOne("Kollity.Services.Domain.FeedbackModels.FeedbackQuestion", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_feedback_answer_feedback_question_question_id");
-
-                    b.HasOne("Kollity.Services.Domain.StudentModels.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_feedback_answer_students_student_id");
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("Question");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Kollity.Services.Domain.RoomModels.MessagePollAnswer", b =>
