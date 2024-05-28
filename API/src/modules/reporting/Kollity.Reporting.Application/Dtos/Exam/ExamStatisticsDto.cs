@@ -1,4 +1,6 @@
-﻿namespace Kollity.Reporting.Application.Dtos.Exam;
+﻿using Kollity.Reporting.Application.Dtos.Common;
+
+namespace Kollity.Reporting.Application.Dtos.Exam;
 
 public class ExamStatisticsDto
 {
@@ -13,4 +15,5 @@ public class ExamStatisticsDto
     public int MinDegree { get; set; }
     public double AverageDegree { get; set; }
     public List<ExamQuestionForExamStatistics> Questions { get; set; }
+    public List<DegreeCount> Degrees { get; set; }
 }

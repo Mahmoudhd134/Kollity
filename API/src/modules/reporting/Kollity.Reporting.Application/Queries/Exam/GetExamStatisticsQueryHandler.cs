@@ -1,4 +1,5 @@
 ﻿using Kollity.Common.ErrorHandling;
+using Kollity.Reporting.Application.Dtos.Common;
 using Kollity.Reporting.Application.Dtos.Exam;
 using Kollity.Reporting.Domain.Errors;
 using Kollity.Reporting.Persistence.Data;
@@ -57,6 +58,18 @@ public class GetExamStatisticsQueryHandler(ReportingDbContext context)
                         Count = o.ExamAnswers.Count
                     })
                     .ToList()
+            })
+            .ToListAsync(cancellationToken);
+
+        examDto.Degrees = await context.ExamAnswers
+            .Where(x => x.ExamId == request.Id)
+            .GroupBy(x => x.StudentId)
+            .Select(g => g.Select(a => a.ExamQuestionOption.IsRightOption ? a.ExamQuestion.Degree : 0).Sum())
+            .GroupBy(x => x)
+            .Select(g => new DegreeCount
+            {
+                Degree = g.Key,
+                Count = g.Count()
             })
             .ToListAsync(cancellationToken);
 
