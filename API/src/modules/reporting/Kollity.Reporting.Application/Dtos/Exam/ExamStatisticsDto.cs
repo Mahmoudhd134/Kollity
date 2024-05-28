@@ -14,20 +14,3 @@ public class ExamStatisticsDto
     public double AverageDegree { get; set; }
     public List<ExamQuestionForExamStatistics> Questions { get; set; }
 }
-
-public class ExamQuestionForExamStatistics
-{
-    public Guid Id { get; set; }
-    public string Question { get; set; }
-    public int Degree { get; set; }
-    public int OpenForSeconds { get; set; }
-    public List<ExamOptionForExamStatistics> Options { get; set; }
-}
-
-public class ExamOptionForExamStatistics
-{
-    public Guid Id { get; set; }
-    public string Option { get; set; }
-    public bool IsRightOption { get; set; }
-    public int Count { get; set; }
-}
