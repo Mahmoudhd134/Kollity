@@ -30,8 +30,7 @@ public class ReportingController(ReportingDbContext context) : BaseController
     }
 
     [HttpGet("room/{roomId:guid}"),
-     // Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     AllowAnonymous,
+     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(RoomReportDto))]
     public Task<IResult> RoomReport(Guid roomId)
     {
@@ -55,8 +54,7 @@ public class ReportingController(ReportingDbContext context) : BaseController
     }
 
     [HttpGet("exam/{examId:guid}"),
-     // Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     AllowAnonymous,
+     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(ExamStatisticsDto))]
     public Task<IResult> ExamStatistics(Guid examId)
     {
@@ -64,8 +62,7 @@ public class ReportingController(ReportingDbContext context) : BaseController
     }
 
     [HttpGet("assignment/{assignmentId:guid}"),
-     // Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
-     AllowAnonymous,
+     Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
      SwaggerResponse(200, type: typeof(AssignmentStatisticsDto))]
     public Task<IResult> AssignmentStatistics(Guid assignmentId)
     {
