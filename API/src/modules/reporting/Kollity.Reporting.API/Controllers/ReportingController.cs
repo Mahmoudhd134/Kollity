@@ -1,8 +1,10 @@
-﻿using Kollity.Reporting.Application.Dtos.Course;
+﻿using Kollity.Reporting.Application.Dtos.Assignment;
+using Kollity.Reporting.Application.Dtos.Course;
 using Kollity.Reporting.Application.Dtos.Doctor;
 using Kollity.Reporting.Application.Dtos.Exam;
 using Kollity.Reporting.Application.Dtos.Room;
 using Kollity.Reporting.Application.Dtos.Student;
+using Kollity.Reporting.Application.Queries.Assignment;
 using Kollity.Reporting.Application.Queries.Course;
 using Kollity.Reporting.Application.Queries.Doctor;
 using Kollity.Reporting.Application.Queries.Exam;
@@ -59,5 +61,14 @@ public class ReportingController(ReportingDbContext context) : BaseController
     public Task<IResult> ExamStatistics(Guid examId)
     {
         return Send(new GetExamStatisticsQuery(examId));
+    }
+
+    [HttpGet("assignment/{assignmentId:guid}"),
+     // Authorize(Roles = $"{Role.Admin},{Role.Doctor},{Role.Assistant}"),
+     AllowAnonymous,
+     SwaggerResponse(200, type: typeof(AssignmentStatisticsDto))]
+    public Task<IResult> AssignmentStatistics(Guid assignmentId)
+    {
+        return Send(new GetAssignmentStatisticsQuery(assignmentId));
     }
 }
