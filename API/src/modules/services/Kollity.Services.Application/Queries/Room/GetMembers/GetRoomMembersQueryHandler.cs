@@ -18,9 +18,10 @@ public class GetRoomMembersQueryHandler : IQueryHandler<GetRoomMembersQuery, Lis
     public async Task<Result<List<RoomMemberDto>>> Handle(GetRoomMembersQuery request,
         CancellationToken cancellationToken)
     {
+        var nameFilter = string.IsNullOrWhiteSpace(request.Dto.FullName);
         var members = await _context.UserRooms
             .Where(x => x.RoomId == request.RoomId)
-            .Where(x => x.User.FullNameInArabic.StartsWith(request.Dto.FullName))
+            .Where(x => nameFilter || x.User.FullNameInArabic.StartsWith(request.Dto.FullName))
             .ProjectTo<RoomMemberDto>(_mapper.ConfigurationProvider)
             .Skip(request.Dto.PageIndex * request.Dto.PageSize)
             .Take(request.Dto.PageSize)
