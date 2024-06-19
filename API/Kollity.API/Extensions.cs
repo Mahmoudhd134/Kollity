@@ -4,7 +4,6 @@ using Kollity.Reporting.Application;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
 using MassTransit;
-using MassTransit.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using KollityUserApiEntryPoint = Kollity.User.API.Extensions.ServiceCollectionExtensions;
 using KollityServicesApiEntryPoint = Kollity.Services.API.Extensions.ServiceCollectionExtensions;
+using KollityFeedbackApplicationEntryPoint = Kollity.Feedback.Application.FeedbackApplicationConfiguration;
 
 
 namespace Kollity.API;
@@ -30,7 +30,8 @@ public static class Extensions
             busConfig.AddConsumers(
                 typeof(ApplicationExtensions).Assembly,
                 typeof(KollityUserApiEntryPoint).Assembly,
-                typeof(ReportingApplicationConfiguration).Assembly
+                typeof(ReportingApplicationConfiguration).Assembly,
+                typeof(KollityFeedbackApplicationEntryPoint).Assembly
             );
 
             if (isProductionEnvironment)

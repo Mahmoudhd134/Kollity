@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\src\modules\feedback\Kollity.Feedback.Api\Kollity.Feedback.Api.csproj" />
       <ProjectReference Include="..\src\modules\reporting\Kollity.Reporting.API\Kollity.Reporting.API.csproj" />
       <ProjectReference Include="..\src\modules\reporting\Kollity.Reporting.Persistence\Kollity.Reporting.Persistence.csproj" />
       <ProjectReference Include="..\src\modules\services\Kollity.Services.API\Kollity.Services.API.csproj" />
