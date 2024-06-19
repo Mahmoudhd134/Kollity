@@ -30,6 +30,16 @@ public class UserServiceServices(IUserIntegrationServices userIntegrationService
             role == Role.Doctor ? UserRole.Doctor : UserRole.Assistant
         );
     }
+
+    public Task<Result> EditUser(Guid id, string username)
+    {
+        return userIntegrationServices.EditUser(id,username);
+    }
+
+    public Task<Result> DeleteUser(Guid id)
+    {
+        return userIntegrationServices.DeleteUser(id);
+    }
 }
 // public class UserServiceServices : IUserServiceServices
 // {

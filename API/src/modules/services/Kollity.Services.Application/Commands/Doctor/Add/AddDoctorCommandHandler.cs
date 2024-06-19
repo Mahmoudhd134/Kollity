@@ -3,6 +3,7 @@ using Kollity.Services.Application.Events.Doctor;
 using Kollity.Services.Application.Queries.Identity.IsUserNameUsed;
 using Kollity.Services.Domain.Errors;
 using Kollity.Services.Domain.Identity;
+using Kollity.User.Contracts;
 using MediatR;
 
 namespace Kollity.Services.Application.Commands.Doctor.Add;
@@ -13,14 +14,16 @@ public class AddDoctorCommandHandler : ICommandHandler<AddDoctorCommand>
     private readonly IMapper _mapper;
     private readonly ISender _sender;
     private readonly EventCollection _eventCollection;
+    private readonly IUserServiceServices _userServiceServices;
 
     public AddDoctorCommandHandler(ApplicationDbContext context, IMapper mapper, ISender sender,
-        EventCollection eventCollection)
+        EventCollection eventCollection, IUserServiceServices userServiceServices)
     {
         _context = context;
         _mapper = mapper;
         _sender = sender;
         _eventCollection = eventCollection;
+        _userServiceServices = userServiceServices;
     }
 
     public async Task<Result> Handle(AddDoctorCommand request, CancellationToken cancellationToken)
@@ -51,6 +54,11 @@ public class AddDoctorCommandHandler : ICommandHandler<AddDoctorCommand>
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
+
+        var addResult =
+            await _userServiceServices.AddDoctor(doctor, request.AddDoctorDto.Password, request.AddDoctorDto.Role);
+        if (addResult.IsSuccess == false)
+            return addResult.Errors;
 
         _eventCollection.Raise(new DoctorAddedEvent(doctor, request.AddDoctorDto.Password, request.AddDoctorDto.Role));
 
