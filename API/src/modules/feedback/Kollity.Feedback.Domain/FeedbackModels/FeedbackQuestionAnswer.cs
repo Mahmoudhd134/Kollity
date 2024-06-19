@@ -1,4 +1,4 @@
-﻿namespace Kollity.Services.Domain.FeedbackModels;
+﻿namespace Kollity.Feedback.Domain.FeedbackModels;
 
 public enum FeedbackQuestionAnswer
 {

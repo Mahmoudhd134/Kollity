@@ -1,18 +1,8 @@
-﻿using Kollity.Services.Domain.FeedbackModels;
+﻿using Kollity.Feedback.Domain.FeedbackModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Kollity.Services.Persistence.EntityConfigurations.FeedbackConfigurations;
-
-public class FeedbackQuestionConfig : IEntityTypeConfiguration<FeedbackQuestion>
-{
-    public void Configure(EntityTypeBuilder<FeedbackQuestion> builder)
-    {
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.Question).IsRequired().HasMaxLength(1023);
-        builder.ToTable("FeedbackQuestion");
-    }
-}
+namespace Kollity.Feedback.Persistence.Configurations;
 
 public class FeedbackAnswerConfig : IEntityTypeConfiguration<FeedbackAnswer>
 {

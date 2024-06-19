@@ -1,5 +1,8 @@
 using Kollity.API;
 using Kollity.API.Helpers;
+using Kollity.Feedback.Api.Extensions;
+using Kollity.Feedback.Application;
+using Kollity.Feedback.Persistence.Data;
 using Kollity.Reporting.Application;
 using Kollity.Reporting.Persistence;
 using Kollity.Reporting.Persistence.Data;
@@ -13,6 +16,7 @@ using Kollity.Services.Persistence.Data;
 using Kollity.User.API.Data;
 using Kollity.User.API.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Kollity.Feedback.Persistence.Extensions;
 using KollityServicesApiEntryPoint = Kollity.Services.API.Extensions.ServiceCollectionExtensions;
 using KollityUserApiEntryPoint = Kollity.User.API.Extensions.ServiceCollectionExtensions;
 
@@ -33,6 +37,11 @@ builder.Services.AddServicesServicesInjection();
 // reporting services
 builder.Services.AddReportingPersistenceConfiguration();
 builder.Services.AddReportingApplicationConfiguration();
+
+// feedback services
+builder.Services.AddFeedbackPersistenceConfiguration();
+builder.Services.AddFeedbackApplicationConfiguration();
+builder.Services.AddFeedbackApiServicesInjection();
 
 
 // base service
@@ -77,15 +86,16 @@ app.MapFallbackToFile("index.html");
 
 try
 {
-    await using var userDbContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<UserDbContext>();
-    await using var serviceDbContext =
-        app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await using var reportingDbContext =
-        app.Services.CreateScope().ServiceProvider.GetRequiredService<ReportingDbContext>();
+    using var scope = app.Services.CreateScope();
+    await using var userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+    await using var serviceDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await using var reportingDbContext = scope.ServiceProvider.GetRequiredService<ReportingDbContext>();
+    await using var feedbackDbContext = scope.ServiceProvider.GetRequiredService<FeedbackDbContext>();
 
     await userDbContext.Database.MigrateAsync();
     await serviceDbContext.Database.MigrateAsync();
     await reportingDbContext.Database.MigrateAsync();
+    await feedbackDbContext.Database.MigrateAsync();
 }
 catch (Exception e)
 {

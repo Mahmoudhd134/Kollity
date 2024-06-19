@@ -1,6 +1,4 @@
-﻿using Kollity.Services.Domain.Identity;
-
-namespace Kollity.Services.Domain.FeedbackModels;
+﻿namespace Kollity.Feedback.Domain.FeedbackModels;
 
 public class FeedbackQuestion
 {
