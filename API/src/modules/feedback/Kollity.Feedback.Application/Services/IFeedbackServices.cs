@@ -11,4 +11,6 @@ public interface IFeedbackServices
 
     Task<Result> AnswerFeedbacks(FeedbacksAnswerDto answers, CancellationToken cancellationToken = default);
     Task<Result<List<FeedbackAvailableCategory>>> AvailableFeedbacks(CancellationToken cancellationToken = default);
+    Task<Result<Guid>> AddQuestion(AddFeedbackQuestionDto dto, CancellationToken cancellationToken = default);
+    Task<Result> DeleteQuestion(Guid id, CancellationToken cancellationToken = default);
 }

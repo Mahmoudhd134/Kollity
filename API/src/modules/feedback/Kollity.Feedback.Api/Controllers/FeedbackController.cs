@@ -13,7 +13,7 @@ namespace Kollity.Feedback.Api.Controllers;
 [Route("api/feedback")]
 public class FeedbackController(FeedbackDbContext context, IFeedbackServices feedbackServices) : BaseController
 {
-    [HttpGet("available")]
+    [HttpGet("available"), SwaggerResponse(200, type: typeof(List<FeedbackAvailableCategory>))]
     public async Task<IResult> GetAvailable(CancellationToken cancellationToken)
     {
         return (await feedbackServices.AvailableFeedbacks(cancellationToken)).ToIResult();
@@ -25,7 +25,19 @@ public class FeedbackController(FeedbackDbContext context, IFeedbackServices fee
         return (await feedbackServices.AnswerFeedbacks(answers, cancellationToken)).ToIResult();
     }
 
-    [HttpGet("questions")]
+    [HttpPost("questions"), SwaggerResponse(200, type: typeof(Guid))]
+    public async Task<IResult> AddQuestion([FromBody] AddFeedbackQuestionDto dto, CancellationToken cancellationToken)
+    {
+        return (await feedbackServices.AddQuestion(dto, cancellationToken)).ToIResult();
+    }
+
+    [HttpDelete("questions/{id:guid}")]
+    public async Task<IResult> AddQuestion(Guid id, CancellationToken cancellationToken)
+    {
+        return (await feedbackServices.DeleteQuestion(id, cancellationToken)).ToIResult();
+    }
+
+    [HttpGet("questions"), SwaggerResponse(200, type: typeof(List<FeedbackQuestionDto>))]
     public async Task<IResult> Answer(FeedbackCategory category, CancellationToken cancellationToken)
     {
         return (await feedbackServices.GetAllQuestions(category, cancellationToken)).ToIResult();

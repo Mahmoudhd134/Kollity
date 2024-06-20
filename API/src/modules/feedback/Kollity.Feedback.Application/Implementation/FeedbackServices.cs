@@ -70,9 +70,9 @@ public class FeedbackServices(FeedbackDbContext context, IUserServices userServi
             .Where(a => questions.ContainsKey(a.QuestionId) == false)
             .Select(a => Error.NotFound("Feedback.QuestionNotFound", $"question with id {a.QuestionId} not found"))
             .ToList();
-        if(outQuestions.Any())
+        if (outQuestions.Any())
             return outQuestions;
-            
+
 
         var errors = answers.Answers.Where(a => (
                 ((questions.GetValueOrDefault(a.QuestionId)?.IsMcq ?? false) &&
@@ -179,5 +179,29 @@ public class FeedbackServices(FeedbackDbContext context, IUserServices userServi
                 Available = requiredDoctors
             },
         };
+    }
+
+    public async Task<Result<Guid>> AddQuestion(AddFeedbackQuestionDto dto,
+        CancellationToken cancellationToken = default)
+    {
+        var feedbackQuestion = new FeedbackQuestion()
+        {
+            IsMcq = dto.IsMcq,
+            Category = dto.Category,
+            Question = dto.Question
+        };
+        context.FeedbackQuestions.Add(feedbackQuestion);
+        await context.SaveChangesAsync(cancellationToken);
+        return feedbackQuestion.Id;
+    }
+
+    public async Task<Result> DeleteQuestion(Guid id, CancellationToken cancellationToken = default)
+    {
+        var result = await context.FeedbackQuestions
+            .Where(x => x.Id == id)
+            .ExecuteDeleteAsync(cancellationToken);
+        if (result == 0)
+            return Error.NotFound("Feedback.QuestionNotFound", $"there are no question with id {id}");
+        return Result.Success();
     }
 }
