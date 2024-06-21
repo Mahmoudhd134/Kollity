@@ -13,4 +13,10 @@ public interface IFeedbackServices
     Task<Result<List<FeedbackAvailableCategory>>> AvailableFeedbacks(CancellationToken cancellationToken = default);
     Task<Result<Guid>> AddQuestion(AddFeedbackQuestionDto dto, CancellationToken cancellationToken = default);
     Task<Result> DeleteQuestion(Guid id, CancellationToken cancellationToken = default);
+
+    Task<Result<FeedbackStatistics>> GetStatistics(Guid targetId, FeedbackCategory category,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<List<FeedbackAnswerDto>>> GetStringAnswersForQuestion(Guid questionId, Guid targetId,
+        FeedbackCategory category, int pageIndex, int pageSize, CancellationToken cancellationToken = default);
 }

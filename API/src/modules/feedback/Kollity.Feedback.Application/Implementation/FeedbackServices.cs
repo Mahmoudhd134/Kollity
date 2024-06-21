@@ -204,4 +204,93 @@ public class FeedbackServices(FeedbackDbContext context, IUserServices userServi
             return Error.NotFound("Feedback.QuestionNotFound", $"there are no question with id {id}");
         return Result.Success();
     }
+
+    public async Task<Result<FeedbackStatistics>> GetStatistics(Guid targetId, FeedbackCategory category,
+        CancellationToken cancellationToken = default)
+    {
+        var isDoctor = category == FeedbackCategory.Doctor;
+        var isCourse = category == FeedbackCategory.Course;
+        var isExam = category == FeedbackCategory.Exam;
+
+        var result = await context.FeedbackAnswers
+            .Where(x => isDoctor == false || x.DoctorId == targetId)
+            .Where(x => isCourse == false || x.CourseId == targetId)
+            .Where(x => isExam == false || x.ExamId == targetId)
+            .Where(x => x.Answer != null)
+            .Select(x => new
+            {
+                x.QuestionId,
+                x.Question.Question,
+                x.Answer
+            })
+            .GroupBy(x => x.QuestionId)
+            .Select(g => new FeedbackStatisticsQuestionDto()
+            {
+                Id = g.Key,
+                Question = g.First().Question,
+                Options = g.GroupBy(x => x.Answer)
+                    .Select(ag => new FeedbackStatisticsQuestionOptionDto()
+                    {
+                        Answer = ag.Key.Value,
+                        Count = ag.Count()
+                    }).ToList()
+            })
+            .ToListAsync(cancellationToken);
+
+        var name = category switch
+        {
+            FeedbackCategory.Course => await context.Courses
+                .Where(x => x.Id == targetId)
+                .Select(x => x.Name)
+                .FirstOrDefaultAsync(cancellationToken),
+            FeedbackCategory.Doctor => await context.Users
+                .Where(x => x.Id == targetId)
+                .Select(x => x.FullName)
+                .FirstOrDefaultAsync(cancellationToken),
+            FeedbackCategory.Exam => await context.Exams
+                .Where(x => x.Id == targetId)
+                .Select(x => x.Name)
+                .FirstOrDefaultAsync(cancellationToken),
+            _ => throw new ArgumentOutOfRangeException(nameof(category), category, null)
+        };
+
+
+        var total = result.Any() ? result.Max(x => x.Options.Sum(o => o.Count)) : 0;
+
+        var statistics = new FeedbackStatistics()
+        {
+            TargetId = targetId,
+            TargetName = name,
+            Category = category,
+            Questions = result,
+            TotalParticipants = total
+        };
+
+        return statistics;
+    }
+
+    public async Task<Result<List<FeedbackAnswerDto>>> GetStringAnswersForQuestion(Guid questionId, Guid targetId,
+        FeedbackCategory category, int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    {
+        var isDoctor = category == FeedbackCategory.Doctor;
+        var isCourse = category == FeedbackCategory.Course;
+        var isExam = category == FeedbackCategory.Exam;
+
+        var result = await context.FeedbackAnswers
+            .Where(x => isDoctor == false || x.DoctorId == targetId)
+            .Where(x => isCourse == false || x.CourseId == targetId)
+            .Where(x => isExam == false || x.ExamId == targetId)
+            .Where(x => x.Answer == null)
+            .Where(x => x.StringAnswer != null)
+            .Select(x => new FeedbackAnswerDto()
+            {
+                QuestionId = x.QuestionId,
+                StringAnswer = x.StringAnswer
+            })
+            .Skip(pageIndex * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+        
+        return result;
+    }
 }

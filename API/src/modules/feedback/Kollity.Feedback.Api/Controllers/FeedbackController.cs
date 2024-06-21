@@ -1,4 +1,5 @@
-﻿using Kollity.Feedback.Api.Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using Kollity.Feedback.Api.Extensions;
 using Kollity.Feedback.Application.Dtos;
 using Kollity.Feedback.Application.Services;
 using Kollity.Feedback.Domain.FeedbackModels;
@@ -25,21 +26,44 @@ public class FeedbackController(FeedbackDbContext context, IFeedbackServices fee
         return (await feedbackServices.AnswerFeedbacks(answers, cancellationToken)).ToIResult();
     }
 
-    [HttpPost("questions"), SwaggerResponse(200, type: typeof(Guid))]
+    [HttpPost("questions"), Authorize(Roles = "Admin"), SwaggerResponse(200, type: typeof(Guid))]
     public async Task<IResult> AddQuestion([FromBody] AddFeedbackQuestionDto dto, CancellationToken cancellationToken)
     {
         return (await feedbackServices.AddQuestion(dto, cancellationToken)).ToIResult();
     }
 
-    [HttpDelete("questions/{id:guid}")]
+    [HttpDelete("questions/{id:guid}"), Authorize(Roles = "Admin")]
     public async Task<IResult> AddQuestion(Guid id, CancellationToken cancellationToken)
     {
         return (await feedbackServices.DeleteQuestion(id, cancellationToken)).ToIResult();
     }
 
-    [HttpGet("questions"), SwaggerResponse(200, type: typeof(List<FeedbackQuestionDto>))]
+    [HttpGet("questions/{category}"), SwaggerResponse(200, type: typeof(List<FeedbackQuestionDto>))]
     public async Task<IResult> Answer(FeedbackCategory category, CancellationToken cancellationToken)
     {
         return (await feedbackServices.GetAllQuestions(category, cancellationToken)).ToIResult();
+    }
+
+    [HttpGet("statistics/{targetId:guid}/{category}"),
+     Authorize(Roles = "Admin,Doctor,Assistant"),
+     SwaggerResponse(200, type: typeof(FeedbackStatistics))]
+    public async Task<IResult> Statistics(Guid targetId, FeedbackCategory category, CancellationToken cancellationToken)
+    {
+        return (await feedbackServices.GetStatistics(targetId, category, cancellationToken)).ToIResult();
+    }
+
+    [HttpGet("not-mcq-answers/{questionId:guid}/{targetId:guid}/{category}"),
+     Authorize(Roles = "Admin,Doctor,Assistant"),
+     SwaggerResponse(200, type: typeof(List<FeedbackAnswerDto>))]
+    public async Task<IResult> Statistics(
+        Guid questionId,
+        Guid targetId,
+        FeedbackCategory category,
+        [Required] int pageIndex,
+        [Required] int pageSize,
+        CancellationToken cancellationToken)
+    {
+        return (await feedbackServices.GetStringAnswersForQuestion(questionId, targetId, category, pageIndex, pageSize,
+            cancellationToken)).ToIResult();
     }
 }
