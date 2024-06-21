@@ -9,11 +9,13 @@ public class DeleteDoctorCommandHandler : ICommandHandler<DeleteDoctorCommand>
 {
     private readonly ApplicationDbContext _context;
     private readonly EventCollection _eventCollection;
+    private readonly IUserServiceServices _userServiceServices;
 
-    public DeleteDoctorCommandHandler(ApplicationDbContext context, EventCollection eventCollection)
+    public DeleteDoctorCommandHandler(ApplicationDbContext context, EventCollection eventCollection,IUserServiceServices userServiceServices)
     {
         _context = context;
         _eventCollection = eventCollection;
+        _userServiceServices = userServiceServices;
     }
 
     public async Task<Result> Handle(DeleteDoctorCommand request, CancellationToken cancellationToken)
@@ -23,7 +25,7 @@ public class DeleteDoctorCommandHandler : ICommandHandler<DeleteDoctorCommand>
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
         if (doctor is null)
             return DoctorErrors.IdNotFound(request.Id);
-
+        
         await _context.CourseAssistants
             .Where(x => x.AssistantId == request.Id)
             .ExecuteDeleteAsync(cancellationToken);
@@ -34,6 +36,10 @@ public class DeleteDoctorCommandHandler : ICommandHandler<DeleteDoctorCommand>
 
         if (result == 0)
             return Error.UnKnown;
+        
+        var r = await _userServiceServices.DeleteUser(doctor.Id);
+        if (r.IsSuccess == false)
+            return r.Errors;
 
         _eventCollection.Raise(new DoctorDeletedEvent(doctor));
         return Result.Success();

@@ -14,18 +14,21 @@ public class EditStudentCommandHandler : ICommandHandler<EditStudentCommand>
     private readonly ISender _sender;
     private readonly IUserServices _userServices;
     private readonly EventCollection _eventCollection;
+    private readonly IUserServiceServices _userServiceServices;
 
     public EditStudentCommandHandler(ApplicationDbContext context,
         ISender sender,
         IMapper mapper,
         IUserServices userServices,
-        EventCollection eventCollection)
+        EventCollection eventCollection,
+        IUserServiceServices userServiceServices)
     {
         _context = context;
         _sender = sender;
         _mapper = mapper;
         _userServices = userServices;
         _eventCollection = eventCollection;
+        _userServiceServices = userServiceServices;
     }
 
     public async Task<Result> Handle(EditStudentCommand request, CancellationToken cancellationToken)
@@ -50,6 +53,10 @@ public class EditStudentCommandHandler : ICommandHandler<EditStudentCommand>
         var result = await _context.SaveChangesAsync(cancellationToken);
         if (result == 0)
             return Error.UnKnown;
+
+        var r = await _userServiceServices.EditUser(student.Id, student.UserName);
+        if (r.IsSuccess == false)
+            return r.Errors;
 
         _eventCollection.Raise(new StudentEditedEvent(student));
         return Result.Success();

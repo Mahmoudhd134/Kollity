@@ -10,13 +10,15 @@ public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
     private readonly IFileServices _fileServices;
     private readonly ApplicationDbContext _context;
     private readonly EventCollection _eventCollection;
+    private readonly IUserServiceServices _userServiceServices;
 
     public DeleteStudentCommandHandler(IFileServices fileServices, ApplicationDbContext context,
-        EventCollection eventCollection)
+        EventCollection eventCollection,IUserServiceServices userServiceServices)
     {
         _fileServices = fileServices;
         _context = context;
         _eventCollection = eventCollection;
+        _userServiceServices = userServiceServices;
     }
 
     public async Task<Result> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
@@ -40,6 +42,10 @@ public class DeleteStudentCommandHandler : ICommandHandler<DeleteStudentCommand>
 
         if (result == 0)
             return Error.UnKnown;
+        
+        var r = await _userServiceServices.DeleteUser(request.Id);
+        if (r.IsSuccess == false)
+            return r.Errors;
         
         _eventCollection.Raise(new StudentDeletedEvent(request.Id));
 

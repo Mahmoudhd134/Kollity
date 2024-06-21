@@ -14,16 +14,18 @@ public class EditDoctorCommandHandler : ICommandHandler<EditDoctorCommand>
     private readonly ISender _sender;
     private readonly IUserServices _userServices;
     private readonly ApplicationDbContext _context;
+    private readonly IUserServiceServices _userServiceServices;
 
     public EditDoctorCommandHandler(EventCollection eventCollection, IMapper mapper,
         ISender sender,
-        IUserServices userServices, ApplicationDbContext context)
+        IUserServices userServices, ApplicationDbContext context,IUserServiceServices userServiceServices)
     {
         _eventCollection = eventCollection;
         _mapper = mapper;
         _sender = sender;
         _userServices = userServices;
         _context = context;
+        _userServiceServices = userServiceServices;
     }
 
     public async Task<Result> Handle(EditDoctorCommand request, CancellationToken cancellationToken)
@@ -49,6 +51,9 @@ public class EditDoctorCommandHandler : ICommandHandler<EditDoctorCommand>
         if (result == 0)
             return Error.UnKnown;
 
+        var r = await _userServiceServices.EditUser(doctor.Id, doctor.UserName);
+        if (r.IsSuccess == false)
+            return r.Errors;
         _eventCollection.Raise(new DoctorEditedEvent(doctor));
         return Result.Success();
     }
