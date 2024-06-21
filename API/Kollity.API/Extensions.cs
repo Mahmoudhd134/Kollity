@@ -19,7 +19,7 @@ namespace Kollity.API;
 public static class Extensions
 {
     public static IServiceCollection AddMassTransitConfiguration(this IServiceCollection services,
-        IConfiguration configuration, bool isProductionEnvironment)
+        IConfiguration configuration, bool useInMemory)
     {
         services.Configure<RabbitMqConfig>(configuration.GetSection("Queues:RabbitMq"));
         services.AddSingleton(sp => sp.GetRequiredService<IOptions<RabbitMqConfig>>().Value);
@@ -34,34 +34,33 @@ public static class Extensions
                 typeof(KollityFeedbackApplicationEntryPoint).Assembly
             );
 
-            if (isProductionEnvironment)
-            {
-                busConfig.UsingRabbitMq((context, config) =>
-                {
-                    config.ConfigureEndpoints(context);
-                    config.UseMessageRetry(r =>
-                    {
-                        r.Exponential(7,
-                            TimeSpan.FromSeconds(30),
-                            TimeSpan.FromMinutes(60),
-                            TimeSpan.FromMinutes(1));
-                    });
-
-
-                    var rabbitMqConfig = context.GetRequiredService<RabbitMqConfig>();
-                    config.Host(new Uri(rabbitMqConfig.Host), host =>
-                    {
-                        host.Username(rabbitMqConfig.Username);
-                        host.Password(rabbitMqConfig.Password);
-                    });
-
-                    config.SendTopology.ErrorQueueNameFormatter = new KebabCaseErrorQueueNameFormatter();
-                });
-            }
-            else
+            if (useInMemory)
             {
                 busConfig.UsingInMemory((context, config) => config.ConfigureEndpoints(context));
+                return;
             }
+
+            busConfig.UsingRabbitMq((context, config) =>
+            {
+                config.ConfigureEndpoints(context);
+                config.UseMessageRetry(r =>
+                {
+                    r.Exponential(7,
+                        TimeSpan.FromSeconds(30),
+                        TimeSpan.FromMinutes(60),
+                        TimeSpan.FromMinutes(1));
+                });
+
+
+                var rabbitMqConfig = context.GetRequiredService<RabbitMqConfig>();
+                config.Host(new Uri(rabbitMqConfig.Host), host =>
+                {
+                    host.Username(rabbitMqConfig.Username);
+                    host.Password(rabbitMqConfig.Password);
+                });
+
+                config.SendTopology.ErrorQueueNameFormatter = new KebabCaseErrorQueueNameFormatter();
+            });
         });
         return services;
     }
