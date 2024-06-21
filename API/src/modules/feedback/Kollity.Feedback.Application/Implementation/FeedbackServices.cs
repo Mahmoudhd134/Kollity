@@ -197,6 +197,9 @@ public class FeedbackServices(FeedbackDbContext context, IUserServices userServi
 
     public async Task<Result> DeleteQuestion(Guid id, CancellationToken cancellationToken = default)
     {
+        await context.FeedbackAnswers
+            .Where(x => x.QuestionId == id)
+            .ExecuteDeleteAsync(cancellationToken);
         var result = await context.FeedbackQuestions
             .Where(x => x.Id == id)
             .ExecuteDeleteAsync(cancellationToken);
