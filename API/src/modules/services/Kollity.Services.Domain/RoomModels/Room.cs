@@ -2,7 +2,6 @@
 using Kollity.Services.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Services.Domain.CourseModels;
 using Kollity.Services.Domain.DoctorModels;
-using Kollity.Services.Domain.ExamModels;
 
 namespace Kollity.Services.Domain.RoomModels;
 
@@ -23,7 +22,6 @@ public class Room
     public List<UserRoom> UsersRooms { get; set; } = [];
 
     public List<RoomContent> RoomContents { get; set; } = [];
-    public List<Exam> Exams { get; set; } = [];
     public List<Assignment> Assignments { get; set; } = [];
     public List<AssignmentGroup> AssignmentGroups { get; set; } = [];
 }

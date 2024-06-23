@@ -193,6 +193,80 @@ begin
         end catch
 end
 
+begin
+    begin transaction migrate_data
+        begin try
+            -- migrate user data
+            insert into KollityExamsDB.exams.[User](id, user_name, full_name, code, user_type, is_deleted)
+            select id,
+                   user_name,
+                   full_name_in_arabic,
+                   code,
+                   case
+                       when user_type = 1 or user_type = 0 then 1
+                       when user_type = 2 or user_type = 3 then 2
+                       end as type,
+                   cast(0 as bit)
+            from KollityServicesDb.services.[User]
+            -- migration of user data ended
+
+
+            --migrate rooms data
+            insert into KollityExamsDB.exams.Room (id, name, doctor_id, is_deleted)
+            select id, name, doctor_id, cast(0 as bit)
+            from KollityServicesDb.services.Room;
+
+            insert into KollityExamsDB.exams.RoomUser(room_id, user_id)
+            select room_id, user_id
+            from KollityServicesDb.services.UserRoom
+            where join_request_accepted = 1
+            -- migration of rooms data ended
+
+            -- migrate exam data
+            insert into KollityExamsDB.exams.Exam(id, name, start_date, end_date, creation_date, last_updated_date,
+                                                  room_id)
+            select e.id, name, start_date, end_date, creation_date, last_updated_date, room_id
+            from KollityServicesDb.services.Exam E
+
+            insert into KollityExamsDB.exams.ExamQuestion (id, exam_id, question, open_for_seconds, degree)
+            select EQ.id, exam_id, question, open_for_seconds, degree
+            from KollityServicesDb.services.ExamQuestion EQ
+
+            insert into KollityExamsDB.exams.ExamQuestionOption (id, exam_question_id, [option], is_right_option)
+            select EQO.id, exam_question_id, [option], is_right_option
+            from KollityServicesDb.services.ExamQuestionOption EQO
+
+            insert into KollityExamsDB.exams.ExamAnswer (id,
+                                                         student_id,
+                                                         exam_id,
+                                                         exam_question_id,
+                                                         exam_question_option_id,
+                                                         request_time,
+                                                         submit_time,
+                                                         room_id)
+            select EA.id,
+                   student_id,
+                   exam_id,
+                   exam_question_id,
+                   exam_question_option_id,
+                   request_time,
+                   submit_time,
+                   E.room_id
+            from KollityServicesDb.services.ExamAnswer EA
+                     left join KollityServicesDB.services.Exam E on E.id = EA.exam_id
+            where EA.exam_question_option_id is not null
+              and EA.submit_time is not null
+              and EA.student_id is not null
+            -- migration of exam data ended
+
+            commit transaction migrate_data
+        end try
+        begin catch
+            select error_message(), error_line()
+            rollback transaction migrate_data
+        end catch
+end
+
 delete
 from KollityReportingDb.reporting.[ExamAnswer]
 delete

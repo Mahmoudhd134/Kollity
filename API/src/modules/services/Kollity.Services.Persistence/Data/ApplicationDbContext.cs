@@ -2,7 +2,6 @@
 using Kollity.Services.Domain.AssignmentModels.AssignmentGroupModels;
 using Kollity.Services.Domain.CourseModels;
 using Kollity.Services.Domain.DoctorModels;
-using Kollity.Services.Domain.ExamModels;
 using Kollity.Services.Domain.Identity;
 using Kollity.Services.Domain.Messages;
 using Kollity.Services.Domain.RoomModels;
@@ -28,10 +27,6 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<RoomContent> RoomContents { get; set; }
     public DbSet<UserRoom> UserRooms { get; set; }
-    public DbSet<Exam> Exams { get; set; }
-    public DbSet<ExamQuestion> ExamQuestions { get; set; }
-    public DbSet<ExamQuestionOption> ExamQuestionOptions { get; set; }
-    public DbSet<ExamAnswer> ExamAnswers { get; set; }
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseAssistant> CourseAssistants { get; set; }
     public DbSet<StudentCourse> StudentCourses { get; set; }

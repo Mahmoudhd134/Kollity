@@ -1,8 +1,8 @@
-﻿using Kollity.Feedback.Application.Abstractions;
+﻿using Kollity.Exams.Contracts.Exam;
+using Kollity.Feedback.Application.Abstractions;
 using Kollity.Feedback.Application.Exceptions;
 using Kollity.Feedback.Domain;
 using Kollity.Feedback.Persistence.Data;
-using Kollity.Services.Contracts.Exam;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kollity.Feedback.Application.EventHandlers.Integration.ExamEvents;

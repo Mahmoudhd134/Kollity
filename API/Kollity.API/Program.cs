@@ -1,5 +1,11 @@
 using Kollity.API;
 using Kollity.API.Helpers;
+using Kollity.Common.Extensions;
+using Kollity.Exams.Api.Extensions;
+using Kollity.Exams.Application;
+using Kollity.Exams.Infrastructure;
+using Kollity.Exams.Persistence;
+using Kollity.Exams.Persistence.Data;
 using Kollity.Feedback.Api.Extensions;
 using Kollity.Feedback.Application;
 using Kollity.Feedback.Persistence.Data;
@@ -9,7 +15,6 @@ using Kollity.Reporting.Persistence.Data;
 using Kollity.Services.API.Extensions;
 using Kollity.Services.API.Hubs;
 using Kollity.Services.Application;
-using Kollity.Services.Application.Extensions;
 using Kollity.Services.Infrastructure;
 using Kollity.Services.Persistence;
 using Kollity.Services.Persistence.Data;
@@ -19,6 +24,8 @@ using Microsoft.EntityFrameworkCore;
 using Kollity.Feedback.Persistence.Extensions;
 using KollityServicesApiEntryPoint = Kollity.Services.API.Extensions.ServiceCollectionExtensions;
 using KollityUserApiEntryPoint = Kollity.User.API.Extensions.ServiceCollectionExtensions;
+using KollityReportingApiEntryPoint = Kollity.Reporting.API.Extensions.ResultExtensions;
+using KollityExamsApiEntryPoint = Kollity.Exams.Api.Extensions.ServiceCollectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,11 +50,18 @@ builder.Services.AddFeedbackPersistenceConfiguration();
 builder.Services.AddFeedbackApplicationConfiguration();
 builder.Services.AddFeedbackApiServicesInjection();
 
+// exams services
+builder.Services.AddExamsPersistenceConfiguration();
+builder.Services.AddExamsApplicationConfiguration();
+builder.Services.AddExamsInfrastructureConfiguration();
+builder.Services.AddExamsApiServicesInjection();
 
 // base service
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(KollityUserApiEntryPoint).Assembly)
-    .AddApplicationPart(typeof(KollityServicesApiEntryPoint).Assembly);
+    .AddApplicationPart(typeof(KollityServicesApiEntryPoint).Assembly)
+    .AddApplicationPart(typeof(KollityExamsApiEntryPoint).Assembly)
+    .AddApplicationPart(typeof(KollityReportingApiEntryPoint).Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
@@ -85,23 +99,28 @@ app.MapServicesHubs();
 app.MapHealthChecks("healthy");
 app.MapFallbackToFile("index.html");
 
-try
+if (app.Environment.IsDevelopment())
 {
-    using var scope = app.Services.CreateScope();
-    await using var userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
-    await using var serviceDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    await using var reportingDbContext = scope.ServiceProvider.GetRequiredService<ReportingDbContext>();
-    await using var feedbackDbContext = scope.ServiceProvider.GetRequiredService<FeedbackDbContext>();
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        await using var userDbContext = scope.ServiceProvider.GetRequiredService<UserDbContext>();
+        await using var serviceDbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await using var reportingDbContext = scope.ServiceProvider.GetRequiredService<ReportingDbContext>();
+        await using var feedbackDbContext = scope.ServiceProvider.GetRequiredService<FeedbackDbContext>();
+        await using var examsDbContext = scope.ServiceProvider.GetRequiredService<ExamsDbContext>();
 
-    await userDbContext.Database.MigrateAsync();
-    await serviceDbContext.Database.MigrateAsync();
-    await reportingDbContext.Database.MigrateAsync();
-    await feedbackDbContext.Database.MigrateAsync();
-}
-catch (Exception e)
-{
-    var logger = app.Services.CreateScope().ServiceProvider.GetRequiredService<ILogger<Program>>();
-    logger.LogError(e.GetErrorMessage());
+        await userDbContext.Database.MigrateAsync();
+        await serviceDbContext.Database.MigrateAsync();
+        await reportingDbContext.Database.MigrateAsync();
+        await feedbackDbContext.Database.MigrateAsync();
+        await examsDbContext.Database.MigrateAsync();
+    }
+    catch (Exception e)
+    {
+        var logger = app.Services.CreateScope().ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(e.GetErrorMessage());
+    }
 }
 
 app.Run();

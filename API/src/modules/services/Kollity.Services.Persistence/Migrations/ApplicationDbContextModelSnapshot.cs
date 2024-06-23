@@ -351,163 +351,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.ToTable("CourseAssistant", "services");
                 });
 
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.Exam", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("creation_date");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("end_date");
-
-                    b.Property<DateTime>("LastUpdatedDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("last_updated_date");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
-                        .HasColumnName("name");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("room_id");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("start_date");
-
-                    b.HasKey("Id")
-                        .HasName("pk_exam");
-
-                    b.HasIndex("RoomId")
-                        .HasDatabaseName("ix_exam_room_id");
-
-                    b.ToTable("Exam", "services");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamAnswer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("ExamId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_id");
-
-                    b.Property<Guid>("ExamQuestionId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_question_id");
-
-                    b.Property<Guid?>("ExamQuestionOptionId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_question_option_id");
-
-                    b.Property<DateTime>("RequestTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("request_time");
-
-                    b.Property<Guid?>("StudentId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("student_id");
-
-                    b.Property<DateTime?>("SubmitTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("submit_time");
-
-                    b.HasKey("Id")
-                        .HasName("pk_exam_answer");
-
-                    b.HasIndex("ExamId")
-                        .HasDatabaseName("ix_exam_answer_exam_id");
-
-                    b.HasIndex("ExamQuestionId")
-                        .HasDatabaseName("ix_exam_answer_exam_question_id");
-
-                    b.HasIndex("ExamQuestionOptionId")
-                        .HasDatabaseName("ix_exam_answer_exam_question_option_id");
-
-                    b.HasIndex("StudentId", "ExamQuestionId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_exam_answer_student_id_exam_question_id")
-                        .HasFilter("[student_id] IS NOT NULL");
-
-                    b.ToTable("ExamAnswer", "services");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamQuestion", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<byte>("Degree")
-                        .HasColumnType("tinyint")
-                        .HasColumnName("degree");
-
-                    b.Property<Guid>("ExamId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_id");
-
-                    b.Property<int>("OpenForSeconds")
-                        .HasColumnType("int")
-                        .HasColumnName("open_for_seconds");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasMaxLength(1023)
-                        .HasColumnType("nvarchar(1023)")
-                        .HasColumnName("question");
-
-                    b.HasKey("Id")
-                        .HasName("pk_exam_question");
-
-                    b.HasIndex("ExamId")
-                        .HasDatabaseName("ix_exam_question_exam_id");
-
-                    b.ToTable("ExamQuestion", "services");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamQuestionOption", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<Guid>("ExamQuestionId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("exam_question_id");
-
-                    b.Property<bool>("IsRightOption")
-                        .HasColumnType("bit")
-                        .HasColumnName("is_right_option");
-
-                    b.Property<string>("Option")
-                        .IsRequired()
-                        .HasMaxLength(1023)
-                        .HasColumnType("nvarchar(1023)")
-                        .HasColumnName("option");
-
-                    b.HasKey("Id")
-                        .HasName("pk_exam_question_option");
-
-                    b.HasIndex("ExamQuestionId")
-                        .HasDatabaseName("ix_exam_question_option_exam_question_id");
-
-                    b.ToTable("ExamQuestionOption", "services");
-                });
-
             modelBuilder.Entity("Kollity.Services.Domain.Identity.BaseUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1063,79 +906,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.Exam", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.RoomModels.Room", "Room")
-                        .WithMany("Exams")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_rooms_room_id");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamAnswer", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.ExamModels.Exam", "Exam")
-                        .WithMany("Answers")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_answer_exams_exam_id");
-
-                    b.HasOne("Kollity.Services.Domain.ExamModels.ExamQuestion", "ExamQuestion")
-                        .WithMany("ExamAnswers")
-                        .HasForeignKey("ExamQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_answer_exam_questions_exam_question_id");
-
-                    b.HasOne("Kollity.Services.Domain.ExamModels.ExamQuestionOption", "ExamQuestionOption")
-                        .WithMany("ExamAnswers")
-                        .HasForeignKey("ExamQuestionOptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .HasConstraintName("fk_exam_answer_exam_question_options_exam_question_option_id");
-
-                    b.HasOne("Kollity.Services.Domain.StudentModels.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("fk_exam_answer_students_student_id");
-
-                    b.Navigation("Exam");
-
-                    b.Navigation("ExamQuestion");
-
-                    b.Navigation("ExamQuestionOption");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamQuestion", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.ExamModels.Exam", "Exam")
-                        .WithMany("ExamQuestions")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_question_exam_exam_id");
-
-                    b.Navigation("Exam");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamQuestionOption", b =>
-                {
-                    b.HasOne("Kollity.Services.Domain.ExamModels.ExamQuestion", "ExamQuestion")
-                        .WithMany("ExamQuestionOptions")
-                        .HasForeignKey("ExamQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_exam_question_option_exam_question_exam_question_id");
-
-                    b.Navigation("ExamQuestion");
-                });
-
             modelBuilder.Entity("Kollity.Services.Domain.RoomModels.MessagePollAnswer", b =>
                 {
                     b.HasOne("Kollity.Services.Domain.RoomModels.RoomMessage", "Poll")
@@ -1287,25 +1057,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.Navigation("StudentsCourses");
                 });
 
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.Exam", b =>
-                {
-                    b.Navigation("Answers");
-
-                    b.Navigation("ExamQuestions");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamQuestion", b =>
-                {
-                    b.Navigation("ExamAnswers");
-
-                    b.Navigation("ExamQuestionOptions");
-                });
-
-            modelBuilder.Entity("Kollity.Services.Domain.ExamModels.ExamQuestionOption", b =>
-                {
-                    b.Navigation("ExamAnswers");
-                });
-
             modelBuilder.Entity("Kollity.Services.Domain.Identity.BaseUser", b =>
                 {
                     b.Navigation("UsersRooms");
@@ -1316,8 +1067,6 @@ namespace Kollity.Services.Persistence.Migrations
                     b.Navigation("AssignmentGroups");
 
                     b.Navigation("Assignments");
-
-                    b.Navigation("Exams");
 
                     b.Navigation("RoomContents");
 

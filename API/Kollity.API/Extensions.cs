@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using KollityUserApiEntryPoint = Kollity.User.API.Extensions.ServiceCollectionExtensions;
 using KollityServicesApiEntryPoint = Kollity.Services.API.Extensions.ServiceCollectionExtensions;
 using KollityFeedbackApplicationEntryPoint = Kollity.Feedback.Application.FeedbackApplicationConfiguration;
+using KollityExamsApplicationEntryPoint = Kollity.Exams.Application.ApplicationExtensions;
 
 
 namespace Kollity.API;
@@ -31,7 +32,8 @@ public static class Extensions
                 typeof(ApplicationExtensions).Assembly,
                 typeof(KollityUserApiEntryPoint).Assembly,
                 typeof(ReportingApplicationConfiguration).Assembly,
-                typeof(KollityFeedbackApplicationEntryPoint).Assembly
+                typeof(KollityFeedbackApplicationEntryPoint).Assembly,
+                typeof(KollityExamsApplicationEntryPoint).Assembly
             );
 
             if (useInMemory)

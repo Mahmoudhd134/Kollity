@@ -1,5 +1,4 @@
-﻿using Kollity.Common;
-using Kollity.Services.API.Extensions;
+﻿using Kollity.Services.API.Extensions;
 using Kollity.Services.API.Hubs.Abstraction;
 using Kollity.Services.API.Hubs.Hubs.Room;
 using Kollity.Services.Application.Commands.Room.AcceptAllJoins;
@@ -17,10 +16,8 @@ using Kollity.Services.Application.Commands.Room.Messages.GetUnRead;
 using Kollity.Services.Application.Commands.Room.Messages.Pin;
 using Kollity.Services.Application.Commands.Room.Messages.SubmitPoll;
 using Kollity.Services.Application.Commands.Room.Messages.UnPin;
-using Kollity.Services.Application.Dtos.Reports;
 using Kollity.Services.Application.Dtos.Room;
 using Kollity.Services.Application.Dtos.Room.Message;
-using Kollity.Services.Application.Queries.Reports.UserRoomReport;
 using Kollity.Services.Application.Queries.Room.GetById;
 using Kollity.Services.Application.Queries.Room.GetMembers;
 using Kollity.Services.Application.Queries.Room.Messages.GetListBeforeDate;
@@ -44,14 +41,6 @@ public class RoomController : BaseController
     {
         _roomHubContext = roomHubContext;
         _roomConnectionServices = roomConnectionServices;
-    }
-
-    [HttpGet("{roomId:guid}/student-report/{studentId:guid}"),
-     Authorize(Roles = $"{Role.Doctor},{Role.Assistant},{Role.Admin}"),
-     SwaggerResponse(200, type: typeof(StudentRoomReportDto))]
-    public Task<IResult> StudentReport(Guid roomId, Guid studentId)
-    {
-        return Send(new GetStudentRoomReportQuery(studentId, roomId));
     }
 
     [HttpPost]

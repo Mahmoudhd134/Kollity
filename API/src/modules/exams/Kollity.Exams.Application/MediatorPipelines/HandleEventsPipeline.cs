@@ -1,0 +1,35 @@
+﻿using Kollity.Exams.Application.Abstractions.Events;
+using MediatR;
+
+namespace Kollity.Exams.Application.MediatorPipelines;
+
+public class HandleEventsPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IBaseCommand
+{
+    private readonly EventCollection _eventCollection;
+    private readonly IPublisher _publisher;
+
+    public HandleEventsPipeline(EventCollection eventCollection, IPublisher publisher)
+    {
+        _eventCollection = eventCollection;
+        _publisher = publisher;
+    }
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        var response = await next();
+
+        if (_eventCollection.Any() == false)
+            return response;
+
+        var events = _eventCollection.Events();
+        _eventCollection.Clear();
+        foreach (var e in events)
+        {
+            await _publisher.Publish(e, cancellationToken);
+        }
+
+        return response;
+    }
+}
